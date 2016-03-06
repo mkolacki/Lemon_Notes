@@ -33,26 +33,20 @@ public class Main extends Application
         JFXButton button = new JFXButton("Btn");
         button.setTooltip(new Tooltip("It's a button... you know like something you press."));
         button.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, new CornerRadii(10), new Insets(0,0,0,0))));
+        button.setButtonType(JFXButton.ButtonType.RAISED);
         JFXCheckBox check = new JFXCheckBox("Checkly");
         JFXBadge badge = new JFXBadge();
         JFXComboBox<String> combo = new JFXComboBox<String>();
 
 
-        AnchorPane container = new AnchorPane();
-        container.getChildren().add(button);
-        container.getChildren().add(check);
-        container.getChildren().add(badge);
-        container.getChildren().add(combo);
-        AnchorPane.setLeftAnchor(button, 20.0);
-        AnchorPane.setLeftAnchor(check, 80.0);
-        AnchorPane.setLeftAnchor(badge, 150.0);
-        AnchorPane.setLeftAnchor(combo, 230.0);
-        AnchorPane.setTopAnchor(button, 100.0);
-        AnchorPane.setTopAnchor(check, 100.0);
-        AnchorPane.setTopAnchor(badge, 200.0);
-        AnchorPane.setTopAnchor(combo, 200.0);
+        GridPane pane = new GridPane();
+        pane.add(button, 0, 0);
+        pane.add(check, 0, 0);
+        pane.add(combo, 0, 0);
 
-        final Scene scene = new Scene(container, 300, 300);
+
+
+        final Scene scene = new Scene(pane, 300, 300);
         primaryStage.setTitle("JFX Popup Demo");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);

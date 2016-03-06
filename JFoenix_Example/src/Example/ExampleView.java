@@ -1,10 +1,7 @@
 package Example;
 
 import Design.View;
-import com.jfoenix.controls.JFXButton;
-import javafx.collections.FXCollections;
 import javafx.embed.swing.JFXPanel;
-import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -16,7 +13,7 @@ import java.awt.event.ActionEvent;
  */
 public final class ExampleView implements View
 {
-    private final JPanel panel = new JPanel(new MigLayout());
+    private final JPanel panel = new JPanel();
     private final JButton button;
     private final JCheckBox checked;
     private final JComboBox<String> combo;
@@ -45,15 +42,15 @@ public final class ExampleView implements View
 
     private void filePanel()
     {
-        panel.add(new JLabel("Hello click the button!"), "cell 0 0");
-        panel.add(button, "wrap");
-        panel.add(checked, "wrap");
-        panel.add(combo, "wrap");
+        panel.add(new JLabel("Hello click the button!"));
+        panel.add(button);
+        panel.add(checked);
+        panel.add(combo);
         textField.setMinimumSize(new Dimension(150, 10));
-        panel.add(textField, "wrap");
+        panel.add(textField);
         panel.add(radioButton1);
         panel.add(radioButton2);
-        panel.add(radioButton3, "wrap");
+        panel.add(radioButton3);
         panel.add(textArea);
     }
 

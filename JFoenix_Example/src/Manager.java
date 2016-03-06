@@ -1,11 +1,7 @@
 import Example.ExampleController;
-import Example.ExampleView;
-import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * Created by alex on 3/5/2016.
@@ -46,7 +42,7 @@ public class Manager extends JFrame
         ExampleController controller = new ExampleController();
         Container pane = getContentPane();
         pane.add(controller.getComponent());
-        pane.setLayout(new MigLayout());
+        pane.setLayout(new GridLayout());
         pack();
     }
 }
