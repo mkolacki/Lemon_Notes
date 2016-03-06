@@ -70,6 +70,7 @@ public final class ExampleView implements View
            }
         );
 
+
         radioButton2.addActionListener(new AbstractAction()
            {
                @Override
