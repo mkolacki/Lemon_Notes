@@ -96,7 +96,7 @@ public class Main extends Application
         // Setting up grid pane
         GridPane pane = new GridPane();
         pane.add(combo, 0, 0);
-        pane.add(menu1, 1, 0);
+        pane.add(menu, 1, 0);
         pane.add(newnote, 3, 1);
         pane.add(preview, 3, 2);
         pane.add(submit, 3, 3);
