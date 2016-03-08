@@ -49,14 +49,16 @@ public class Main extends Application
         button.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, new CornerRadii(10), new Insets(0,0,0,0))));
         button.setButtonType(JFXButton.ButtonType.RAISED);
 
-        // Creating group selection combo box
+        // Creating Project selection combo box
         final JFXComboBox<String> combo = new JFXComboBox<String>();
-        combo.setTooltip(new Tooltip("Hey you! Click me to pick a listed item."));
-        combo.setPromptText("Look at a project.");
-        combo.getItems().add("Project 1");
+
+        //combo.setTooltip(new Tooltip("Hey you! Click me to pick a listed item."));
+        //combo.setPromptText("Look at a project.");
+        /*combo.getItems().add("Project 1");
         combo.getItems().add("Project 2");
         combo.getItems().add("Project 3");
-        combo.getItems().add("Test");
+        combo.getItems().add("Test");*/
+
 
         // Making a dropdown menu
         final MenuBar menu = new MenuBar();
@@ -95,7 +97,14 @@ public class Main extends Application
 
         // Setting up grid pane
         GridPane pane = new GridPane();
-        pane.add(combo, 0, 0);
+        ProjectCombobox combobox = new ProjectCombobox(primaryStage, pane, combo);
+        combobox.addAProject("Project 1", "a");
+        combobox.addAProject("Project 2", "b");
+        combobox.addAProject("Project 3", "c");
+        combobox.addAProject("Test", "d");
+        combobox.addAProject("Test", "e");
+
+        pane.add(combobox.comboBox, 0, 0);
         pane.add(menu, 1, 0);
         pane.add(newnote, 3, 1);
         pane.add(preview, 3, 2);
