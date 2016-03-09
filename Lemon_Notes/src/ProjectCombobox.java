@@ -13,6 +13,7 @@ public class ProjectCombobox {
     GridPane pane;
     ArrayList<Project> projects;
     JFXComboBox<String> comboBox;
+    Project current_project;
 
     public ProjectCombobox(Stage main_stage, GridPane main_pane, JFXComboBox<String> combo){
         stage = main_stage;
@@ -23,14 +24,10 @@ public class ProjectCombobox {
         comboBox = combo;
         comboBox.setTooltip(new Tooltip("Hey you! Click me to pick an item."));
         comboBox.setPromptText("Projects");
-        //Temporary things to list
-       /* comboBox.getItems().add("Project 1");
-        comboBox.getItems().add("Project 2");
-        comboBox.getItems().add("Project 3");
-        comboBox.getItems().add("Test");*/
+
     }
 
-    public void addAProject(String name, String location){
+    public void addAProject(String name){
         Boolean is_viable = true;
 
         for (Project p: projects){
@@ -41,9 +38,10 @@ public class ProjectCombobox {
         }
 
         if (is_viable){
-            Project new_project = new Project(name, location);
+            Project new_project = new Project(name);
             projects.add(projects.size(), new_project);
             comboBox.getItems().add(name);
+            current_project = new_project;
         }else {
             System.out.println("A project with that name already exists!");
         }

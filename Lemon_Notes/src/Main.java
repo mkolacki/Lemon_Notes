@@ -62,14 +62,15 @@ public class Main extends Application
 
         // Making a dropdown menu
         final MenuBar menu = new MenuBar();
-        Image cog_wheel = new Image(getClass().getResourceAsStream("cogicon.png"));
+        //Image cog_wheel = new Image(getClass().getResourceAsStream("cogicon.png"));
         final Menu menu1 = new Menu();
-        menu1.setGraphic(new ImageView(cog_wheel));
+
+        /*menu1.setGraphic(new ImageView(cog_wheel));
         final MenuItem thing1 = new MenuItem("Thing 1");
         final MenuItem thing2 = new MenuItem("Thing 2");
         final MenuItem thing3 = new MenuItem("Thing 3");
-        menu1.getItems().addAll(thing1, thing2, thing3);
-        menu.getMenus().add(menu1);
+        menu1.getItems().addAll(thing1, thing2, thing3);*/
+        //menu.getMenus().add(menu1);
 
 
         // Creating note control buttons
@@ -98,11 +99,14 @@ public class Main extends Application
         // Setting up grid pane
         GridPane pane = new GridPane();
         ProjectCombobox combobox = new ProjectCombobox(primaryStage, pane, combo);
-        combobox.addAProject("Project 1", "a");
-        combobox.addAProject("Project 2", "b");
-        combobox.addAProject("Project 3", "c");
-        combobox.addAProject("Test", "d");
-        combobox.addAProject("Test", "e");
+        combobox.addAProject("Project 1");
+        combobox.addAProject("Project 2");
+        combobox.addAProject("Project 3");
+        combobox.addAProject("Test");
+        combobox.addAProject("Rest");
+
+        final CogWheel cogWheel = new CogWheel(primaryStage, pane, menu, menu1);
+        menu.getMenus().add(cogWheel.menu);
 
         pane.add(combobox.comboBox, 0, 0);
         pane.add(menu, 1, 0);
