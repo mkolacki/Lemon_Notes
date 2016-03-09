@@ -12,7 +12,9 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePatternBuilder;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 /**
@@ -173,6 +175,7 @@ public class Main extends Application
             }
         });
 
+
         //Creating experimental buttons
         JFXButton btn1 = new JFXButton("Button1");
         JFXButton btn2 = new JFXButton("Button2");
@@ -187,7 +190,62 @@ public class Main extends Application
             titleText = "Lemon Notes";
         }
 
-        // Adding pane the the scene
+        //save prompt on closing program (finally!)
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                if (bigbox.getText().trim().length() != 0) {
+                    Alert saveprompt = new Alert(Alert.AlertType.CONFIRMATION);
+                    saveprompt.setTitle("Lemon Notes");
+                    saveprompt.setContentText("Save your changes before closing?");
+                    ButtonType yes = new ButtonType("Yes");
+                    ButtonType no = new ButtonType("No");
+                    ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+                    saveprompt.getButtonTypes().setAll(yes, no, cancel);
+                    Optional<ButtonType> choice = saveprompt.showAndWait();
+
+                    if (choice.get() == yes) {
+                        String subj = null;
+                        Pattern p = Pattern.compile("[^a-zA-Z0-9]");
+                        boolean noteFound = false;
+                        if (subjbox.getText().trim().length() != 0 && !p.matcher(subjbox.getText()).find()) {
+                            subj = subjbox.getText(); //need to restrict to alphanumeric characters only.
+                        } else {
+                            System.out.println("Must enter alphanumeric subject.");
+                            Alert ngname = new Alert(Alert.AlertType.ERROR);
+                            ngname.setTitle("Lemon Notes");
+                            ngname.setHeaderText(null);
+                            ngname.setContentText("You must have an alphanumberic subject in the subject field to save.");
+                            ngname.showAndWait();
+                            event.consume();
+                            return;
+                        }
+                        String content = bigbox.getText();
+                        content.replaceAll("(?!\\r)\\n", "\r\n");
+                        for (Note n : combobox.current_project.notes) {
+                            if (subj.equals(n.subject)) {
+                                noteFound = true;
+                            }
+                        }
+                        if (noteFound) {
+                            System.out.println("note already exists");
+                            //overwrite existing note?
+                        } else {
+                            combobox.current_project.addNote(content, subj, true);
+                        }
+                        primaryStage.close();
+                    } else if (choice.get() == no) {
+                        primaryStage.close();
+                    } else {
+                        event.consume();
+                        return;
+                    }
+                }
+            }
+        });
+
+        // Adding pane to the scene
         final Scene scene = new Scene(pane, 600, 300);
         primaryStage.setTitle(titleText);
         primaryStage.setScene(scene);
