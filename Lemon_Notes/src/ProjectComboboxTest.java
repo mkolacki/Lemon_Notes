@@ -33,7 +33,7 @@ public final class ProjectComboboxTest {
     //@Mock private GridPane gTest;
     JFXComboBox<String> comboTest = new JFXComboBox<String>();
 
-    @Mock private ProjectCombobox mockProject = new ProjectCombobox(comboTest);
+    @Mock private ProjectCombobox mockProject;
 
     public static class AsNonApp extends Application {
         @Override
@@ -88,7 +88,7 @@ public final class ProjectComboboxTest {
      */
     @Test
     public void testAddAProjectDupe() {
-        ProjectCombobox pcbTest = mockProject;
+        ProjectCombobox pcbTest = new ProjectCombobox(comboTest);
         pcbTest.addAProject("Name");
         pcbTest.addAProject("Name");
         assertEquals("Name",pcbTest.projects.get(0).name);
@@ -102,7 +102,7 @@ public final class ProjectComboboxTest {
      */
     @Test
     public void testAddAProjectNull1() {
-        ProjectCombobox pcbTest = mockProject;
+        ProjectCombobox pcbTest = new ProjectCombobox(comboTest);
         exc.expect(NullPointerException.class);
         pcbTest.addAProject(null);
     }
@@ -113,7 +113,7 @@ public final class ProjectComboboxTest {
      */
     @Test
     public void testSelectProject() {
-        ProjectCombobox pcbTest = mockProject;
+        ProjectCombobox pcbTest = new ProjectCombobox(comboTest);
         pcbTest.addAProject("Name1");
         pcbTest.addAProject("Name2");
         pcbTest.selectProject("Name1");
@@ -126,7 +126,7 @@ public final class ProjectComboboxTest {
      */
     @Test
     public void testSelectProject2() {
-        ProjectCombobox pcbTest = mockProject;
+        ProjectCombobox pcbTest = new ProjectCombobox(comboTest);
         pcbTest.addAProject("Name1");
         pcbTest.addAProject("Name2");
         exc.expect(NullPointerException.class);
