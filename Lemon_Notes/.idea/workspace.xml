@@ -19,8 +19,8 @@
     <SUITE FILE_PATH="coverage/Lemon_Notes$ProjectComboboxTest_testSelectProject2.coverage" NAME="ProjectComboboxTest.testSelectProject2 Coverage Results" MODIFIED="1457594886242" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Lemon_Notes$ProjectComboboxTest_testAddAProject.coverage" NAME="ProjectComboboxTest.testAddAProject Coverage Results" MODIFIED="1457594402422" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Lemon_Notes$ProjectComboboxTest_nullPCB.coverage" NAME="ProjectComboboxTest.nullPCB Coverage Results" MODIFIED="1457593430883" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-    <SUITE FILE_PATH="coverage/Lemon_Notes$ProjectComboboxTest_testSelectProject.coverage" NAME="ProjectComboboxTest.testSelectProject Coverage Results" MODIFIED="1457594534540" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Lemon_Notes$ProjectComboboxTest_testAddAProjectNull1.coverage" NAME="ProjectComboboxTest.testAddAProjectNull1 Coverage Results" MODIFIED="1457594664476" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Lemon_Notes$ProjectComboboxTest_testSelectProject.coverage" NAME="ProjectComboboxTest.testSelectProject Coverage Results" MODIFIED="1457632071581" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Lemon_Notes$ProjectComboboxTest.coverage" NAME="ProjectComboboxTest Coverage Results" MODIFIED="1457631939655" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Lemon_Notes$ProjectComboboxTest_testAddAProjectDupe.coverage" NAME="ProjectComboboxTest.testAddAProjectDupe Coverage Results" MODIFIED="1457594250833" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Lemon_Notes$ProjectTest.coverage" NAME="ProjectTest Coverage Results" MODIFIED="1457594733502" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
@@ -76,8 +76,8 @@
           <file leaf-file-name="ProjectComboboxTest.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/ProjectComboboxTest.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-0.60876626">
-                  <caret line="24" column="23" selection-start-line="24" selection-start-column="23" selection-end-line="24" selection-end-column="23" />
+                <state vertical-scroll-proportion="0.5584416">
+                  <caret line="125" column="44" selection-start-line="125" selection-start-column="44" selection-end-line="125" selection-end-column="44" />
                   <folding>
                     <element signature="imports" expanded="true" />
                     <element signature="e#880#888#0" expanded="true" />
@@ -241,7 +241,7 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.ProjectComboboxTest">
+  <component name="RunManager" selected="JUnit.ProjectComboboxTest.testSelectProject">
     <configuration default="false" name="ProjectComboboxTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="Lemon_Notes" />
@@ -795,11 +795,11 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="JUnit.ProjectComboboxTest" />
-        <item index="1" class="java.lang.String" itemvalue="JUnit.ProjectComboboxTest.testSelectProject2" />
-        <item index="2" class="java.lang.String" itemvalue="JUnit.ProjectTest" />
-        <item index="3" class="java.lang.String" itemvalue="JUnit.ProjectComboboxTest.testAddAProjectNull1" />
-        <item index="4" class="java.lang.String" itemvalue="JUnit.ProjectComboboxTest.testSelectProject" />
+        <item index="0" class="java.lang.String" itemvalue="JUnit.ProjectComboboxTest.testSelectProject" />
+        <item index="1" class="java.lang.String" itemvalue="JUnit.ProjectComboboxTest" />
+        <item index="2" class="java.lang.String" itemvalue="JUnit.ProjectComboboxTest.testSelectProject2" />
+        <item index="3" class="java.lang.String" itemvalue="JUnit.ProjectTest" />
+        <item index="4" class="java.lang.String" itemvalue="JUnit.ProjectComboboxTest.testAddAProjectNull1" />
       </list>
     </recent_temporary>
   </component>
@@ -822,9 +822,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="ProjectComboboxTest - 2016.03.10 at 02h 16m 41s.xml">
-      <configuration name="ProjectComboboxTest" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="ProjectComboboxTest - 2016.03.10 at 02h 24m 00s.xml">
       <configuration name="ProjectComboboxTest" configurationId="JUnit" />
     </history-entry>
@@ -833,9 +830,6 @@
     </history-entry>
     <history-entry file="ProjectComboboxTest_testAddAProject - 2016.03.10 at 02h 20m 08s.xml">
       <configuration name="ProjectComboboxTest.testAddAProject" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ProjectComboboxTest_testAddAProjectDupe - 2016.03.10 at 02h 17m 36s.xml">
-      <configuration name="ProjectComboboxTest.testAddAProjectDupe" configurationId="JUnit" />
     </history-entry>
     <history-entry file="ProjectComboboxTest_testAddAProjectNull1 - 2016.03.10 at 02h 24m 29s.xml">
       <configuration name="ProjectComboboxTest.testAddAProjectNull1" configurationId="JUnit" />
@@ -846,6 +840,12 @@
     <history-entry file="ProjectComboboxTest_testSelectProject - 2016.03.10 at 02h 22m 20s.xml">
       <configuration name="ProjectComboboxTest.testSelectProject" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="ProjectComboboxTest_testSelectProject - 2016.03.10 at 12h 47m 41s.xml">
+      <configuration name="ProjectComboboxTest.testSelectProject" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="ProjectComboboxTest_testSelectProject - 2016.03.10 at 12h 47m 59s.xml">
+      <configuration name="ProjectComboboxTest.testSelectProject" configurationId="JUnit" />
+    </history-entry>
     <history-entry file="ProjectComboboxTest_testSelectProject2 - 2016.03.10 at 02h 28m 11s.xml">
       <configuration name="ProjectComboboxTest.testSelectProject2" configurationId="JUnit" />
     </history-entry>
@@ -854,7 +854,7 @@
     </history-entry>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
+    <frame x="-8" y="-8" width="1382" height="754" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1343,8 +1343,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ProjectComboboxTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.60876626">
-          <caret line="24" column="23" selection-start-line="24" selection-start-column="23" selection-end-line="24" selection-end-column="23" />
+        <state vertical-scroll-proportion="0.5584416">
+          <caret line="125" column="44" selection-start-line="125" selection-start-column="44" selection-end-line="125" selection-end-column="44" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#880#888#0" expanded="true" />

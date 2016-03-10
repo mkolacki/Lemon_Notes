@@ -62,6 +62,7 @@ public final class ProjectComboboxTest {
 
     /**
      * {@link ProjectComboboxTest}
+     * Attempt to build a null ProjectComboBox
      */
     @Test
     public void nullPCB() {
@@ -122,7 +123,7 @@ public final class ProjectComboboxTest {
     }
     /**
      * {@link ProjectComboboxTest#testSelectProject()}
-     * The "right" way
+     * Pass in null for a project selection.
      */
     @Test
     public void testSelectProject2() {
