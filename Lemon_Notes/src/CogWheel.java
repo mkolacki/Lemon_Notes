@@ -11,8 +11,8 @@ import javafx.stage.Stage;
  */
 public class CogWheel {
 
-    Stage stage;
-    GridPane pane;
+    //Stage stage;
+    //GridPane pane;
     MenuBar menuBar;
     Menu menu;
     Coggie[] options = new Coggie[7];
@@ -24,9 +24,9 @@ public class CogWheel {
     Help help;
     About about;
 
-    public CogWheel(Stage main_stage, GridPane main_pane, MenuBar mb, Menu m){
-        stage = main_stage;
-        pane = main_pane;
+    public CogWheel(MenuBar mb, Menu m){
+        //stage = main_stage;
+        //pane = main_pane;
         menuBar = mb;
         menu = m;
         options[0] = visual_settings = new VisualSettings();
