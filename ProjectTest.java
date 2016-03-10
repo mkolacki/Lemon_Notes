@@ -1,9 +1,11 @@
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.experimental.categories.Category;
 import org.junit.rules.ExpectedException;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
@@ -18,17 +20,23 @@ public final class ProjectTest
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
-    /**
-     *
-     */
-    @AfterClass
-    public static void tearDown()
-    {
 
+    @Mock
+    private Project mockProject; // Project would be better off just being made but
+                                // I figured it would be a useful example
+
+    /**
+     * For setting up variables for tests
+     */
+    @Before
+    public void setup()
+    {
+        //This is required
+        MockitoAnnotations.initMocks(this);
     }
 
     /**
-     * Test method for {@link Project#addNote}
+     * Test method for {@link Project#Project(String)}
      *
      */
     @Test
