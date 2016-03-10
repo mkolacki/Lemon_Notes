@@ -9,15 +9,15 @@ import java.util.ArrayList;
  */
 public class ProjectCombobox {
 
-    Stage stage;
-    GridPane pane;
     ArrayList<Project> projects;
     JFXComboBox<String> comboBox;
     Project current_project;
 
-    public ProjectCombobox(Stage main_stage, GridPane main_pane, JFXComboBox<String> combo){
-        stage = main_stage;
-        pane = main_pane;
+    public ProjectCombobox(JFXComboBox<String> combo){
+        if(combo == null) {
+            throw new NullPointerException("combo box is null");
+        }
+
         projects = new ArrayList<Project>();
 
         // Creating Project selection combo box
@@ -28,6 +28,10 @@ public class ProjectCombobox {
     }
 
     public void addAProject(String name){
+        if(name == null) {
+            throw new NullPointerException("No name given");
+        }
+
         Boolean is_viable = true;
 
         for (Project p: projects){
@@ -48,6 +52,10 @@ public class ProjectCombobox {
     }
 
     public  String selectProject(String name){
+        if(name == null) {
+            throw new NullPointerException("No name given");
+        }
+
         for (Project p: projects){
             if (name.equals(p.name)){
                 current_project = p;

@@ -102,7 +102,7 @@ public class Main extends Application
 
         // Setting up grid pane
         GridPane pane = new GridPane();
-        final ProjectCombobox combobox = new ProjectCombobox(primaryStage, pane, combo);
+        final ProjectCombobox combobox = new ProjectCombobox(combo);
         combobox.addAProject("Project 1");
         combobox.addAProject("Project 2");
         combobox.addAProject("Project 3");
@@ -138,7 +138,7 @@ public class Main extends Application
         combo.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                primaryStage.setTitle(combobox.selectProject(combo.getSelectionModel().getSelectedItem().toString()));
+                combobox.selectProject(combo.getSelectionModel().getSelectedItem().toString());
                 combo.setTooltip(new Tooltip("Click to pick another project."));
             }
         });
