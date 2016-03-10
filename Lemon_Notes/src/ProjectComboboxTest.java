@@ -3,10 +3,7 @@ import javafx.application.Application;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -14,6 +11,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import javax.swing.*;
+import java.io.File;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -28,9 +26,6 @@ public final class ProjectComboboxTest {
     @Rule
     public ExpectedException exc = ExpectedException.none();
 
-
-    //@Mock private Stage stgTest = new Stage();
-    //@Mock private GridPane gTest;
     JFXComboBox<String> comboTest = new JFXComboBox<String>();
 
     @Mock private ProjectCombobox mockProject;
@@ -58,6 +53,27 @@ public final class ProjectComboboxTest {
     {
         //This is required
         MockitoAnnotations.initMocks(this);
+    }
+
+    @AfterClass
+    public static void tearDown() { //remove created files after testing
+        File dir = new File("Projects/Name");
+        for (File file:dir.listFiles()) {
+            file.delete();
+        }
+        dir.delete();
+
+        dir = new File("Projects/Name1");
+        for (File file:dir.listFiles()) {
+            file.delete();
+        }
+        dir.delete();
+
+        dir = new File("Projects/Name2");
+        for (File file:dir.listFiles()) {
+            file.delete();
+        }
+        dir.delete();
     }
 
     /**

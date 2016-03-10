@@ -5,6 +5,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.io.File;
+
 import static org.junit.Assert.*;
 
 /**
@@ -18,7 +20,11 @@ public final class ProjectTest {
 
     @AfterClass
     public static void tearDown() { //remove created files after testing
-
+        File dir = new File("Projects/Test01");
+        for (File file:dir.listFiles()) {
+            file.delete();
+        }
+        dir.delete();
     }
     /**
      * Test method for addNote method in the Project class.
