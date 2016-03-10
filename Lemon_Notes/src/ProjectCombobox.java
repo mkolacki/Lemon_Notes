@@ -45,6 +45,14 @@ public class ProjectCombobox {
         }else {
             System.out.println("A project with that name already exists!");
         }
+    }
 
+    public  String selectProject(String name){
+        for (Project p: projects){
+            if (name.equals(p.name)){
+                current_project = p;
+            }
+        }
+        return current_project.name;
     }
 }
