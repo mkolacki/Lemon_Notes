@@ -58,7 +58,7 @@ public final class ProjectComboboxTest {
     }
 
     /**
-     * {@link ProjectComboboxTest}
+     * {@link ProjectCombobox}
      * Attempt to build a null ProjectComboBox
      */
     @Test
@@ -68,7 +68,7 @@ public final class ProjectComboboxTest {
     }
 
     /**
-     * {@link ProjectComboboxTest#testAddAProject()}
+     * {@link ProjectCombobox#addAProject(String)}
      * The "right" way
      */
     @Test
@@ -81,7 +81,7 @@ public final class ProjectComboboxTest {
     }
 
     /**
-     * {@link ProjectComboboxTest#testAddAProject()}
+     * {@link ProjectCombobox#addAProject(String)}
      * Attempting to add the same thing twice
      */
     @Test
@@ -95,7 +95,7 @@ public final class ProjectComboboxTest {
     }
 
     /**
-     * {@link ProjectComboboxTest#testAddAProject()}
+     * {@link ProjectCombobox#addAProject(String)}
      * No given name
      */
     @Test
@@ -106,7 +106,7 @@ public final class ProjectComboboxTest {
     }
 
     /**
-     * {@link ProjectComboboxTest#testSelectProject()}
+     * {@link ProjectCombobox#selectProject(String)}
      * The "right" way
      */
     @Test
@@ -119,7 +119,7 @@ public final class ProjectComboboxTest {
         assertEquals(2,pcbTest.projects.size());
     }
     /**
-     * {@link ProjectComboboxTest#testSelectProject()}
+     * {@link ProjectCombobox#selectProject(String)}
      * Pass in null for a project selection.
      */
     @Test
