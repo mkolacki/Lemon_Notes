@@ -1,13 +1,17 @@
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.controls.JFXTextField;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.PickResult;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.lang.reflect.Field;
 
@@ -59,40 +63,92 @@ public class MainTest
                     public void run() {
                         Main main = new Main();
                         main.start(new Stage());
-                        Field[] fields = main.getClass().getDeclaredFields();
-                        for(Field field: fields)
-                        {
-                            if(field.getName().equals("button"))
-                            {
-                                field.setAccessible(true);
                                 try
                                 {
-                                    EventHandler<MouseEvent> event = (EventHandler<MouseEvent>) ((JFXButton)field.get(main)).getOnMouseClicked();
+                                    Field button = main.getClass().getDeclaredField("button");
+                                    button.setAccessible(true);
+                                    EventHandler<MouseEvent> event = (EventHandler<MouseEvent>) ((JFXButton)button.get(main)).getOnMouseClicked();
+                                    event.handle(null);
+                                    button.setAccessible(false);
+                                } catch (IllegalAccessException e)
+                                {
+                                    e.printStackTrace();
+                                } catch (NoSuchFieldException e)
+                                {
+                                    e.printStackTrace();
+                                }
+
+                                try
+                                {
+                                    Field combo = main.getClass().getDeclaredField("combo");
+                                    combo.setAccessible(true);
+                                    EventHandler<ActionEvent> event = ((JFXComboBox<String>)combo.get(main)).getOnAction();
+                                    event.handle(new ActionEvent());
+                                    combo.setAccessible(false);
+                                } catch (IllegalAccessException e)
+                                {
+                                    e.printStackTrace();
+                                } catch (NoSuchFieldException e)
+                                {
+                                    e.printStackTrace();
+                                }
+
+                                try
+                                {
+                                    Field submit = main.getClass().getDeclaredField("submit");
+                                    submit.setAccessible(true);
+                                    EventHandler<ActionEvent> event = ((JFXButton)submit.get(main)).getOnAction();
+                                    event.handle(new ActionEvent());
+                                    Field subjBox = main.getClass().getDeclaredField("subjBox");
+                                    subjBox.setAccessible(true);
+                                    event.handle(new ActionEvent());
+                                    ((TextField)subjBox.get(main)).setText("Test");
+                                    subjBox.setAccessible(false);
+                                    Field bigBox = main.getClass().getDeclaredField("bigBox");
+                                    bigBox.setAccessible(true);
+                                    event.handle(new ActionEvent());
+                                    ((JFXTextArea)bigBox.get(main)).setText("Test");
+                                    bigBox.setAccessible(false);
+                                    event.handle(new ActionEvent());
+                                    event.handle(new ActionEvent());
+                                    subjBox.setAccessible(true);
+                                    ((TextField)subjBox.get(main)).setText("");
+                                    subjBox.setAccessible(false);
+                                    event.handle(new ActionEvent());
+                                    submit.setAccessible(false);
+                                }
+                                catch (IllegalAccessException e)
+                                {
+                                    e.printStackTrace();
+                                } catch (NoSuchFieldException e)
+                                {
+                                    e.printStackTrace();
+                                }
+
+                                try
+                                {
+                                    Field primary = main.getClass().getDeclaredField("primaryStage");
+                                    primary.setAccessible(true);
+                                    EventHandler<WindowEvent> event = ((Stage)primary.get(main)).getOnCloseRequest();
+                                    event.handle(null);
+                                    primary.setAccessible(false);
+                                    Field bigBox = main.getClass().getDeclaredField("bigBox");
+                                    bigBox.setAccessible(true);
+                                    ((JFXTextArea)bigBox.get(main)).setText("Test");
+                                    bigBox.setAccessible(false);
                                     event.handle(null);
                                 } catch (IllegalAccessException e)
                                 {
                                     e.printStackTrace();
-                                }
-                                field.setAccessible(false);
-                            }
-                            else if(field.getName().equals("combo"))
-                            {
-                                field.setAccessible(true);
-                                try
-                                {
-                                    EventHandler<ActionEvent> event = ((JFXComboBox<String>)field.get(main)).getOnAction();
-                                } catch (IllegalAccessException e)
+                                } catch (NoSuchFieldException e)
                                 {
                                     e.printStackTrace();
                                 }
-                                field.setAccessible(false);
-                            }
-                        }
                     }
                 });
             }
         });
         thread.start();// Initialize the thread
-        Thread.sleep(2000);
+        Thread.sleep(10000);
     }
 }

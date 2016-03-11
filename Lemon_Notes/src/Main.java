@@ -1,4 +1,6 @@
-import com.jfoenix.controls.*;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextArea;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -10,7 +12,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePatternBuilder;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -35,14 +36,25 @@ public class Main extends Application
         launch(args);
     }
 
+    private Stage primaryStage;
+    private Scene scene;
+    private GridPane pane;
+
     private JFXButton submit;
-    private  JFXButton button;
+    private JFXButton button;
     private JFXButton preview;
+    private JFXButton newNote;
+    private JFXButton delete;
+
+    private JFXTextArea bigBox;
     private JFXComboBox<String> combo;
+
     private MenuBar menu;
     private Menu menu1;
-    private JFXButton newnote;
-    private JFXButton delete;
+
+    private TextField subjBox;
+    private ProjectCombobox comboBox;
+    private CogWheel cogWheel;
 
     /**
      * The method called by Application for starting up the display
@@ -53,6 +65,18 @@ public class Main extends Application
     @Override
     public void start(final Stage primaryStage)
     {
+        this.primaryStage = primaryStage;
+        createComponents();
+        setupGrid();
+        setEventHandlers();
+        setupScene(pane);
+    }
+
+    /**
+     * Creates the JFX components that will be added to the stage
+     */
+    private void createComponents()
+    {
         // Creating a random button
         button = new JFXButton("Button");
         button.setTooltip(new Tooltip("It's a button!"));
@@ -61,18 +85,19 @@ public class Main extends Application
 
         // Creating Project selection combo box
         combo = new JFXComboBox<String>();
+        combo.setTooltip(new Tooltip("Click to pick another project."));
 
         // Making a dropdown menu
         menu = new MenuBar();
 
         //Image cog_wheel = new Image(getClass().getResourceAsStream("cogicon.png"));
-        Menu menu1 = new Menu();
+        menu1 = new Menu();
 
         // Creating note control buttons
-        JFXButton newnote = new JFXButton();
+        newNote = new JFXButton();
         Image new_note_graphic = new Image(getClass().getResourceAsStream("newpageicon.png"));
-        newnote.setGraphic(new ImageView(new_note_graphic));
-        newnote.setTooltip(new Tooltip("Clears the current screen"));
+        newNote.setGraphic(new ImageView(new_note_graphic));
+        newNote.setTooltip(new Tooltip("Clears the current screen"));
 
         preview = new JFXButton();
         Image  preview_graphic = new Image(getClass().getResourceAsStream("eyeicon.png"));
@@ -89,38 +114,50 @@ public class Main extends Application
         delete.setGraphic(new ImageView(delete_graphic));
         delete.setTooltip(new Tooltip("Deletes the currently displayed note."));
 
-        final JFXTextArea bigbox = new JFXTextArea();
+        bigBox = new JFXTextArea();
 
-        final TextField subjbox = new TextField(); //needs to be restricted to alphanumeric characters
-        subjbox.setPromptText("Subject");
+        subjBox = new TextField(); //needs to be restricted to alphanumeric characters
+        subjBox.setPromptText("Subject");
 
-        // Setting up grid pane
-        GridPane pane = new GridPane();
-        final ProjectCombobox combobox = new ProjectCombobox(primaryStage, pane, combo);
-        combobox.addAProject("Project 1");
-        combobox.addAProject("Project 2");
-        combobox.addAProject("Project 3");
-        combobox.addAProject("Test");
-        combobox.addAProject("Rest");
-
-        final CogWheel cogWheel = new CogWheel(primaryStage, pane, menu, menu1);
+        cogWheel = new CogWheel(primaryStage, pane, menu, menu1);
         menu.getMenus().add(cogWheel.menu);
+    }
 
-        pane.add(combobox.comboBox, 0, 0);
+    /**
+     * Setting up the format of the components on a grid
+     */
+    private void setupGrid()
+    {
+        // Setting up grid pane
+        pane = new GridPane();
+        comboBox = new ProjectCombobox(primaryStage, pane, combo);
+        comboBox.addAProject("Project 1");
+        comboBox.addAProject("Project 2");
+        comboBox.addAProject("Project 3");
+        comboBox.addAProject("Test");
+        comboBox.addAProject("Rest");
+
+        pane.add(comboBox.comboBox, 0, 0);
         pane.add(menu, 1, 0);
-        pane.add(newnote, 3, 1);
+        pane.add(newNote, 3, 1);
         pane.add(preview, 3, 3);
         pane.add(submit, 3, 4);
         pane.add(delete, 3, 5);
-        pane.add(bigbox, 0, 2, 2, 5);
-        pane.add(subjbox, 0, 1, 2, 1);
+        pane.add(bigBox, 0, 2, 2, 5);
+        pane.add(subjBox, 0, 1, 2, 1);
         pane.setHgap(2);
         pane.setVgap(2);
 
         // Setting the general padding for the grid pane
         ColumnConstraints cons1 = new ColumnConstraints();
         pane.getColumnConstraints().add(cons1);
+    }
 
+    /**
+     * Sets the event handlers for the components
+     */
+    private void setEventHandlers()
+    {
         //Testing how JFoenix events work. --Mike C.
         button.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -132,27 +169,27 @@ public class Main extends Application
         combo.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                primaryStage.setTitle(combobox.selectProject(combo.getSelectionModel().getSelectedItem().toString()));
-                combo.setTooltip(new Tooltip("Click to pick another project."));
+                if(combo.getSelectionModel().getSelectedItem() != null)
+                    primaryStage.setTitle(comboBox.selectProject(combo.getSelectionModel().getSelectedItem().toString()));
             }
         });
 
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (bigbox.getText().trim().length() != 0) {
-                    String subj = null;
+                if (bigBox.getText().trim().length() != 0) {
+                    String subj;
                     Pattern p = Pattern.compile("[^a-zA-Z0-9]");
                     boolean noteFound = false;
-                    if (subjbox.getText().trim().length() != 0 && !p.matcher(subjbox.getText()).find()) {
-                        subj = subjbox.getText(); //need to restrict to alphanumeric characters only.
+                    if (subjBox.getText().trim().length() != 0 && !p.matcher(subjBox.getText()).find()) {
+                        subj = subjBox.getText(); //need to restrict to alphanumeric characters only.
                     } else {
                         System.out.println("Must enter alphanumeric subject.");
                         return;
                     }
-                    String content = bigbox.getText();
+                    String content = bigBox.getText();
                     content.replaceAll("(?!\\r)\\n", "\r\n");
-                    for (Note n : combobox.current_project.notes) {
+                    for (Note n : comboBox.current_project.notes) {
                         if (subj.equals(n.subject)) {
                             noteFound = true;
                         }
@@ -161,7 +198,7 @@ public class Main extends Application
                         System.out.println("note already exists");
                         //overwrite existing note?
                     } else {
-                        combobox.current_project.addNote(content, subj, true);
+                        comboBox.current_project.addNote(content, subj, true);
                     }
                 } else {
                     System.out.println("No content to save.");
@@ -169,18 +206,11 @@ public class Main extends Application
             }
         });
 
-        String titleText;
-        if (combobox.current_project != null) {
-            titleText = combobox.current_project.name;
-        } else {
-            titleText = "Lemon Notes";
-        }
-
         //save prompt on closing program (finally!)
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
-                if (bigbox.getText().trim().length() != 0) {
+                if (bigBox.getText().trim().length() != 0) {
                     Alert saveprompt = new Alert(Alert.AlertType.CONFIRMATION);
                     saveprompt.setTitle("Lemon Notes");
                     saveprompt.setContentText("Save your changes before closing?");
@@ -192,11 +222,11 @@ public class Main extends Application
                     Optional<ButtonType> choice = saveprompt.showAndWait();
 
                     if (choice.get() == yes) {
-                        String subj = null;
+                        String subj;
                         Pattern p = Pattern.compile("[^a-zA-Z0-9]");
                         boolean noteFound = false;
-                        if (subjbox.getText().trim().length() != 0 && !p.matcher(subjbox.getText()).find()) {
-                            subj = subjbox.getText(); //need to restrict to alphanumeric characters only.
+                        if (subjBox.getText().trim().length() != 0 && !p.matcher(subjBox.getText()).find()) {
+                            subj = subjBox.getText(); //need to restrict to alphanumeric characters only.
                         } else {
                             System.out.println("Must enter alphanumeric subject.");
                             Alert ngname = new Alert(Alert.AlertType.ERROR);
@@ -207,9 +237,9 @@ public class Main extends Application
                             event.consume();
                             return;
                         }
-                        String content = bigbox.getText();
+                        String content = bigBox.getText();
                         content.replaceAll("(?!\\r)\\n", "\r\n");
-                        for (Note n : combobox.current_project.notes) {
+                        for (Note n : comboBox.current_project.notes) {
                             if (subj.equals(n.subject)) {
                                 noteFound = true;
                             }
@@ -218,21 +248,35 @@ public class Main extends Application
                             System.out.println("note already exists");
                             //overwrite existing note?
                         } else {
-                            combobox.current_project.addNote(content, subj, true);
+                            comboBox.current_project.addNote(content, subj, true);
                         }
                         primaryStage.close();
                     } else if (choice.get() == no) {
                         primaryStage.close();
                     } else {
                         event.consume();
-                        return;
                     }
                 }
             }
         });
+    }
+
+    /**
+     * Setting up the primary stage
+     * @param pane
+     *  The GridPane to be added to the scene.
+     */
+    private void setupScene(GridPane pane)
+    {
+        String titleText;
+        if (comboBox.current_project != null) {
+            titleText = comboBox.current_project.name;
+        } else {
+            titleText = "Lemon Notes";
+        }
 
         // Adding pane the the scene
-        final Scene scene = new Scene(pane, 600, 250);
+        scene = new Scene(pane, 600, 250);
         primaryStage.setTitle(titleText);
         primaryStage.setScene(scene);
         primaryStage.setResizable(true);
