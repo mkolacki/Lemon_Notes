@@ -6,11 +6,14 @@ import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.PickResult;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 
 import java.lang.reflect.Field;
@@ -62,7 +65,8 @@ public class MainTest
                     @Override
                     public void run() {
                         Main main = new Main();
-                        main.start(new Stage());
+                        Stage stage = new Stage();
+                        main.start(stage);
                                 try
                                 {
                                     Field button = main.getClass().getDeclaredField("button");
@@ -127,16 +131,12 @@ public class MainTest
 
                                 try
                                 {
-                                    Field primary = main.getClass().getDeclaredField("primaryStage");
-                                    primary.setAccessible(true);
-                                    EventHandler<WindowEvent> event = ((Stage)primary.get(main)).getOnCloseRequest();
-                                    event.handle(null);
-                                    primary.setAccessible(false);
+                                    EventHandler<WindowEvent> event = stage.getOnCloseRequest();
                                     Field bigBox = main.getClass().getDeclaredField("bigBox");
                                     bigBox.setAccessible(true);
                                     ((JFXTextArea)bigBox.get(main)).setText("Test");
                                     bigBox.setAccessible(false);
-                                    event.handle(null);
+                                    event.handle(new WindowEvent(stage.getOwner(), EventType.ROOT));
                                 } catch (IllegalAccessException e)
                                 {
                                     e.printStackTrace();
