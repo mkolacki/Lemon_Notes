@@ -25,10 +25,23 @@ public class CogWheel {
     About about;
 
     public CogWheel(Stage main_stage, GridPane main_pane, MenuBar mb, Menu m){
-        stage = main_stage;
-        pane = main_pane;
-        menuBar = mb;
-        menu = m;
+        if(main_stage != null)
+            stage = main_stage;
+        else
+            throw new NullPointerException("The main stage is null.");
+        if(main_pane != null)
+            pane = main_pane;
+        else
+            throw new NullPointerException("The main pane is null.");
+        if(mb != null)
+            menuBar = mb;
+        else
+            throw new NullPointerException("The menu bar is null.");
+        if (m != null)
+            menu = m;
+        else
+            throw new NullPointerException("The menu is null.");
+
         options[0] = visual_settings = new VisualSettings();
         options[1] = font_settings = new FontSettings();
         options[2] = mode_settings = new ModeSettings();
