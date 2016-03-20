@@ -19,6 +19,9 @@ public class CogWheelTest
     @Rule
     public JavaFXThreadingRule jfxTester = new JavaFXThreadingRule();
 
+    /**
+     * For Expecting Exceptions
+     */
     @Rule
     public ExpectedException exception = ExpectedException.none();
 

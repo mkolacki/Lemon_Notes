@@ -119,8 +119,6 @@ public class Main extends Application
         subjBox = new TextField(); //needs to be restricted to alphanumeric characters
         subjBox.setPromptText("Subject");
 
-        cogWheel = new CogWheel(primaryStage, pane, menu, menu1);
-        menu.getMenus().add(cogWheel.menu);
     }
 
     /**
@@ -151,6 +149,9 @@ public class Main extends Application
         // Setting the general padding for the grid pane
         ColumnConstraints cons1 = new ColumnConstraints();
         pane.getColumnConstraints().add(cons1);
+
+        cogWheel = new CogWheel(primaryStage, pane, menu, menu1);
+        menu.getMenus().add(cogWheel.menu);
     }
 
     /**
