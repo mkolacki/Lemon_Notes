@@ -11,6 +11,7 @@ import java.util.ArrayList;
  * Created by Michael K. on 3/8/2016.
  */
 public class Project {
+
     final String name;
     final String location;
     final String saved_notes;
@@ -25,6 +26,7 @@ public class Project {
         }
 
         name = project_name;
+
         notes = new ArrayList<Note>();
         location = "Projects/" + name;
         saved_notes = location + "/saved_notes";

@@ -17,7 +17,6 @@ public class ProjectCombobox {
         if(combo == null) {
             throw new NullPointerException("combo box is null");
         }
-
         projects = new ArrayList<Project>();
 
         // Creating Project selection combo box
@@ -31,7 +30,6 @@ public class ProjectCombobox {
         if(name == null) {
             throw new NullPointerException("No name given");
         }
-
         Boolean is_viable = true;
 
         for (Project p: projects){
@@ -55,7 +53,6 @@ public class ProjectCombobox {
         if(name == null) {
             throw new NullPointerException("No name given");
         }
-
         for (Project p: projects){
             if (name.equals(p.name)){
                 current_project = p;
