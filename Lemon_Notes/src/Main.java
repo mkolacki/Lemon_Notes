@@ -128,7 +128,7 @@ public class Main extends Application
     {
         // Setting up grid pane
         pane = new GridPane();
-        comboBox = new ProjectCombobox(primaryStage, pane, combo);
+        comboBox = new ProjectCombobox(combo);
         comboBox.addAProject("Project 1");
         comboBox.addAProject("Project 2");
         comboBox.addAProject("Project 3");
@@ -143,6 +143,7 @@ public class Main extends Application
         pane.add(delete, 3, 5);
         pane.add(bigBox, 0, 2, 2, 5);
         pane.add(subjBox, 0, 1, 2, 1);
+
         pane.setHgap(2);
         pane.setVgap(2);
 

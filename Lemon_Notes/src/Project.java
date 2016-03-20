@@ -20,8 +20,13 @@ public class Project {
     //final File all_notes;
     //final File temp_note;
 
-    public Project(String projcet_name){
-        name = projcet_name;
+    public Project(String project_name){
+        if (project_name == null) {
+            throw new NullPointerException("Project name is null.");
+        }
+
+        name = project_name;
+
         notes = new ArrayList<Note>();
         location = "Projects/" + name;
         saved_notes = location + "/saved_notes";
@@ -47,6 +52,16 @@ public class Project {
     }
 
     public void addNote(String note_to_add, String subject, Boolean new_note){
+        if(note_to_add == null) {
+            throw new NullPointerException("No note content.");
+        }
+        if(subject == null) {
+            throw new NullPointerException("No subject content.");
+        }
+        if(new_note == null) {
+            throw new NullPointerException("Boolean new_note is null.");
+        }
+
         if(new_note){
             Note thing_to_add = new Note(note_to_add, subject);
             notes.add(notes.size(), thing_to_add);
