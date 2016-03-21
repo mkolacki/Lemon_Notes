@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -48,6 +49,7 @@ public class Main extends Application
 
     private JFXTextArea bigBox;
     private JFXComboBox<String> combo;
+    private JFXComboBox<String> noteCombo;
 
     private MenuBar menu;
     private Menu menu1;
@@ -55,6 +57,8 @@ public class Main extends Application
     private TextField subjBox;
     private ProjectCombobox comboBox;
     private CogWheel cogWheel;
+
+    boolean noteModified;
 
     /**
      * The method called by Application for starting up the display
@@ -86,6 +90,11 @@ public class Main extends Application
         // Creating Project selection combo box
         combo = new JFXComboBox<String>();
         combo.setTooltip(new Tooltip("Click to pick another project."));
+
+        //Note selection comboBox
+        noteCombo = new JFXComboBox<String>();
+        noteCombo.setTooltip(new Tooltip("Click to view a note in this project."));
+        noteCombo.setPromptText("Notes");
 
         // Making a dropdown menu
         menu = new MenuBar();
@@ -136,13 +145,14 @@ public class Main extends Application
         comboBox.addAProject("Rest");
 
         pane.add(comboBox.comboBox, 0, 0);
-        pane.add(menu, 1, 0);
-        pane.add(newNote, 3, 1);
-        pane.add(preview, 3, 3);
-        pane.add(submit, 3, 4);
-        pane.add(delete, 3, 5);
-        pane.add(bigBox, 0, 2, 2, 5);
-        pane.add(subjBox, 0, 1, 2, 1);
+        pane.add(noteCombo, 1, 0);
+        pane.add(menu, 2, 0);
+        pane.add(newNote, 4, 1);
+        pane.add(preview, 4, 3);
+        pane.add(submit, 4, 4);
+        pane.add(delete, 4, 5);
+        pane.add(bigBox, 0, 2, 3, 5);
+        pane.add(subjBox, 0, 1, 3, 1);
 
         pane.setHgap(2);
         pane.setVgap(2);
@@ -171,8 +181,66 @@ public class Main extends Application
         combo.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(combo.getSelectionModel().getSelectedItem() != null)
+                if(combo.getSelectionModel().getSelectedItem() != null) {
                     primaryStage.setTitle(comboBox.selectProject(combo.getSelectionModel().getSelectedItem().toString()));
+                    //allows you to save the written note to another project
+                    noteModified = true;
+                }
+            }
+        });
+
+        //clear current note functionality -- clears the note if there's things written in the box. Prompts user to save
+        newNote.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                //prompt user to save here
+                if (noteModified && bigBox.getText().trim().length() != 0) {
+                    Alert saveprompt = new Alert(Alert.AlertType.CONFIRMATION);
+                    saveprompt.setTitle("Lemon Notes");
+                    saveprompt.setHeaderText("Clearing editor field...");
+                    saveprompt.setContentText("Would you like to save before clearing the field?");
+                    ButtonType yes = new ButtonType("Yes");
+                    ButtonType no = new ButtonType("No");
+                    ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+                    saveprompt.getButtonTypes().setAll(yes, no, cancel);
+
+                    Optional<ButtonType> choice = saveprompt.showAndWait();
+                    if (choice.get() == yes) {
+                        if (bigBox.getText().trim().length() != 0) {
+                            String subj;
+                            Pattern p = Pattern.compile("[^a-zA-Z0-9]");
+                            boolean noteFound = false;
+                            if (subjBox.getText().trim().length() != 0 && !p.matcher(subjBox.getText()).find()) {
+                                subj = subjBox.getText(); //need to restrict to alphanumeric characters only.
+                            } else {
+                                System.out.println("Must enter alphanumeric subject.");
+                                return;
+                            }
+                            String content = bigBox.getText();
+                            content.replaceAll("(?!\\r)\\n", "\r\n");
+                            for (Note n : comboBox.current_project.notes) {
+                                if (subj.equals(n.subject)) {
+                                    noteFound = true;
+                                }
+                            }
+                            if (noteFound) {
+                                System.out.println("note already exists");
+                                //overwrite existing note?
+                            } else {
+                                comboBox.current_project.addNote(content, subj, true);
+                                noteModified = false;
+                            }
+                        } else {
+                            System.out.println("No content to save.");
+                        }
+                        bigBox.clear();
+                    } else if (choice.get() == no) {
+                        bigBox.clear();
+                    }
+                } else {
+                    bigBox.clear();
+                }
             }
         });
 
@@ -201,6 +269,7 @@ public class Main extends Application
                         //overwrite existing note?
                     } else {
                         comboBox.current_project.addNote(content, subj, true);
+                        noteModified = false;
                     }
                 } else {
                     System.out.println("No content to save.");
@@ -208,56 +277,76 @@ public class Main extends Application
             }
         });
 
-        //save prompt on closing program (finally!)
+        //check if textbox was modified since last save
+        bigBox.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                System.out.println("User has modified this item!");
+                noteModified = true;
+            }
+        });
+
+        //save prompt on closing program
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
-                if (bigBox.getText().trim().length() != 0) {
-                    Alert saveprompt = new Alert(Alert.AlertType.CONFIRMATION);
-                    saveprompt.setTitle("Lemon Notes");
-                    saveprompt.setContentText("Save your changes before closing?");
-                    ButtonType yes = new ButtonType("Yes");
-                    ButtonType no = new ButtonType("No");
-                    ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+                if (noteModified) {
+                    if (bigBox.getText().trim().length() != 0) {
+                        Alert saveprompt = new Alert(Alert.AlertType.CONFIRMATION);
+                        saveprompt.setTitle("Lemon Notes");
+                        saveprompt.setContentText("Save your changes before closing?");
+                        ButtonType yes = new ButtonType("Yes");
+                        ButtonType no = new ButtonType("No");
+                        ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
 
-                    saveprompt.getButtonTypes().setAll(yes, no, cancel);
-                    Optional<ButtonType> choice = saveprompt.showAndWait();
+                        saveprompt.getButtonTypes().setAll(yes, no, cancel);
+                        Optional<ButtonType> choice = saveprompt.showAndWait();
 
-                    if (choice.get() == yes) {
-                        String subj;
-                        Pattern p = Pattern.compile("[^a-zA-Z0-9]");
-                        boolean noteFound = false;
-                        if (subjBox.getText().trim().length() != 0 && !p.matcher(subjBox.getText()).find()) {
-                            subj = subjBox.getText(); //need to restrict to alphanumeric characters only.
-                        } else {
-                            System.out.println("Must enter alphanumeric subject.");
-                            Alert ngname = new Alert(Alert.AlertType.ERROR);
-                            ngname.setTitle("Lemon Notes");
-                            ngname.setHeaderText(null);
-                            ngname.setContentText("You must have an alphanumeric subject in the subject field to save.");
-                            ngname.showAndWait();
-                            event.consume();
-                            return;
-                        }
-                        String content = bigBox.getText();
-                        content.replaceAll("(?!\\r)\\n", "\r\n");
-                        for (Note n : comboBox.current_project.notes) {
-                            if (subj.equals(n.subject)) {
-                                noteFound = true;
+                        if (choice.get() == yes) {
+                            String subj;
+                            Pattern p = Pattern.compile("[^a-zA-Z0-9]");
+                            boolean noteFound = false;
+                            if (subjBox.getText().trim().length() != 0 && !p.matcher(subjBox.getText()).find()) {
+                                subj = subjBox.getText(); //need to restrict to alphanumeric characters only.
+                            } else {
+                                System.out.println("Must enter alphanumeric subject.");
+                                Alert ngname = new Alert(Alert.AlertType.ERROR);
+                                ngname.setTitle("Lemon Notes");
+                                ngname.setHeaderText(null);
+                                ngname.setContentText("You must have an alphanumeric subject in the subject field to save.");
+                                ngname.showAndWait();
+                                event.consume();
+                                return;
                             }
-                        }
-                        if (noteFound) {
-                            System.out.println("note already exists");
-                            //overwrite existing note?
+                            String content = bigBox.getText();
+                            content.replaceAll("(?!\\r)\\n", "\r\n");
+                            for (Note n : comboBox.current_project.notes) {
+                                if (subj.equals(n.subject)) {
+                                    noteFound = true;
+                                }
+                            }
+                            if (noteFound) {
+                                System.out.println("note already exists");
+                                Alert ngname = new Alert(Alert.AlertType.ERROR);
+                                ngname.setTitle("Lemon Notes");
+                                ngname.setHeaderText(null);
+                                ngname.setContentText("A note with this name already exists.");
+                                ngname.showAndWait();
+                                event.consume();
+                                return;
+                                //overwrite existing note?
+                            } else {
+                                comboBox.current_project.addNote(content, subj, true);
+                            }
+                            primaryStage.close();
+                        } else if (choice.get() == no) {
+                            primaryStage.close();
                         } else {
-                            comboBox.current_project.addNote(content, subj, true);
+                            event.consume();
                         }
-                        primaryStage.close();
-                    } else if (choice.get() == no) {
-                        primaryStage.close();
-                    } else {
-                        event.consume();
                     }
+                } else {
+                    primaryStage.close();
                 }
             }
         });

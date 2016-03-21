@@ -21,7 +21,7 @@ public class ProjectCombobox {
 
         // Creating Project selection combo box
         comboBox = combo;
-        comboBox.setTooltip(new Tooltip("Hey you! Click me to pick an item."));
+        comboBox.setTooltip(new Tooltip("Click to pick another project."));
         comboBox.setPromptText("Projects");
 
     }
