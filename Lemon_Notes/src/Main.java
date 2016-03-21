@@ -16,6 +16,9 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -42,7 +45,7 @@ public class Main extends Application
     private GridPane pane;
 
     private JFXButton submit;
-    private JFXButton button;
+    private JFXButton npbutton;
     private JFXButton preview;
     private JFXButton newNote;
     private JFXButton delete;
@@ -82,10 +85,10 @@ public class Main extends Application
     private void createComponents()
     {
         // Creating a random button
-        button = new JFXButton("Button");
-        button.setTooltip(new Tooltip("It's a button!"));
-        button.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, new CornerRadii(10), new Insets(0,0,0,0))));
-        button.setButtonType(JFXButton.ButtonType.RAISED);
+        npbutton = new JFXButton("New Project");
+        npbutton.setTooltip(new Tooltip("Click to make a new project directory."));
+        npbutton.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, new CornerRadii(10), new Insets(0,0,0,0))));
+        npbutton.setButtonType(JFXButton.ButtonType.RAISED);
 
         // Creating Project selection combo box
         combo = new JFXComboBox<String>();
@@ -138,15 +141,44 @@ public class Main extends Application
         // Setting up grid pane
         pane = new GridPane();
         comboBox = new ProjectCombobox(combo);
-        comboBox.addAProject("Project 1");
+        /*comboBox.addAProject("Project 1");
         comboBox.addAProject("Project 2");
         comboBox.addAProject("Project 3");
         comboBox.addAProject("Test");
-        comboBox.addAProject("Rest");
+        comboBox.addAProject("Rest");*/
+
+        //create project directory or load directory
+        File projDir = new File("Projects/");
+        if(!projDir.exists() || projDir.list().length == 0) {
+            Pattern p = Pattern.compile("[^a-zA-Z0-9_ ]");
+            TextInputDialog firstTime = new TextInputDialog();
+            firstTime.setTitle("Lemon Notes");
+            firstTime.setHeaderText("Welcome to Lemon Notes");
+            firstTime.setContentText("Enter a project name?");
+            Optional<String> result = firstTime.showAndWait();
+            if (result.isPresent() && result.get().trim().length() > 0 && !p.matcher(result.get()).find()){
+                System.out.println("Project name: " + result.get());
+                comboBox.addAProject(result.get());
+            } else {
+                System.out.println("Make default directory.");
+                comboBox.addAProject("default");
+            }
+        } else {
+            //read in directory names in Projects folder.
+            String[] projList = projDir.list();
+            for (String n : projList){
+                if (new File("Projects/" + n).isDirectory()) {
+                    System.out.println("added directory " + n);
+                    comboBox.addAProject(n);
+                }
+            }
+
+        }
 
         pane.add(comboBox.comboBox, 0, 0);
         pane.add(noteCombo, 1, 0);
         pane.add(menu, 2, 0);
+        pane.add(npbutton, 4, 0);
         pane.add(newNote, 4, 1);
         pane.add(preview, 4, 3);
         pane.add(submit, 4, 4);
@@ -171,10 +203,34 @@ public class Main extends Application
     private void setEventHandlers()
     {
         //Testing how JFoenix events work. --Mike C.
-        button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        npbutton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                primaryStage.setTitle("Hey, you clicked a button!");
+                Pattern p = Pattern.compile("[^a-zA-Z0-9_ ]");
+                //primaryStage.setTitle("Hey, you clicked a button!");
+                TextInputDialog newProject = new TextInputDialog();
+                newProject.setTitle("Lemon Notes");
+                newProject.setHeaderText("New Project");
+                newProject.setContentText("Please enter a new project name.");
+                Optional<String> result = newProject.showAndWait();
+                if (result.isPresent()){
+                    if (result.get().trim().length() > 0 && !p.matcher(subjBox.getText()).find()){
+                        System.out.println("New project name: " + result.get());
+                        comboBox.addAProject(result.get());
+                    }
+                    else {
+                        Alert ngname = new Alert(Alert.AlertType.ERROR);
+                        ngname.setTitle("Lemon Notes");
+                        ngname.setHeaderText(null);
+                        ngname.setContentText("You didn't enter a valid name.");
+                        ngname.showAndWait();
+                        event.consume();
+                        return;
+                    }
+                    comboBox.addAProject(result.get());
+                } else {
+                    System.out.println("Cancelled.");
+                }
             }
         });
 
@@ -209,7 +265,7 @@ public class Main extends Application
                     if (choice.get() == yes) {
                         if (bigBox.getText().trim().length() != 0) {
                             String subj;
-                            Pattern p = Pattern.compile("[^a-zA-Z0-9]");
+                            Pattern p = Pattern.compile("[^a-zA-Z0-9_ ]");
                             boolean noteFound = false;
                             if (subjBox.getText().trim().length() != 0 && !p.matcher(subjBox.getText()).find()) {
                                 subj = subjBox.getText(); //need to restrict to alphanumeric characters only.
@@ -249,7 +305,7 @@ public class Main extends Application
             public void handle(ActionEvent event) {
                 if (bigBox.getText().trim().length() != 0) {
                     String subj;
-                    Pattern p = Pattern.compile("[^a-zA-Z0-9]");
+                    Pattern p = Pattern.compile("[^a-zA-Z0-9_ ]");
                     boolean noteFound = false;
                     if (subjBox.getText().trim().length() != 0 && !p.matcher(subjBox.getText()).find()) {
                         subj = subjBox.getText(); //need to restrict to alphanumeric characters only.
@@ -304,7 +360,7 @@ public class Main extends Application
 
                         if (choice.get() == yes) {
                             String subj;
-                            Pattern p = Pattern.compile("[^a-zA-Z0-9]");
+                            Pattern p = Pattern.compile("[^a-zA-Z0-9_ ]");
                             boolean noteFound = false;
                             if (subjBox.getText().trim().length() != 0 && !p.matcher(subjBox.getText()).find()) {
                                 subj = subjBox.getText(); //need to restrict to alphanumeric characters only.
