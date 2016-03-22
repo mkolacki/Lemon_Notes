@@ -59,6 +59,7 @@ public class Main extends Application
 
     private TextField subjBox;
     private ProjectCombobox comboBox;
+    private NoteComboBox note_combo_box;
     private CogWheel cogWheel;
 
     boolean noteModified;
@@ -96,8 +97,6 @@ public class Main extends Application
 
         //Note selection comboBox
         noteCombo = new JFXComboBox<String>();
-        noteCombo.setTooltip(new Tooltip("Click to view a note in this project."));
-        noteCombo.setPromptText("Notes");
 
         // Making a dropdown menu
         menu = new MenuBar();
@@ -168,15 +167,22 @@ public class Main extends Application
             String[] projList = projDir.list();
             for (String n : projList){
                 if (new File("Projects/" + n).isDirectory()) {
-                    System.out.println("added directory " + n);
+                    System.out.println("recognized directory " + n);
                     comboBox.addAProject(n);
+
+                    //
+                    // we will need to adjust which project is the 'current project' here
+                    //- Michael K.
+                    //
                 }
             }
 
         }
 
+        note_combo_box = new NoteComboBox(comboBox.current_project, noteCombo);
+
         pane.add(comboBox.comboBox, 0, 0);
-        pane.add(noteCombo, 1, 0);
+        pane.add(note_combo_box.comboBox, 1, 0);
         pane.add(menu, 2, 0);
         pane.add(npbutton, 4, 0);
         pane.add(newNote, 4, 1);
@@ -238,12 +244,22 @@ public class Main extends Application
             @Override
             public void handle(ActionEvent event) {
                 if(combo.getSelectionModel().getSelectedItem() != null) {
-                    primaryStage.setTitle(comboBox.selectProject(combo.getSelectionModel().getSelectedItem().toString()));
+                    primaryStage.setTitle(comboBox.selectProject(combo.getSelectionModel().getSelectedItem().toString()).name);
+                    note_combo_box.changeProjects(comboBox.selectProject(combo.getSelectionModel().getSelectedItem().toString()));
                     //allows you to save the written note to another project
                     noteModified = true;
                 }
             }
         });
+
+        /*noteCombo.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(noteCombo.getSelectionModel().getSelectedItem() != null){
+                    primaryStage.set
+                }
+            }
+        });*/
 
         //clear current note functionality -- clears the note if there's things written in the box. Prompts user to save
         newNote.setOnAction(new EventHandler<ActionEvent>() {
@@ -325,6 +341,7 @@ public class Main extends Application
                         //overwrite existing note?
                     } else {
                         comboBox.current_project.addNote(content, subj, true);
+                        note_combo_box.resize();
                         noteModified = false;
                     }
                 } else {
@@ -386,7 +403,7 @@ public class Main extends Application
                                 Alert ngname = new Alert(Alert.AlertType.ERROR);
                                 ngname.setTitle("Lemon Notes");
                                 ngname.setHeaderText(null);
-                                ngname.setContentText("A note with this name already exists.");
+                                ngname.setContentText("A note with this subject heading already exists.");
                                 ngname.showAndWait();
                                 event.consume();
                                 return;

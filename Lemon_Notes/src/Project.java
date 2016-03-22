@@ -1,3 +1,4 @@
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.shape.Path;
 
 import javax.security.auth.Subject;
@@ -6,6 +7,9 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Optional;
+import java.util.Scanner;
+import java.util.regex.Pattern;
 
 /**
  * Created by Michael K. on 3/8/2016.
@@ -40,13 +44,32 @@ public class Project {
 
         try {
             made_dir = dir.mkdirs();
+
         } catch (SecurityException se) {
             System.out.println("Unsuccessful attempt to make Directory --- " + location + ":\n" + se.toString());
         }
         try {
             made_all_notes = all_notes.mkdirs();
+
+            if(!made_all_notes){
+                File[] note_list = all_notes.listFiles();
+                if(note_list.length != 0){
+                    for(File n : note_list){
+                        String subject = n.getName();
+                        subject = subject.replace(".txt", "");
+                        String note = "";
+                        Scanner sc = new Scanner(n);
+                        while(sc.hasNextLine()){
+                            note = note + sc.nextLine();
+                        }
+                        notes.add(notes.size(), new Note(note, subject));
+                    }
+                }
+            }
         } catch (SecurityException se) {
             System.out.println("Unsuccessful attempt to make Directory --- " + saved_notes + ":\n" + se.toString());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
 
     }
