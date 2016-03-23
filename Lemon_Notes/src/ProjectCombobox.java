@@ -53,7 +53,7 @@ public class ProjectCombobox {
         }
     }
 
-    public  Project selectProject(String name){
+    public Project selectProject(String name){
         if(name == null) {
             throw new NullPointerException("No name given");
         }

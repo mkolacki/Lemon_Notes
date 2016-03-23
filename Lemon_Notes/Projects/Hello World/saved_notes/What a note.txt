@@ -1,0 +1,5 @@
+3.    Subject: What a note
+   Note: this
+has breaks
+in it
+

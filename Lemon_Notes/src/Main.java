@@ -233,7 +233,7 @@ public class Main extends Application
                         event.consume();
                         return;
                     }
-                    comboBox.addAProject(result.get());
+                    //comboBox.addAProject(result.get());
                 } else {
                     System.out.println("Cancelled.");
                 }
@@ -260,6 +260,21 @@ public class Main extends Application
                 }
             }
         });*/
+        note_combo_box.comboBox.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (note_combo_box.comboBox.getSelectionModel().getSelectedItem() != null) {
+                    Note n = comboBox.current_project.selectNote(note_combo_box.comboBox.getSelectionModel().getSelectedItem());
+                    if (n != null) {
+                        subjBox.clear();
+                        subjBox.setText(n.subject);
+                        bigBox.clear();
+                        bigBox.setText(n.note.substring(n.note.indexOf("Note: ") + 6, n.note.length()));
+                        noteModified = false;
+                    }
+                }
+            }
+        });
 
         //clear current note functionality -- clears the note if there's things written in the box. Prompts user to save
         newNote.setOnAction(new EventHandler<ActionEvent>() {

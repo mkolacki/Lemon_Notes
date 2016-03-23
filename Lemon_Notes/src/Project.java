@@ -60,7 +60,7 @@ public class Project {
                         String note = "";
                         Scanner sc = new Scanner(n);
                         while(sc.hasNextLine()){
-                            note = note + sc.nextLine();
+                            note = note + "\n" + sc.nextLine();
                         }
                         notes.add(notes.size(), new Note(note, subject));
                     }
@@ -100,5 +100,20 @@ public class Project {
                 ex.printStackTrace();
             }
         }
+    }
+
+    public Note selectNote(String subject) {
+        if (subject == null) {
+            throw new NullPointerException("No subject given");
+        }
+
+        Note pickedNote = null;
+
+        for (Note n : notes) {
+            if (subject.equals(n.subject)) {
+                pickedNote = n;
+            }
+        }
+        return pickedNote;
     }
 }
