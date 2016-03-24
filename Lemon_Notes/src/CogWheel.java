@@ -1,3 +1,5 @@
+import javafx.event.Event;
+import javafx.event.EventType;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -23,6 +25,14 @@ public class CogWheel {
     AccountManagement account_management;
     Help help;
     About about;
+
+    MenuItem visualSettings;
+    MenuItem fontSettings;
+    MenuItem modeSettings;
+    MenuItem projectSettings;
+    MenuItem accountManagement;
+    MenuItem helpItem;
+    MenuItem aboutItem;
 
     public CogWheel(Stage main_stage, GridPane main_pane, MenuBar mb, Menu m){
         if(main_stage != null)
@@ -52,15 +62,15 @@ public class CogWheel {
 
         Image cog_wheel = new Image(getClass().getResourceAsStream("cogicon.png"));
         menu.setGraphic(new ImageView(cog_wheel));
-        final MenuItem thing1 = new MenuItem("Visual Settings...");
-        final MenuItem thing2 = new MenuItem("Font Settings...");
-        final MenuItem thing3 = new MenuItem("Mode Settings...");
-        final MenuItem thing4 = new MenuItem("Project Settings...");
-        final MenuItem thing5 = new MenuItem("Account Management...");
-        final MenuItem thing6 = new MenuItem("Help");
-        final MenuItem thing7 = new MenuItem("About");
+        visualSettings = new MenuItem("Visual Settings...");
+        fontSettings = new MenuItem("Font Settings...");
+        modeSettings = new MenuItem("Mode Settings...");
+        projectSettings = new MenuItem("Project Settings...");
+        accountManagement = new MenuItem("Account Management...");
+        helpItem = new MenuItem("Help");
+        aboutItem = new MenuItem("About");
 
-        menu.getItems().addAll(thing1, thing2, thing3, thing4, thing5, thing6, thing7);
+        menu.getItems().addAll(visualSettings, fontSettings, modeSettings, projectSettings, accountManagement, helpItem, aboutItem);
     }
 
 }
