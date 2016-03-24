@@ -3,10 +3,7 @@ import javafx.application.Application;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -14,6 +11,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import javax.swing.*;
+import java.io.File;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -36,6 +34,22 @@ public final class ProjectComboboxTest {
         @Override
         public void start(Stage primaryStage) throws Exception {
             // noop
+        }
+    }
+
+    @AfterClass
+    public static void tearDown() { //remove created files after testing
+        File delete_me = new File("Projects/Test01");
+        File delete_me_notes = new File("Projects/Test01/saved_notes");
+        File delete_me_too = new File("Projects/Test02");
+        File delete_me_too_notes = new File("Projects/Test02/saved_notes");
+        if(delete_me.exists()){
+            delete_me_notes.delete();
+            delete_me.delete();
+        }
+        if(delete_me_too.exists()){
+            delete_me_too_notes.delete();
+            delete_me_too.delete();
         }
     }
 
@@ -74,9 +88,9 @@ public final class ProjectComboboxTest {
     @Test
     public void testAddAProject() {
         ProjectCombobox pcbTest = new ProjectCombobox(comboTest);
-        pcbTest.addAProject("Name");
-        assertEquals("Name",pcbTest.projects.get(0).name);
-        assertEquals("Name",pcbTest.current_project.name);
+        pcbTest.addAProject("Test01");
+        assertEquals("Test01",pcbTest.projects.get(0).name);
+        assertEquals("Test01",pcbTest.current_project.name);
         assertEquals(1,pcbTest.projects.size());
     }
 
@@ -87,10 +101,10 @@ public final class ProjectComboboxTest {
     @Test
     public void testAddAProjectDupe() {
         ProjectCombobox pcbTest = new ProjectCombobox(comboTest);
-        pcbTest.addAProject("Name");
-        pcbTest.addAProject("Name");
-        assertEquals("Name",pcbTest.projects.get(0).name);
-        assertEquals("Name",pcbTest.current_project.name);
+        pcbTest.addAProject("Test01");
+        pcbTest.addAProject("Test01");
+        assertEquals("Test01",pcbTest.projects.get(0).name);
+        assertEquals("Test01",pcbTest.current_project.name);
         assertEquals(1,pcbTest.projects.size());
     }
 
@@ -112,10 +126,10 @@ public final class ProjectComboboxTest {
     @Test
     public void testSelectProject() {
         ProjectCombobox pcbTest = new ProjectCombobox(comboTest);
-        pcbTest.addAProject("Name1");
-        pcbTest.addAProject("Name2");
-        pcbTest.selectProject("Name1");
-        assertEquals("Name1",pcbTest.current_project.name);
+        pcbTest.addAProject("Test01");
+        pcbTest.addAProject("Test02");
+        pcbTest.selectProject("Test01");
+        assertEquals("Test01",pcbTest.current_project.name);
         assertEquals(2,pcbTest.projects.size());
     }
     /**
@@ -123,10 +137,10 @@ public final class ProjectComboboxTest {
      * Pass in null for a project selection.
      */
     @Test
-    public void testSelectProject2() {
+    public void testSelectProjectNull() {
         ProjectCombobox pcbTest = new ProjectCombobox(comboTest);
-        pcbTest.addAProject("Name1");
-        pcbTest.addAProject("Name2");
+        pcbTest.addAProject("Test01");
+        pcbTest.addAProject("Test02");
         exc.expect(NullPointerException.class);
         pcbTest.selectProject(null);
     }

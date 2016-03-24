@@ -1,5 +1,6 @@
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.shape.Path;
+import org.mockito.internal.matchers.Null;
 
 import javax.security.auth.Subject;
 import java.io.*;
@@ -29,7 +30,7 @@ public class Project {
             throw new NullPointerException("Project name is null.");
         }
 
-        name = project_name;
+        name = project_name.trim();
 
         notes = new ArrayList<Note>();
         location = "Projects/" + name;
@@ -60,7 +61,7 @@ public class Project {
                         String note = "";
                         Scanner sc = new Scanner(n);
                         while(sc.hasNextLine()){
-                            note = note + "\n" + sc.nextLine();
+                            note = note + sc.nextLine();
                         }
                         notes.add(notes.size(), new Note(note, subject));
                     }
@@ -86,19 +87,26 @@ public class Project {
         }
 
         if(new_note){
-            Note thing_to_add = new Note(note_to_add, subject);
+            Note thing_to_add = new Note(note_to_add, subject.trim());
             notes.add(notes.size(), thing_to_add);
-            //
-            String full_note = notes.size() + ".    Subject: " + subject + "\n" +
-                    "   Note: " + note_to_add + "\n\n";
 
             try {
-                FileWriter fw = new FileWriter(saved_notes + "/" + subject + ".txt");
-                fw.write(full_note);
+                FileWriter fw = new FileWriter(saved_notes + "/" + subject.trim() + ".txt");
+                fw.write(note_to_add);
                 fw.close();
             }catch (IOException ex){
                 ex.printStackTrace();
             }
+        }
+    }
+
+    public Boolean removeNote(Note note_to_remove){
+        if(note_to_remove != null){
+            notes.remove(note_to_remove);
+            File remove_me = new File(saved_notes +"/" + note_to_remove.subject + ".txt");
+            return remove_me.delete();
+        }else {
+            throw new NullPointerException("No note was provided.");
         }
     }
 

@@ -1,6 +1,8 @@
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
+import com.sun.org.apache.xerces.internal.impl.dv.xs.BooleanDV;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -244,32 +246,124 @@ public class Main extends Application
             @Override
             public void handle(ActionEvent event) {
                 if(combo.getSelectionModel().getSelectedItem() != null) {
-                    primaryStage.setTitle(comboBox.selectProject(combo.getSelectionModel().getSelectedItem().toString()).name);
+                    //primaryStage.setTitle(comboBox.selectProject(combo.getSelectionModel().getSelectedItem().toString()).name);
+                    //prompt user to save here
+                    if (noteModified && bigBox.getText().trim().length() != 0) {
+                        Alert saveprompt = new Alert(Alert.AlertType.CONFIRMATION);
+                        saveprompt.setTitle("Lemon Notes");
+                        saveprompt.setHeaderText("Clearing editor field...");
+                        saveprompt.setContentText("Would you like to save before clearing the field?");
+                        ButtonType yes = new ButtonType("Yes");
+                        ButtonType no = new ButtonType("No");
+                        ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+                        saveprompt.getButtonTypes().setAll(yes, no, cancel);
+
+                        Optional<ButtonType> choice = saveprompt.showAndWait();
+                        if (choice.get() == yes) {
+                            if (bigBox.getText().trim().length() != 0) {
+                                String subj;
+                                Pattern p = Pattern.compile("[^a-zA-Z0-9_ ]");
+                                boolean noteFound = false;
+                                if (subjBox.getText().trim().length() != 0 && !p.matcher(subjBox.getText()).find()) {
+                                    subj = subjBox.getText(); //need to restrict to alphanumeric characters only.
+                                } else {
+                                    System.out.println("Must enter alphanumeric subject.");
+                                    return;
+                                }
+                                String content = bigBox.getText();
+                                content.replaceAll("(?!\\r)\\n", "\r\n");
+                                for (Note n : comboBox.current_project.notes) {
+                                    if (subj.equals(n.subject)) {
+                                        noteFound = true;
+                                    }
+                                }
+                                if (noteFound) {
+                                    System.out.println("note already exists");
+                                    //overwrite existing note?
+                                } else {
+                                    comboBox.current_project.addNote(content, subj, true);
+                                    noteModified = false;
+                                }
+                            } else {
+                                System.out.println("No content to save.");
+                            }
+                            bigBox.clear();
+                            subjBox.clear();
+                        } else if (choice.get() == no) {
+                            bigBox.clear();
+                            subjBox.clear();
+                        }
+                    } else {
+                        bigBox.clear();
+                        subjBox.clear();
+                    }
                     note_combo_box.changeProjects(comboBox.selectProject(combo.getSelectionModel().getSelectedItem().toString()));
                     //allows you to save the written note to another project
-                    noteModified = true;
+                    noteModified = false;
                 }
             }
         });
 
-        /*noteCombo.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(noteCombo.getSelectionModel().getSelectedItem() != null){
-                    primaryStage.set
-                }
-            }
-        });*/
         note_combo_box.comboBox.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 if (note_combo_box.comboBox.getSelectionModel().getSelectedItem() != null) {
                     Note n = comboBox.current_project.selectNote(note_combo_box.comboBox.getSelectionModel().getSelectedItem());
                     if (n != null) {
-                        subjBox.clear();
+                        //prompt user to save here
+                        if (noteModified && bigBox.getText().trim().length() != 0) {
+                            Alert saveprompt = new Alert(Alert.AlertType.CONFIRMATION);
+                            saveprompt.setTitle("Lemon Notes");
+                            saveprompt.setHeaderText("Clearing editor field...");
+                            saveprompt.setContentText("Would you like to save before clearing the field?");
+                            ButtonType yes = new ButtonType("Yes");
+                            ButtonType no = new ButtonType("No");
+                            ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+                            saveprompt.getButtonTypes().setAll(yes, no, cancel);
+
+                            Optional<ButtonType> choice = saveprompt.showAndWait();
+                            if (choice.get() == yes) {
+                                if (bigBox.getText().trim().length() != 0) {
+                                    String subj;
+                                    Pattern p = Pattern.compile("[^a-zA-Z0-9_ ]");
+                                    boolean noteFound = false;
+                                    if (subjBox.getText().trim().length() != 0 && !p.matcher(subjBox.getText()).find()) {
+                                        subj = subjBox.getText(); //need to restrict to alphanumeric characters only.
+                                    } else {
+                                        System.out.println("Must enter alphanumeric subject.");
+                                        return;
+                                    }
+                                    String content = bigBox.getText();
+                                    content.replaceAll("(?!\\r)\\n", "\r\n");
+                                    for (Note note : comboBox.current_project.notes) {
+                                        if (subj.equals(note.subject)) {
+                                            noteFound = true;
+                                        }
+                                    }
+                                    if (noteFound) {
+                                        System.out.println("note already exists");
+                                        //overwrite existing note?
+                                    } else {
+                                        comboBox.current_project.addNote(content, subj, true);
+                                        noteModified = false;
+                                    }
+                                } else {
+                                    System.out.println("No content to save.");
+                                }
+                                subjBox.clear();
+                                bigBox.clear();
+                            } else if (choice.get() == no) {
+                                subjBox.clear();
+                                bigBox.clear();
+                            }
+                        } else {
+                            subjBox.clear();
+                            bigBox.clear();
+                        }
                         subjBox.setText(n.subject);
-                        bigBox.clear();
-                        bigBox.setText(n.note.substring(n.note.indexOf("Note: ") + 6, n.note.length()));
+                        bigBox.setText(n.note);
                         noteModified = false;
                     }
                 }
@@ -359,8 +453,139 @@ public class Main extends Application
                         note_combo_box.resize();
                         noteModified = false;
                     }
+                    bigBox.clear();
+                    subjBox.clear();
+                    noteModified = false;
                 } else {
                     System.out.println("No content to save.");
+                    bigBox.clear();
+                    subjBox.clear();
+                    noteModified = false;
+                }
+            }
+        });
+
+        delete.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(bigBox.getText().trim().length() != 0){
+                    if(subjBox.getText().trim().length() != 0){
+                        Boolean found_note = false;
+                        Note note_to_remove = null;
+                        for(Note n : comboBox.current_project.notes){
+                            if(subjBox.getText().trim().equals(n.subject)){
+                                note_to_remove = n;
+                                found_note = true;
+                            }
+                        }
+                        if(found_note && (note_to_remove != null)){
+                            //delete note?
+                            Alert delete_note = new Alert(Alert.AlertType.CONFIRMATION);
+                            delete_note.setTitle("Lemon Notes");
+                            delete_note.setHeaderText("Deleting previous note...");
+                            delete_note.setContentText("Are you sure you'd like to continue?");
+                            ButtonType yes = new ButtonType("Yes");
+                            ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+                            delete_note.getButtonTypes().setAll(yes, cancel);
+
+                            Optional<ButtonType> choice = delete_note.showAndWait();
+                            if (choice.get() == yes) {
+                                comboBox.current_project.removeNote(note_to_remove);
+                                note_combo_box.resize();
+                                subjBox.clear();
+                                bigBox.clear();
+                                noteModified = false;
+                            }
+                        }else {
+                            //not recognized as a previous note (currently). clear screen?
+                            Alert clear_screen = new Alert(Alert.AlertType.CONFIRMATION);
+                            clear_screen.setTitle("Lemon Notes");
+                            clear_screen.setHeaderText("Clearing screen...");
+                            clear_screen.setContentText("Are you sure you'd like to continue?");
+                            ButtonType yes = new ButtonType("Yes");
+                            ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+                            clear_screen.getButtonTypes().setAll(yes, cancel);
+
+                            Optional<ButtonType> choice = clear_screen.showAndWait();
+                            if (choice.get() == yes) {
+                                subjBox.clear();
+                                bigBox.clear();
+                                noteModified = false;
+                            }
+                        }
+                    }else {
+                        //not recognized as a previous note (currently). clear screen?
+                        Alert clear_screen = new Alert(Alert.AlertType.CONFIRMATION);
+                        clear_screen.setTitle("Lemon Notes");
+                        clear_screen.setHeaderText("Clearing screen...");
+                        clear_screen.setContentText("Are you sure you'd like to continue?");
+                        ButtonType yes = new ButtonType("Yes");
+                        ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+                        clear_screen.getButtonTypes().setAll(yes, cancel);
+
+                        Optional<ButtonType> choice = clear_screen.showAndWait();
+                        if (choice.get() == yes) {
+                            subjBox.clear();
+                            bigBox.clear();
+                            noteModified = false;
+                        }
+                    }
+                }else {
+                    if(subjBox.getText().trim().length() != 0){
+                        Boolean found_note = false;
+                        Note note_to_remove = null;
+                        for(Note n : comboBox.current_project.notes){
+                            if(subjBox.getText().trim().equals(n.subject)){
+                                note_to_remove = n;
+                                found_note = true;
+                            }
+                        }
+                        if(found_note && (note_to_remove != null)){
+                            //delete note?
+                            Alert delete_note = new Alert(Alert.AlertType.CONFIRMATION);
+                            delete_note.setTitle("Lemon Notes");
+                            delete_note.setHeaderText("Deleting previous note...");
+                            delete_note.setContentText("Are you sure you'd like to continue?");
+                            ButtonType yes = new ButtonType("Yes");
+                            ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+                            delete_note.getButtonTypes().setAll(yes, cancel);
+
+                            Optional<ButtonType> choice = delete_note.showAndWait();
+                            if (choice.get() == yes) {
+                                comboBox.current_project.removeNote(note_to_remove);
+                                note_combo_box.resize();
+                                subjBox.clear();
+                                bigBox.clear();
+                                noteModified = false;
+                            }
+                        }else {
+                            //not recognized as a previous note (currently). clear screen?
+                            Alert clear_screen = new Alert(Alert.AlertType.CONFIRMATION);
+                            clear_screen.setTitle("Lemon Notes");
+                            clear_screen.setHeaderText("Clearing screen...");
+                            clear_screen.setContentText("Are you sure you'd like to continue?");
+                            ButtonType yes = new ButtonType("Yes");
+                            ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+                            clear_screen.getButtonTypes().setAll(yes, cancel);
+
+                            Optional<ButtonType> choice = clear_screen.showAndWait();
+                            if (choice.get() == yes) {
+                                subjBox.clear();
+                                bigBox.clear();
+                                noteModified = false;
+                            }
+                        }
+                    }else {
+                        //not recognized as a previous note (currently). for now, just "clear screen" (its already clear, but this sets note modified to false)
+                        subjBox.clear();
+                        bigBox.clear();
+                        noteModified = false;
+                    }
                 }
             }
         });
@@ -370,6 +595,15 @@ public class Main extends Application
             @Override
             public void handle(MouseEvent event) {
                 System.out.println("User has modified this item!");
+                noteModified = true;
+            }
+        });
+
+        //check if the subject has been modified since the last save
+        subjBox.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                System.out.println("User has modified the subject!");
                 noteModified = true;
             }
         });
