@@ -61,7 +61,7 @@ public class Project {
                         String note = "";
                         Scanner sc = new Scanner(n);
                         while(sc.hasNextLine()){
-                            note = note + sc.nextLine();
+                            note = note + "\n" + sc.nextLine();
                         }
                         notes.add(notes.size(), new Note(note, subject));
                     }

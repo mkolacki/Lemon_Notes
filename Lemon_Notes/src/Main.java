@@ -681,12 +681,7 @@ public class Main extends Application
      */
     private void setupScene(GridPane pane)
     {
-        String titleText;
-        if (comboBox.current_project != null) {
-            titleText = comboBox.current_project.name;
-        } else {
-            titleText = "Lemon Notes";
-        }
+        String titleText = "Lemon Notes";
 
         // Adding pane the the scene
         scene = new Scene(pane, 600, 250);
