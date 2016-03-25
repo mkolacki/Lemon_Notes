@@ -1,5 +1,5 @@
-import javafx.event.Event;
-import javafx.event.EventType;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -34,7 +34,7 @@ public class CogWheel {
     MenuItem helpItem;
     MenuItem aboutItem;
 
-    public CogWheel(Stage main_stage, GridPane main_pane, MenuBar mb, Menu m){
+    public CogWheel(final Stage main_stage, final GridPane main_pane, final MenuBar mb, final Menu m){
         if(main_stage != null)
             stage = main_stage;
         else
@@ -53,7 +53,7 @@ public class CogWheel {
             throw new NullPointerException("The menu is null.");
 
         options[0] = visual_settings = new VisualSettings();
-        options[1] = font_settings = new FontSettings();
+        options[1] = font_settings = new FontSettings(main_stage, main_pane);
         options[2] = mode_settings = new ModeSettings();
         options[3] = project_settings = new ProjectSettings();
         options[4] = account_management = new AccountManagement();
@@ -69,6 +69,18 @@ public class CogWheel {
         accountManagement = new MenuItem("Account Management...");
         helpItem = new MenuItem("Help");
         aboutItem = new MenuItem("About");
+
+        fontSettings.setOnAction(new EventHandler<ActionEvent>()
+        {
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void handle(ActionEvent event)
+            {
+                font_settings.show();
+            }
+        });
 
         menu.getItems().addAll(visualSettings, fontSettings, modeSettings, projectSettings, accountManagement, helpItem, aboutItem);
     }

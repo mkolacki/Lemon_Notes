@@ -15,6 +15,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -128,8 +129,10 @@ public class Main extends Application
         delete.setTooltip(new Tooltip("Deletes the currently displayed note."));
 
         bigBox = new JFXTextArea();
+        bigBox.setId("Big Box Area");
 
         subjBox = new TextField(); //needs to be restricted to alphanumeric characters
+        subjBox.setId("Subject Box");
         subjBox.setPromptText("Subject");
 
     }
