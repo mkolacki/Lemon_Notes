@@ -48,11 +48,20 @@ public class FontSettings extends Coggie
      *  Constructor.
      *
      * @param primaryStage The owner of the new stage
+     *
+     * @param mainPane The pane organizing the screen
      */
     public FontSettings(Stage primaryStage, Pane mainPane)
     {
-        this.mainPane = mainPane;
-        this.primaryStage = primaryStage;
+        if(primaryStage != null)
+            this.primaryStage = primaryStage;
+        else
+            throw new NullPointerException("Primary Stage is null");
+        if(mainPane != null)
+            this.mainPane = mainPane;
+        else
+            throw new NullPointerException("Main Pane is null");
+
         fontDialog = new Stage();
         fontDialog.setTitle("Font Settings");
         fontDialog.initStyle(StageStyle.UTILITY);
@@ -60,6 +69,7 @@ public class FontSettings extends Coggie
         fontDialog.initOwner(primaryStage);
 
         MigPane pane = createLayout();
+        pane.setId("MainFontPane");
         Scene fontDialogScene = new Scene(pane, DIALOG_WIDTH, DIALOG_HEIGHT);
         fontDialog.setScene(fontDialogScene);
     }
@@ -78,53 +88,67 @@ public class FontSettings extends Coggie
     private MigPane createLayout()
     {
         MigPane mainPane = new MigPane();
+        mainPane.setId("MainFontPaneBuilder");
         mainPane.setPrefSize(DIALOG_WIDTH, DIALOG_HEIGHT);
 
         subjLabel = new Label("This is the font selected.");
+        subjLabel.setId("SubjectLabel");
         textLabel = new Label("This is the font selected.");
+        textLabel.setId("TextLabel");
 
         subjFontSizeBox = new JFXComboBox<Integer>();
+        subjFontSizeBox.setId("SubjectFontComboBox");
         subjFontSizeBox.setPromptText("Select a size.");
         subjFontSizeBox.setItems(FXCollections.observableArrayList(1,2,3,4,5,6,7,8,9,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50));
         subjFontSizeBox.setMaxSize(150, 50);
 
         textFontSizeBox = new JFXComboBox<Integer>();
+        textFontSizeBox.setId("TextFontComboBox");
         textFontSizeBox.setPromptText("Select a size.");
         textFontSizeBox.setItems(FXCollections.observableArrayList(1,2,3,4,5,6,7,8,9,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50));
         textFontSizeBox.setMaxSize(150, 50);
 
         subjFontStyleBox = new JFXComboBox<String>();
+        subjFontStyleBox.setId("SubjectStyleComboBox");
         subjFontStyleBox.setPromptText("Select a font style.");
         subjFontStyleBox.setItems(FXCollections.observableArrayList(Font.getFontNames()));
         subjFontStyleBox.setMaxSize(300, 50);
 
         textFontStyleBox = new JFXComboBox<String>();
+        textFontStyleBox.setId("TextStyleComboBox");
         textFontStyleBox.setPromptText("Select a font style.");
         textFontStyleBox.setItems(FXCollections.observableArrayList(Font.getFontNames()));
         textFontStyleBox.setMaxSize(300, 50);
 
         MigPane subjectPane = new MigPane();
+        subjectPane.setId("SubjectFontPaneBuilder");
         subjectPane.add(subjFontSizeBox, "wrap, align center");
         subjectPane.add(subjFontStyleBox, "wrap, align center");
         subjectPane.add(subjLabel, "span, align center, gapy 15px");
         subjectPane.setPrefSize(mainPane.getPrefWidth(), mainPane.getPrefHeight()/2);
         TitledPane subjPane = new TitledPane("Subject Fonts", subjectPane);
+        subjPane.setId("SubjectFontPane");
 
         MigPane textAreaPane = new MigPane();
+        textAreaPane.setId("TextFontPaneBuilder");
         textAreaPane.add(textFontSizeBox, "wrap, align center");
         textAreaPane.add(textFontStyleBox, "wrap, align center");
         textAreaPane.add(textLabel, "span, align center, gapy 15px");
         textAreaPane.setPrefSize(mainPane.getPrefWidth(), mainPane.getPrefHeight()/2);
         TitledPane textPane = new TitledPane("Text Area Fonts", textAreaPane);
+        textPane.setId("TextFontPane");
 
         okButton = new JFXButton("Ok");
+        okButton.setId("OKButton");
         okButton.setButtonType(JFXButton.ButtonType.FLAT);
         okButton.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, new CornerRadii(0), new Insets(0))));
         cancelButton = new JFXButton("Cancel");
+        cancelButton.setId("CancelButton");
         cancelButton.setButtonType(JFXButton.ButtonType.FLAT);
         cancelButton.setBackground(new Background(new BackgroundFill(Color.PINK, new CornerRadii(0), new Insets(0))));
 
         MigPane buttonPane = new MigPane();
+        buttonPane.setId("ButtonFontPane");
         buttonPane.add(okButton);
         buttonPane.add(cancelButton);
 
