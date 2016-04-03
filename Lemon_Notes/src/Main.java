@@ -7,6 +7,8 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -15,11 +17,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
+import javafx.scene.text.*;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -64,6 +67,7 @@ public class Main extends Application
     private ProjectCombobox comboBox;
     private NoteComboBox note_combo_box;
     private CogWheel cogWheel;
+
 
     boolean noteModified;
 
@@ -203,6 +207,7 @@ public class Main extends Application
         // Setting the general padding for the grid pane
         ColumnConstraints cons1 = new ColumnConstraints();
         pane.getColumnConstraints().add(cons1);
+
 
         cogWheel = new CogWheel(primaryStage, pane, menu, menu1);
         menu.getMenus().add(cogWheel.menu);
@@ -465,6 +470,36 @@ public class Main extends Application
                     subjBox.clear();
                     noteModified = false;
                 }
+            }
+        });
+
+        //preview the current note
+        preview.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Stage stage = new Stage();
+                String family = "Helvetica";
+                double size = 50;
+
+                TextFlow textFlow = new TextFlow();
+                textFlow.setLayoutX(40);
+                textFlow.setLayoutY(40);
+                Text text1 = new Text("Hello ");
+                text1.setFont(Font.font(family, size));
+                text1.setFill(Color.RED);
+                Text text2 = new Text("Bold");
+                text2.setFill(Color.ORANGE);
+                text2.setFont(Font.font(family, FontWeight.BOLD, size));
+                Text text3 = new Text(" World");
+                text3.setFill(Color.GREEN);
+                text3.setFont(Font.font(family, FontPosture.ITALIC, size));
+                textFlow.getChildren().addAll(text1, text2, text3);
+
+                Group group = new Group(textFlow);
+                Scene scene = new Scene(group, 500, 150, Color.WHITE);
+                stage.setTitle("Testing Preview");
+                stage.setScene(scene);
+                stage.show();
             }
         });
 

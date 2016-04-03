@@ -8,8 +8,8 @@ import javafx.scene.text.Text;
  */
 public class ItalicFormat extends Mode {
 
-    public ItalicFormat(String new_mode, String initiator, String what_to_take, String what_it_does, String how_to_do_it) {
-        super(new_mode, initiator, what_to_take, what_it_does, how_to_do_it);
+    public ItalicFormat() {
+        super("Italic", "<i>", "Text formatting setting", "Makes the specified text italicised when previewed", "<i>This text will be italicised<i>");
     }
 
     //format given text within bold tags, return the formatted text to the preview stage.

@@ -98,7 +98,7 @@ public class ModeSettings extends Coggie {
 
         //String within should be obtained from the information for each Mode,
         //i.e.:     basicCalculator.getInfo();
-        BasicCalculator mode1 = new BasicCalculator("Basic Calculator", "<calc>", "Numbers and basic operations", "Performs the input basic calculation when previewed or prompted", "5 + 3");
+        BasicCalculator mode1 = new BasicCalculator();
         basicCalculator = new Label(mode1.getInfo());
         basicCalculator.setId("BasicCalculatorLabel");
 
@@ -109,7 +109,7 @@ public class ModeSettings extends Coggie {
         TitledPane calcPane = new TitledPane("Basic Calculator", basicCalculatorPane);
         calcPane.setId("BasicCalculatorPane");
 
-        BoldFormat mode2 = new BoldFormat("Bold", "<b>", "Text formatting setting", "Makes the specified text bold when previewed", "<b>This text will become bold<b>");
+        BoldFormat mode2 = new BoldFormat();
         boldFormat = new Label(mode2.getInfo());
         boldFormat.setId("BoldFormatLabel");
 
@@ -120,7 +120,7 @@ public class ModeSettings extends Coggie {
         TitledPane boldPane = new TitledPane("Bold", boldFormatPane);
         boldPane.setId("BoldFormatPane");
 
-        ItalicFormat mode3 =  new ItalicFormat("Italic", "<i>", "Text formatting setting", "Makes the specified text italicised when previewed", "<i>This text will be italicised<i>");
+        ItalicFormat mode3 =  new ItalicFormat();
         italicFormat = new Label(mode3.getInfo());
         italicFormat.setId("ItalicFormatLabel");
 

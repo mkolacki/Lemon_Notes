@@ -7,8 +7,8 @@ import javafx.scene.text.Text;
  */
 public class BoldFormat extends Mode {
 
-    public BoldFormat(String new_mode, String initiator, String what_to_take, String what_it_does, String how_to_do_it) {
-        super(new_mode, initiator, what_to_take, what_it_does, how_to_do_it);
+    public BoldFormat() {
+        super("Bold", "<b>", "Text formatting setting", "Makes the specified text bold when previewed", "<b>This text will become bold<b>");
     }
 
     //format given text within bold tags, return the formatted text to the preview stage.
