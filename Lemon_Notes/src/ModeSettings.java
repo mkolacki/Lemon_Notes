@@ -45,7 +45,15 @@ public class ModeSettings extends Coggie {
     //Description: (brief but detailed description of whatever the mode is supposed to do/be able to do)
     //Format and Parameters: (what does the mode take and how does it take it)
     //Example: (an example of the mode with some input)
+
+    //Note from Mike C: When I add more panels, the content gets cut off if we have too many open at once. I have to resize the window so that it becomes readable.
+    //                  Should we make it so only one item stays opened at a time? Or I could try and figure out a scroll bar option.
+    //                  Also, not a huge deal now but something we could keep in mind, once we have the separate modes figured out, we should see how we can
+    //                  integrate them together in case someone wants bold and italicised text, or they want to make a calculation have red text in their note.
+
     private Label basicCalculator;
+    private Label boldFormat;
+    private Label italicFormat;
 
     //private Label otherModes;
 
@@ -101,6 +109,28 @@ public class ModeSettings extends Coggie {
         TitledPane calcPane = new TitledPane("Basic Calculator", basicCalculatorPane);
         calcPane.setId("BasicCalculatorPane");
 
+        BoldFormat mode2 = new BoldFormat("Bold", "<b>", "Text formatting setting", "Makes the specified text bold when previewed", "<b>This text will become bold<b>");
+        boldFormat = new Label(mode2.getInfo());
+        boldFormat.setId("BoldFormatLabel");
+
+        MigPane boldFormatPane = new MigPane();
+        boldFormatPane.setId("BoldFormatPaneBuilder");
+        boldFormatPane.add(boldFormat, "wrap, align left");
+        boldFormatPane.setPrefSize(mainPane.getPrefWidth(), mainPane.getPrefHeight()/2);
+        TitledPane boldPane = new TitledPane("Bold", boldFormatPane);
+        boldPane.setId("BoldFormatPane");
+
+        ItalicFormat mode3 =  new ItalicFormat("Italic", "<i>", "Text formatting setting", "Makes the specified text italicised when previewed", "<i>This text will be italicised<i>");
+        italicFormat = new Label(mode3.getInfo());
+        italicFormat.setId("ItalicFormatLabel");
+
+        MigPane italicFormatPane = new MigPane();
+        italicFormatPane.setId("ItalicFormatPaneBuilder");
+        italicFormatPane.add(italicFormat, "wrap, align left");
+        italicFormatPane.setPrefSize(mainPane.getPrefWidth(), mainPane.getPrefHeight()/2);
+        TitledPane italicPane = new TitledPane("Italic", italicFormatPane);
+        italicPane.setId("ItalicFormatPane");
+
         closeButton = new JFXButton("Close");
         closeButton.setId("CloseButton");
         closeButton.setButtonType(JFXButton.ButtonType.FLAT);
@@ -113,6 +143,8 @@ public class ModeSettings extends Coggie {
         setActionListeners();
 
         mainPane.add(calcPane, "wrap");
+        mainPane.add(boldPane,"wrap");
+        mainPane.add(italicPane,"wrap");
         mainPane.add(buttonPane, "align right");
 
 
