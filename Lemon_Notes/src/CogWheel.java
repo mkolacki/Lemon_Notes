@@ -54,7 +54,7 @@ public class CogWheel {
 
         options[0] = visual_settings = new VisualSettings();
         options[1] = font_settings = new FontSettings(main_stage, main_pane);
-        options[2] = mode_settings = new ModeSettings();
+        options[2] = mode_settings = new ModeSettings(main_stage, main_pane);
         options[3] = project_settings = new ProjectSettings();
         options[4] = account_management = new AccountManagement();
         options[5] = help = new Help();
@@ -79,6 +79,17 @@ public class CogWheel {
             public void handle(ActionEvent event)
             {
                 font_settings.show();
+            }
+        });
+
+        modeSettings.setOnAction(new EventHandler<ActionEvent>(){
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void handle(ActionEvent event)
+            {
+                mode_settings.show();
             }
         });
 
