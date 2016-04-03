@@ -45,20 +45,6 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="PreviewBox.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/PreviewBox.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                    <element signature="e#2550#2714#0" expanded="true" />
-                    <element signature="e#2713#2714#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
           <file leaf-file-name="CogWheel.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/CogWheel.java">
               <provider selected="true" editor-type-id="text-editor">
@@ -1134,18 +1120,6 @@
           <folding>
             <element signature="e#2821#3062#0" expanded="true" />
             <element signature="e#3061#3062#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/PreviewBox.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2550#2714#0" expanded="true" />
-            <element signature="e#2713#2714#0" expanded="true" />
           </folding>
         </state>
       </provider>
