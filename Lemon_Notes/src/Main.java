@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -474,17 +475,20 @@ public class Main extends Application
         });
 
         //preview the current note
+        //Possible soultions:
+        // Read through the note, split into formatted/unformatted pieces, add to a list, read in via for loop
         preview.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 Stage stage = new Stage();
                 String family = "Helvetica";
-                double size = 50;
+                double size = 12;
 
                 TextFlow textFlow = new TextFlow();
-                textFlow.setLayoutX(40);
-                textFlow.setLayoutY(40);
-                Text text1 = new Text("Hello ");
+                textFlow.setLayoutX(12);
+                textFlow.setLayoutY(12);
+
+                /*Text text1 = new Text("Hello ");
                 text1.setFont(Font.font(family, size));
                 text1.setFill(Color.RED);
                 Text text2 = new Text("Bold");
@@ -493,7 +497,68 @@ public class Main extends Application
                 Text text3 = new Text(" World");
                 text3.setFill(Color.GREEN);
                 text3.setFont(Font.font(family, FontPosture.ITALIC, size));
-                textFlow.getChildren().addAll(text1, text2, text3);
+                textFlow.getChildren().addAll(text1, text2, text3);*/
+
+
+                ArrayList<Text> noteBits = new ArrayList<Text>();
+                String fullNote = bigBox.getText();
+
+                //substring is from current spot until next tag.
+                //save this substring, format if needed and add to the list.
+                //cut the substring from the main string
+                //rinse, repeat
+
+                while (fullNote != null && fullNote.length() != 0) {
+                    if (fullNote.indexOf("<") != -1) {
+                        if (fullNote.indexOf("<b>") == fullNote.indexOf("<")) {
+                            if (fullNote.indexOf("<b>") == 0) {
+                                if (fullNote.indexOf("</b>") != -1) {
+                                    Text t = new Text(fullNote.substring(3,fullNote.indexOf("</b>")));
+                                    t.setFont(Font.font(family, FontWeight.BOLD, size));
+                                    noteBits.add(t);
+                                    System.out.println("a");
+                                    fullNote = fullNote.substring(fullNote.indexOf("</b>")+4);
+                                    System.out.println("b");
+                                } else {
+                                    Text t = new Text(fullNote);
+                                    noteBits.add(t);
+                                    break;
+                                }
+                            } else {
+                                Text t = new Text(fullNote.substring(0,fullNote.indexOf("<b>")));
+                                noteBits.add(t);
+                                fullNote = fullNote.substring(fullNote.indexOf("<b>"));
+                            }
+                        } else if (fullNote.indexOf("<i>") == fullNote.indexOf("<")) {
+                            if (fullNote.indexOf("<i>") == 0) {
+                                if (fullNote.indexOf("</i>") != -1) {
+                                    Text t = new Text(fullNote.substring(3, fullNote.indexOf("</i>")));
+                                    t.setFont(Font.font(family, FontPosture.ITALIC, size));
+                                    noteBits.add(t);
+                                    System.out.println("a");
+                                    fullNote = fullNote.substring(fullNote.indexOf("</i>") + 4);
+                                    System.out.println("b");
+                                } else {
+                                    Text t = new Text(fullNote);
+                                    noteBits.add(t);
+                                    break;
+                                }
+                            } else {
+                                Text t = new Text(fullNote.substring(0, fullNote.indexOf("<i>")));
+                                noteBits.add(t);
+                                fullNote = fullNote.substring(fullNote.indexOf("<i>"));
+                            }
+                        }
+                    } else {
+                        Text t = new Text(fullNote);
+                        noteBits.add(t);
+                        break;
+                    }
+                }
+
+                for (Text t : noteBits) {
+                    textFlow.getChildren().add(t);
+                }
 
                 Group group = new Group(textFlow);
                 Scene scene = new Scene(group, 500, 150, Color.WHITE);

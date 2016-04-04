@@ -4,7 +4,7 @@
 public class BasicCalculator extends Mode {
 
     public BasicCalculator() {
-        super("Basic Calculator", "<calc>", "Numbers and basic operations", "Performs the input basic calculation when previewed or prompted", "5 + 3");
+        super("Basic Calculator", "<calc>", "Numbers and basic operations", "Performs the input basic calculation when previewed or prompted", "<calc>5 + 3</calc>");
     }
 
 
