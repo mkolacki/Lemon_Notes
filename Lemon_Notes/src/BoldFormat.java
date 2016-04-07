@@ -18,8 +18,8 @@ public class BoldFormat extends Mode {
     }
 
     @Override
-    public void update(String textAreaBoxData)
+    public Text preview(Text textAreaBoxData)
     {
-
+        return new Text("");
     }
 }

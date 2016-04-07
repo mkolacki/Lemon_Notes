@@ -40,7 +40,7 @@ public class Main extends Application
         launch(args);
     }
 
-    private final Translator translate = new Translator();
+    private final TranslatorMode translate = new TranslatorMode();
 
     private Stage primaryStage;
     private Scene scene;
@@ -496,7 +496,8 @@ public class Main extends Application
 
                 ArrayList<Text> noteBits = new ArrayList<Text>();
                 String fullNote = bigBox.getText();
-                Mode.updateAllModes(fullNote);
+                Text formattedText = new Text(bigBox.getText());
+                Mode.updateAllModes(formattedText);
 
                 //substring is from current spot until next tag.
                 //save this substring, format if needed and add to the list.
