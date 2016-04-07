@@ -8,4 +8,9 @@ public class BasicCalculator extends Mode {
     }
 
 
+    @Override
+    public void update(String textAreaBoxData)
+    {
+
+    }
 }

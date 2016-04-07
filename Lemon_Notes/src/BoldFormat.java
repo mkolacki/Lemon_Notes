@@ -8,12 +8,18 @@ import javafx.scene.text.Text;
 public class BoldFormat extends Mode {
 
     public BoldFormat() {
-        super("Bold", "<b>", "Text formatting setting", "Makes the specified text bold when previewed", "<b>This text will become bold</b>");
+        super("Bold", "<b>", "Text formatting setting", "Makes the specified text bold when previewed", "<b>This text will become bold</b>", true);
     }
 
     //format given text within bold tags, return the formatted text to the preview stage.
     public Text formatter (Text to_be_formatted, String family, double size) {
         to_be_formatted.setFont(Font.font(family, FontWeight.BOLD, size));
         return to_be_formatted;
+    }
+
+    @Override
+    public void update(String textAreaBoxData)
+    {
+
     }
 }

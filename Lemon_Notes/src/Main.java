@@ -1,19 +1,15 @@
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
-import com.sun.org.apache.xerces.internal.impl.dv.xs.BooleanDV;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -22,9 +18,6 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -47,6 +40,8 @@ public class Main extends Application
         launch(args);
     }
 
+    private final Translator translate = new Translator();
+
     private Stage primaryStage;
     private Scene scene;
     private GridPane pane;
@@ -68,7 +63,6 @@ public class Main extends Application
     private ProjectCombobox comboBox;
     private NoteComboBox note_combo_box;
     private CogWheel cogWheel;
-
 
     boolean noteModified;
 
@@ -502,6 +496,7 @@ public class Main extends Application
 
                 ArrayList<Text> noteBits = new ArrayList<Text>();
                 String fullNote = bigBox.getText();
+                Mode.updateAllModes(fullNote);
 
                 //substring is from current spot until next tag.
                 //save this substring, format if needed and add to the list.
