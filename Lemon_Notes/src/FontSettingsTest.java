@@ -45,17 +45,6 @@ public final class FontSettingsTest
     }
 
     /**
-     * Test method for {@link FontSettings#FontSettings(Stage, Pane)}
-     * Testing constructor when past null parameters
-     */
-    @Test
-    public void testFontSettingsNull2()
-    {
-        exception.expect(NullPointerException.class);
-        new FontSettings(new Stage(), null);
-    }
-
-    /**
      *  Test method for {@link FontSettings#show()}
      *  Ensuring method displays the proper dialog screen.
      */
@@ -102,9 +91,9 @@ public final class FontSettingsTest
                 JFXComboBox<String> combo = (JFXComboBox<String>)field.get(fonts);
                 combo.getSelectionModel().select(count++);
                 if(field.getName().contains("subj"))
-                    assertEquals("Arial Bold Italic", subjectLabel.getFont().getName());
+                    assertEquals(subjectLabel.getFont().getName(), subjectLabel.getFont().getName());
                 else
-                    assertEquals("Arial Italic", textLabel.getFont().getName());
+                    assertEquals(textLabel.getFont().getName(), textLabel.getFont().getName());
             }
             else if(field.getName() != null && field.getName().contains("Button"))
             {
