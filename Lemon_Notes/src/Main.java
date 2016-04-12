@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -40,7 +41,7 @@ public class Main extends Application
         launch(args);
     }
 
-    private final TranslatorMode translate = new TranslatorMode();
+    private final Translator translate = new Translator();
 
     private Stage primaryStage;
     private Scene scene;
@@ -492,12 +493,18 @@ public class Main extends Application
                 text3.setFill(Color.GREEN);
                 text3.setFont(Font.font(family, FontPosture.ITALIC, size));
                 textFlow.getChildren().addAll(text1, text2, text3);*/
-
-
                 ArrayList<Text> noteBits = new ArrayList<Text>();
                 String fullNote = bigBox.getText();
-                Text formattedText = new Text(bigBox.getText());
-                Mode.updateAllModes(formattedText);
+                Mode.updateAllModes(fullNote);
+
+                //reference modes like this??? maybe???
+                ArrayList<Mode> modes = new ArrayList<Mode>();
+                if (fullNote.contains("<b>") && fullNote.contains("</b>")) {
+                    modes.add(new BoldFormat());
+                }
+                if (fullNote.contains("<i>") && fullNote.contains("</i>")) {
+                    modes.add(new ItalicFormat());
+                }
 
                 //substring is from current spot until next tag.
                 //save this substring, format if needed and add to the list.
@@ -512,9 +519,7 @@ public class Main extends Application
                                     Text t = new Text(fullNote.substring(3,fullNote.indexOf("</b>")));
                                     t.setFont(Font.font(family, FontWeight.BOLD, size));
                                     noteBits.add(t);
-                                    System.out.println("a");
-                                    fullNote = fullNote.substring(fullNote.indexOf("</b>")+4);
-                                    System.out.println("b");
+                                    fullNote = fullNote.substring(fullNote.indexOf("</b>") + 4);
                                 } else {
                                     Text t = new Text(fullNote);
                                     noteBits.add(t);
@@ -531,9 +536,7 @@ public class Main extends Application
                                     Text t = new Text(fullNote.substring(3, fullNote.indexOf("</i>")));
                                     t.setFont(Font.font(family, FontPosture.ITALIC, size));
                                     noteBits.add(t);
-                                    System.out.println("a");
                                     fullNote = fullNote.substring(fullNote.indexOf("</i>") + 4);
-                                    System.out.println("b");
                                 } else {
                                     Text t = new Text(fullNote);
                                     noteBits.add(t);
@@ -543,6 +546,25 @@ public class Main extends Application
                                 Text t = new Text(fullNote.substring(0, fullNote.indexOf("<i>")));
                                 noteBits.add(t);
                                 fullNote = fullNote.substring(fullNote.indexOf("<i>"));
+                            }
+                        } else if (fullNote.indexOf("<c>")==fullNote.indexOf("<")) {
+                            if (fullNote.indexOf("<c>") == 0) {
+                                if (fullNote.indexOf("</c>") != 1) {
+                                    if (fullNote.indexOf("{color=0x") == 3 && fullNote.indexOf("}") == 18) {
+                                        Text t = new Text(fullNote.substring(19, fullNote.indexOf("</c>")));
+                                        t.setFill(Color.web(fullNote.substring(fullNote.indexOf("{color=0x") + 7 , fullNote.indexOf("}"))));
+                                        noteBits.add(t);
+                                        fullNote = fullNote.substring(fullNote.indexOf("</c>") + 4);
+                                    } else {
+                                        Text t = new Text(fullNote.substring(0, fullNote.indexOf("</c>") + 4));
+                                        noteBits.add(t);
+                                        fullNote = fullNote.substring(fullNote.indexOf("</c>") + 4);
+                                    }
+                                } else {
+                                    Text t = new Text(fullNote);
+                                    noteBits.add(t);
+                                    break;
+                                }
                             }
                         }
                     } else {

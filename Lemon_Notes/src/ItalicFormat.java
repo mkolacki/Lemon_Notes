@@ -6,6 +6,7 @@ import javafx.scene.text.Text;
  * Created by Mike on 4/3/2016.
  */
 public class ItalicFormat extends Mode {
+    //viable modes: bold
 
     public ItalicFormat() {
         super("Italic", "<i>", "Text formatting setting", "Makes the specified text italicised when previewed", "<i>This text will be italicised</i>", true);
@@ -18,8 +19,8 @@ public class ItalicFormat extends Mode {
     }
 
     @Override
-    public Text preview(Text textAreaBoxData)
+    public void update(String textAreaBoxData)
     {
-        return new Text("");
+
     }
 }

@@ -54,6 +54,7 @@ public class ModeSettings extends Coggie {
     private Label basicCalculator;
     private Label boldFormat;
     private Label italicFormat;
+    private Label colorFormat;
 
     //private Label otherModes;
 
@@ -131,10 +132,24 @@ public class ModeSettings extends Coggie {
         TitledPane italicPane = new TitledPane("Italic", italicFormatPane);
         italicPane.setId("ItalicFormatPane");
 
+        ColorFormat mode4 = new ColorFormat();
+        colorFormat = new Label(mode4.getInfo());
+        colorFormat.setId("ColorFormatLabel");
+
+        MigPane colorFormatPane = new MigPane();
+        colorFormatPane.setId("ColorFormatPaneBuilder");
+        colorFormatPane.add(colorFormat, "wrap, align left");
+        colorFormatPane.setPrefSize(mainPane.getPrefWidth(), mainPane.getPrefHeight()/2);
+        TitledPane colorPane = new TitledPane("Color", colorFormatPane);
+        colorPane.setId("ColorFormatPane");
+
+
         closeButton = new JFXButton("Close");
         closeButton.setId("CloseButton");
         closeButton.setButtonType(JFXButton.ButtonType.FLAT);
         closeButton.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, new CornerRadii(0), new Insets(0))));
+
+
 
         MigPane buttonPane = new MigPane();
         buttonPane.setId("ButtonFontPane");
@@ -145,6 +160,7 @@ public class ModeSettings extends Coggie {
         mainPane.add(calcPane, "wrap");
         mainPane.add(boldPane,"wrap");
         mainPane.add(italicPane,"wrap");
+        mainPane.add(colorPane,"wrap");
         mainPane.add(buttonPane, "align right");
 
 
