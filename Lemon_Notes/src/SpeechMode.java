@@ -58,6 +58,7 @@ public class SpeechMode extends Mode
             }
         });
 
+        textAreaBoxData.setText(textAreaBoxData.getText().replaceAll("<speak>", "").replaceAll("</speak>", ""));
         return textAreaBoxData;
     }
 
