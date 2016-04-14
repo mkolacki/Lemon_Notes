@@ -20,6 +20,7 @@ public class ItalicFormat extends Mode {
     @Override
     public Text preview(Text textAreaBoxData)
     {
+
         return new Text("");
     }
 }

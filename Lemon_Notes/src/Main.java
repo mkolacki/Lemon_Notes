@@ -564,6 +564,7 @@ public class Main extends Application
             }
         });
 
+
         delete.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
