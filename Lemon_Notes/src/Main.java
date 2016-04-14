@@ -18,7 +18,6 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -41,7 +40,7 @@ public class Main extends Application
         launch(args);
     }
 
-    private final Translator translate = new Translator();
+    private final SpeechMode translate = new SpeechMode();
 
     private Stage primaryStage;
     private Scene scene;
