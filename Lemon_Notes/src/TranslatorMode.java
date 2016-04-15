@@ -1,9 +1,12 @@
+/*
 import com.gtranslate.Language;
 import javafx.scene.text.Text;
 
+*/
 /**
  * Created by alex on 4/7/2016.
- */
+ *//*
+
 public class TranslatorMode extends Mode
 {
     public TranslatorMode()
@@ -31,3 +34,4 @@ public class TranslatorMode extends Mode
         return new Text(text);
     }
 }
+*/

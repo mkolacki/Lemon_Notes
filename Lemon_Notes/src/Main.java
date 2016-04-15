@@ -40,7 +40,9 @@ public class Main extends Application
         launch(args);
     }
 
+/*
     private final TranslatorMode translate = new TranslatorMode();
+*/
 
     private Stage primaryStage;
     private Scene scene;
@@ -63,6 +65,7 @@ public class Main extends Application
     private ProjectCombobox comboBox;
     private NoteComboBox note_combo_box;
     private CogWheel cogWheel;
+    private ArrayList<Mode> modes;
 
     boolean noteModified;
 
@@ -134,6 +137,13 @@ public class Main extends Application
         subjBox.setId("Subject Box");
         subjBox.setPromptText("Subject");
 
+        modes = new ArrayList<Mode>();
+        BasicCalculator mode1 = new BasicCalculator();
+        BoldFormat mode2 = new BoldFormat();
+        ItalicFormat mode3 = new ItalicFormat();
+        modes.add(0, mode1);
+        modes.add(1, mode2);
+        modes.add(2, mode3);
     }
 
     /**
@@ -203,8 +213,7 @@ public class Main extends Application
         ColumnConstraints cons1 = new ColumnConstraints();
         pane.getColumnConstraints().add(cons1);
 
-
-        cogWheel = new CogWheel(primaryStage, pane, menu, menu1);
+        cogWheel = new CogWheel(primaryStage, pane, menu, menu1, modes);
         menu.getMenus().add(cogWheel.menu);
     }
 
@@ -543,6 +552,21 @@ public class Main extends Application
                                 Text t = new Text(fullNote.substring(0, fullNote.indexOf("<i>")));
                                 noteBits.add(t);
                                 fullNote = fullNote.substring(fullNote.indexOf("<i>"));
+                            }
+                        }else if (fullNote.indexOf("<calc>") == fullNote.indexOf("<")){
+                            if (fullNote.indexOf("<calc>") == 0){
+                                if(fullNote.indexOf("</calc>") != -1){
+                                    Text t = new Text(fullNote.substring(6, fullNote.indexOf("</calc>")));
+                                    t = modes.get(0).preview(t);
+                                    noteBits.add(t);
+                                    System.out.println("a");
+                                    fullNote = fullNote.substring(fullNote.indexOf("</calc>") + 7);
+                                    System.out.println("b");
+                                } else {
+                                    Text t = new Text(fullNote);
+                                    noteBits.add(t);
+                                    break;
+                                }
                             }
                         }
                     } else {

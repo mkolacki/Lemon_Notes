@@ -35,11 +35,11 @@ public class BasicCalculator extends Mode {
         return addition || subtraction || division || multiplication || integration || differentiation || exponentiation || log || natural_log;
     }
 
-    Boolean enough_paranthesis(String being_evaluated){
+    Boolean enough_parenthesis(String being_evaluated){
         String new_string = being_evaluated;
-        int count1, count2, count3, count4;
+        Integer count1, count2, count3, count4;
         count1 = count2 = count3 = count4 = 0;
-        while (new_string != null){
+        for(int i = 0; i < being_evaluated.length(); i++){
             if(new_string.startsWith("(")){
                 count1++;
             }else if(new_string.startsWith(")")){
@@ -51,7 +51,7 @@ public class BasicCalculator extends Mode {
             }
             new_string = new_string.substring(1);
         }
-        return (count1 == count2) && (count3 == count4);
+        return (count1.equals(count2)) && (count3.equals(count4));
     }
 
     String evalComponent(String being_evaluated){
@@ -61,7 +61,7 @@ public class BasicCalculator extends Mode {
 
         String evaluated = being_evaluated;
         if(has_internal_operations(being_evaluated)){
-            if(enough_paranthesis(being_evaluated)){
+            if(enough_parenthesis(being_evaluated)){
                 String  badly_formatted_exponentiation, badly_formatted_multiplication, badly_formatted_division, division_by_0, badly_formatted_addition, badly_formatted_subtraction;
                 badly_formatted_exponentiation = "No number was provided after a ^. The expression could not be exponentiated.";
                 badly_formatted_multiplication = "No number was provided after a *. The expression could not be multiplied.";
@@ -83,6 +83,10 @@ public class BasicCalculator extends Mode {
                         }
                         if(count1 == count2){
                             String reducing = evalComponent(evaluated.substring(evaluated.indexOf("("), evaluated.indexOf(temp)));
+                            if(reducing.equals(badly_formatted_exponentiation) || reducing.equals(badly_formatted_multiplication) || reducing.equals(badly_formatted_division) || reducing.equals(division_by_0) ||
+                                    reducing.equals(badly_formatted_addition) || reducing.equals(badly_formatted_subtraction)){
+                                return reducing;
+                            }
                             evaluated = evaluated.replace(evaluated.substring(evaluated.indexOf("("), being_evaluated.indexOf(temp)), reducing);
                         }
                         temp = temp.substring(1);
@@ -101,6 +105,10 @@ public class BasicCalculator extends Mode {
                         }
                         if(count1 == count2){
                             String reducing = evalComponent(evaluated.substring(evaluated.indexOf("["), evaluated.indexOf(temp)));
+                            if(reducing.equals(badly_formatted_exponentiation) || reducing.equals(badly_formatted_multiplication) || reducing.equals(badly_formatted_division) || reducing.equals(division_by_0) ||
+                                    reducing.equals(badly_formatted_addition) || reducing.equals(badly_formatted_subtraction)){
+                                return reducing;
+                            }
                             evaluated = evaluated.replace(evaluated.substring(evaluated.indexOf("]"), being_evaluated.indexOf(temp)), reducing);
                         }
                         temp = temp.substring(1);
@@ -109,7 +117,7 @@ public class BasicCalculator extends Mode {
                 }
                 if(being_evaluated.contains("^")){
                     java.util.Scanner sc = new java.util.Scanner(being_evaluated);
-                    String an_exponential = being_evaluated;
+                    String an_expression = being_evaluated;
                     evaluated = being_evaluated;
                     //int next_int = 0;
                     double next_double = 0;
@@ -126,26 +134,26 @@ public class BasicCalculator extends Mode {
                         //hasLong = sc.hasNextLong();
                         if (hasDouble) {
                             next_double = sc.nextDouble();
-                            if (an_exponential.indexOf(Double.toString(next_double)) < an_exponential.indexOf("^")) {
-                                if (Double.toString(next_double) == (being_evaluated.trim().substring(being_evaluated.trim().indexOf(Double.toString(next_double)), being_evaluated.trim().indexOf("^")))) {
+                            if (an_expression.indexOf(Double.toString(next_double)) < an_expression.indexOf("^")) {
+                                if (Double.toString(next_double).equals(being_evaluated.substring(being_evaluated.indexOf(Double.toString(next_double)), being_evaluated.indexOf("^")).trim())) {
                                     //next number is right before the ^
                                     double exponentiate_this = next_double;
                                     while (!sc.hasNextDouble()) {
                                         sc.next();
                                     }
                                     double to_this_power = sc.nextDouble();
-                                    if (Double.toString(to_this_power) == (being_evaluated.trim().substring(being_evaluated.trim().indexOf("^"), being_evaluated.trim().indexOf(Double.toString(to_this_power))))) {
+                                    if (Double.toString(to_this_power).equals(being_evaluated.substring(being_evaluated.indexOf("^") + 1, being_evaluated.indexOf(Double.toString(to_this_power)) + Double.toString(to_this_power).length()).trim())) {
                                         double replacement;
                                         if (to_this_power < 0) {
                                             replacement = 1 / Math.pow(exponentiate_this, Math.abs(to_this_power));
                                         } else {
                                             replacement = Math.pow(exponentiate_this, to_this_power);
                                         }
-                                        evaluated = evaluated.replace(an_exponential.substring(an_exponential.indexOf(Double.toString(exponentiate_this)), an_exponential.indexOf(Double.toString(to_this_power))), Double.toString(replacement));
-                                        an_exponential = an_exponential.substring(an_exponential.indexOf(Double.toString(to_this_power)) + Double.toString(to_this_power).length());
+                                        evaluated = evaluated.replace(an_expression.substring(an_expression.indexOf(Double.toString(exponentiate_this)), an_expression.indexOf(Double.toString(to_this_power)) + Double.toString(to_this_power).length()), Double.toString(replacement));
+                                        an_expression = an_expression.substring(an_expression.indexOf(Double.toString(to_this_power)) + Double.toString(to_this_power).length());
                                     } else {
                                         //the number is after the ^, but not right after. This is badly formatted and all that will be returned is what was given.
-                                        return evaluated;
+                                        return badly_formatted_exponentiation;
                                     }
 
                                 }//otherwise the next number is before the ^, but not RIGHT before it
@@ -236,28 +244,28 @@ public class BasicCalculator extends Mode {
                     }*/
                 }else if(being_evaluated.contains("*")){
                     java.util.Scanner sc = new java.util.Scanner(being_evaluated);
-                    String an_exponential = being_evaluated;
+                    String an_expression = being_evaluated;
                     evaluated = being_evaluated;
                     double next_double = 0;
                     while(sc.hasNext()) {
                         Boolean hasDouble = sc.hasNextDouble();
                         if (hasDouble) {
                             next_double = sc.nextDouble();
-                            if (an_exponential.indexOf(Double.toString(next_double)) < an_exponential.indexOf("*")) {
-                                if (Double.toString(next_double) == (being_evaluated.trim().substring(being_evaluated.trim().indexOf(Double.toString(next_double)), being_evaluated.trim().indexOf("*")))) {
+                            if (an_expression.indexOf(Double.toString(next_double)) < an_expression.indexOf("*")) {
+                                if (Double.toString(next_double).equals(being_evaluated.substring(being_evaluated.indexOf(Double.toString(next_double)), being_evaluated.indexOf("*")).trim())) {
                                     //next number is right before the *
                                     double multiply_this = next_double;
                                     while (!sc.hasNextDouble()) {
                                         sc.next();
                                     }
                                     double by_this = sc.nextDouble();
-                                    if (Double.toString(by_this) == (being_evaluated.trim().substring(being_evaluated.trim().indexOf("*"), being_evaluated.trim().indexOf(Double.toString(by_this))))) {
+                                    if (Double.toString(by_this).equals(being_evaluated.substring(being_evaluated.indexOf("*") + 1, being_evaluated.indexOf(Double.toString(by_this)) + Double.toString(by_this).length()).trim())) {
                                         double replacement = multiply_this * by_this;
-                                        evaluated = evaluated.replace(an_exponential.substring(an_exponential.indexOf(Double.toString(multiply_this)), an_exponential.indexOf(Double.toString(by_this))), Double.toString(replacement));
-                                        an_exponential = an_exponential.substring(an_exponential.indexOf(Double.toString(by_this)) + Double.toString(by_this).length());
+                                        evaluated = evaluated.replace(an_expression.substring(an_expression.indexOf(Double.toString(multiply_this)), an_expression.indexOf(Double.toString(by_this)) + Double.toString(by_this).length()), Double.toString(replacement));
+                                        an_expression = an_expression.substring(an_expression.indexOf(Double.toString(by_this)) + Double.toString(by_this).length());
                                     } else {
                                         //the number is after the *, but not right after. This is badly formatted and all that will be returned is what was given.
-                                        return evaluated;
+                                        return badly_formatted_multiplication;
                                     }
 
                                 }//otherwise the next number is before the *, but not RIGHT before it
@@ -270,15 +278,15 @@ public class BasicCalculator extends Mode {
                     return evaluated;
                 }else if(being_evaluated.contains("/")){
                     java.util.Scanner sc = new java.util.Scanner(being_evaluated);
-                    String an_exponential = being_evaluated;
+                    String an_expression = being_evaluated;
                     evaluated = being_evaluated;
                     double next_double = 0;
                     while(sc.hasNext()) {
                         Boolean hasDouble = sc.hasNextDouble();
                         if (hasDouble) {
                             next_double = sc.nextDouble();
-                            if (an_exponential.indexOf(Double.toString(next_double)) < an_exponential.indexOf("/")) {
-                                if (Double.toString(next_double) == (being_evaluated.trim().substring(being_evaluated.trim().indexOf(Double.toString(next_double)), being_evaluated.trim().indexOf("/")))) {
+                            if (an_expression.indexOf(Double.toString(next_double)) < an_expression.indexOf("/")) {
+                                if (Double.toString(next_double).equals(being_evaluated.substring(being_evaluated.indexOf(Double.toString(next_double)), being_evaluated.indexOf("/")).trim())) {
                                     //next number is right before the /
                                     double divide_this = next_double;
                                     while (!sc.hasNextDouble()) {
@@ -287,15 +295,15 @@ public class BasicCalculator extends Mode {
                                     double by_this = sc.nextDouble();
                                     if(by_this == 0){
                                         //attempted division by 0
-                                        return "Attempted Division By 0";
+                                        return division_by_0;
                                     }
-                                    if (Double.toString(by_this) == (being_evaluated.trim().substring(being_evaluated.trim().indexOf("/"), being_evaluated.trim().indexOf(Double.toString(by_this))))) {
-                                        double replacement = divide_this * by_this;
-                                        evaluated = evaluated.replace(an_exponential.substring(an_exponential.indexOf(Double.toString(divide_this)), an_exponential.indexOf(Double.toString(by_this))), Double.toString(replacement));
-                                        an_exponential = an_exponential.substring(an_exponential.indexOf(Double.toString(by_this)) + Double.toString(by_this).length());
+                                    if (Double.toString(by_this).equals(being_evaluated.trim().substring(being_evaluated.indexOf("/") + 1, being_evaluated.indexOf(Double.toString(by_this)) + Double.toString(by_this).length()).trim())) {
+                                        double replacement = divide_this / by_this;
+                                        evaluated = evaluated.replace(an_expression.substring(an_expression.indexOf(Double.toString(divide_this)), an_expression.indexOf(Double.toString(by_this)) + Double.toString(by_this).length()), Double.toString(replacement));
+                                        an_expression = an_expression.substring(an_expression.indexOf(Double.toString(by_this)) + Double.toString(by_this).length());
                                     } else {
                                         //the number is after the /, but not right after. This is badly formatted and all that will be returned is what was given.
-                                        return evaluated;
+                                        return badly_formatted_division;
                                     }
 
                                 }//otherwise the next number is before the /, but not RIGHT before it
@@ -307,28 +315,28 @@ public class BasicCalculator extends Mode {
                     }
                 }else if(being_evaluated.contains("+")){
                     java.util.Scanner sc = new java.util.Scanner(being_evaluated);
-                    String an_exponential = being_evaluated;
+                    String an_expression = being_evaluated;
                     evaluated = being_evaluated;
                     double next_double = 0;
                     while(sc.hasNext()) {
                         Boolean hasDouble = sc.hasNextDouble();
                         if (hasDouble) {
                             next_double = sc.nextDouble();
-                            if (an_exponential.indexOf(Double.toString(next_double)) < an_exponential.indexOf("+")) {
-                                if (Double.toString(next_double) == (being_evaluated.trim().substring(being_evaluated.trim().indexOf(Double.toString(next_double)), being_evaluated.trim().indexOf("+")))) {
+                            if (an_expression.indexOf(Double.toString(next_double)) < an_expression.indexOf("+")) {
+                                if (Double.toString(next_double).equals(being_evaluated.substring(being_evaluated.indexOf(Double.toString(next_double)), being_evaluated.indexOf("+")).trim())) {
                                     //next number is right before the +
                                     double add_this = next_double;
                                     while (!sc.hasNextDouble()) {
                                         sc.next();
                                     }
                                     double to_this = sc.nextDouble();
-                                    if (Double.toString(to_this) == (being_evaluated.trim().substring(being_evaluated.trim().indexOf("+"), being_evaluated.trim().indexOf(Double.toString(to_this))))) {
+                                    if (Double.toString(to_this).equals(being_evaluated.substring(being_evaluated.indexOf("+") + 1, being_evaluated.indexOf(Double.toString(to_this)) + Double.toString(to_this).length()).trim())) {
                                         double replacement = add_this + to_this;
-                                        evaluated = evaluated.replace(an_exponential.substring(an_exponential.indexOf(Double.toString(add_this)), an_exponential.indexOf(Double.toString(to_this))), Double.toString(replacement));
-                                        an_exponential = an_exponential.substring(an_exponential.indexOf(Double.toString(to_this)) + Double.toString(to_this).length());
+                                        evaluated = evaluated.replace(an_expression.substring(an_expression.indexOf(Double.toString(add_this)), an_expression.indexOf(Double.toString(to_this)) + Double.toString(to_this).length()), Double.toString(replacement));
+                                        an_expression = an_expression.substring(an_expression.indexOf(Double.toString(to_this)) + Double.toString(to_this).length());
                                     } else {
                                         //the number is after the +, but not right after. This is badly formatted and all that will be returned is what was given.
-                                        return evaluated;
+                                        return badly_formatted_addition;
                                     }
 
                                 }//otherwise the next number is before the +, but not RIGHT before it
@@ -340,28 +348,28 @@ public class BasicCalculator extends Mode {
                     }
                 }else if(being_evaluated.contains("-")){
                     java.util.Scanner sc = new java.util.Scanner(being_evaluated);
-                    String an_exponential = being_evaluated;
+                    String an_expression = being_evaluated;
                     evaluated = being_evaluated;
                     double next_double = 0;
                     while(sc.hasNext()) {
                         Boolean hasDouble = sc.hasNextDouble();
                         if (hasDouble) {
                             next_double = sc.nextDouble();
-                            if (an_exponential.indexOf(Double.toString(next_double)) < an_exponential.indexOf("-")) {
-                                if (Double.toString(next_double) == (being_evaluated.trim().substring(being_evaluated.trim().indexOf(Double.toString(next_double)), being_evaluated.trim().indexOf("-")))) {
+                            if (an_expression.indexOf(Double.toString(next_double)) < an_expression.indexOf("-")) {
+                                if (Double.toString(next_double).equals(being_evaluated.substring(being_evaluated.indexOf(Double.toString(next_double)), being_evaluated.indexOf("-")).trim())) {
                                     //next number is right before the -
                                     double subtract_this = next_double;
                                     while (!sc.hasNextDouble()) {
                                         sc.next();
                                     }
                                     double by_this = sc.nextDouble();
-                                    if (Double.toString(by_this) == (being_evaluated.trim().substring(being_evaluated.trim().indexOf("-"), being_evaluated.trim().indexOf(Double.toString(by_this))))) {
+                                    if (Double.toString(by_this).equals(being_evaluated.substring(being_evaluated.indexOf("-") + 1, being_evaluated.indexOf(Double.toString(by_this)) + Double.toString(by_this).length()).trim())) {
                                         double replacement = subtract_this - by_this;
-                                        evaluated = evaluated.replace(an_exponential.substring(an_exponential.indexOf(Double.toString(subtract_this)), an_exponential.indexOf(Double.toString(by_this))), Double.toString(replacement));
-                                        an_exponential = an_exponential.substring(an_exponential.indexOf(Double.toString(by_this)) + Double.toString(by_this).length());
+                                        evaluated = evaluated.replace(an_expression.substring(an_expression.indexOf(Double.toString(subtract_this)), an_expression.indexOf(Double.toString(by_this)) + Double.toString(by_this).length()), Double.toString(replacement));
+                                        an_expression = an_expression.substring(an_expression.indexOf(Double.toString(by_this)) + Double.toString(by_this).length());
                                     } else {
                                         //the number is after the -, but not right after. This is badly formatted and all that will be returned is what was given.
-                                        return evaluated;
+                                        return badly_formatted_subtraction;
                                     }
 
                                 }//otherwise the next number is before the -, but not RIGHT before it
@@ -386,43 +394,6 @@ public class BasicCalculator extends Mode {
 
     @Override
     public Text preview(Text textAreaBoxData) {
-        String entry = textAreaBoxData.getText();
-        Boolean addition, subtraction, division, multiplication, integration, differentiation, exponentiation, log, natural_log;
-        addition = entry.contains("+");
-        subtraction = entry.contains("-");
-        division = entry.contains("/");
-        multiplication = entry.contains("*");
-        integration = entry.trim().contains("int(");
-        differentiation = entry.trim().contains("d/d");
-        exponentiation = entry.contains("^");
-        log = entry.contains("log");
-        natural_log = entry.contains("ln");
-        if(addition || subtraction || division || multiplication || integration || differentiation || exponentiation || log || natural_log){
-            java.util.Scanner line_scanner = new java.util.Scanner(entry);
-            ArrayList<String> all_portions = new ArrayList<String>();
-            if(entry.contains("(")){
-                int count1, count2;
-                count1 = count2 = 0;
-                String new_string = entry;
-                String portion;
-                while (new_string != null){
-                    if(new_string.startsWith("(")){
-                        count1++;
-                    }else if(new_string.startsWith(")")){
-                        count2++;
-                    }
-                    new_string = new_string.substring(1);
-                }
-                if(count1 == count2){
-
-                }
-            }
-
-        }else {
-            System.out.println("No known operation");
-        }
-
-
-        return new Text("");
+        return new Text(evalComponent(textAreaBoxData.getText()));
     }
 }

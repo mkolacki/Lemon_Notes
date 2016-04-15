@@ -54,12 +54,13 @@ public class ModeSettings extends Coggie {
     private Label basicCalculator;
     private Label boldFormat;
     private Label italicFormat;
+    ArrayList<Mode> modes = new ArrayList<Mode>();
 
     //private Label otherModes;
 
     private JFXButton closeButton;
 
-    public ModeSettings(Stage primaryStage, Pane mainPane){
+    public ModeSettings(Stage primaryStage, Pane mainPane, ArrayList<Mode> all_modes){
         if(primaryStage != null)
             this.primaryStage = primaryStage;
         else
@@ -68,6 +69,10 @@ public class ModeSettings extends Coggie {
             this.mainPane = mainPane;
         else
             throw new NullPointerException("No Main Pane was provided");
+        if(all_modes != null)
+            this.modes = all_modes;
+        else
+            throw new NullPointerException("No modes were provided");
 
         modeSettingsDialog = new Stage();
         modeSettingsDialog.setTitle("Mode Settings");
@@ -98,8 +103,9 @@ public class ModeSettings extends Coggie {
 
         //String within should be obtained from the information for each Mode,
         //i.e.:     basicCalculator.getInfo();
-        BasicCalculator mode1 = new BasicCalculator();
-        basicCalculator = new Label(mode1.getInfo());
+        //BasicCalculator mode1 = new BasicCalculator();
+        //mode 1 will be the Basic Calculator
+        basicCalculator = new Label(modes.get(0).getInfo());
         basicCalculator.setId("BasicCalculatorLabel");
 
         MigPane basicCalculatorPane = new MigPane();
@@ -109,8 +115,9 @@ public class ModeSettings extends Coggie {
         TitledPane calcPane = new TitledPane("Basic Calculator", basicCalculatorPane);
         calcPane.setId("BasicCalculatorPane");
 
-        BoldFormat mode2 = new BoldFormat();
-        boldFormat = new Label(mode2.getInfo());
+        //BoldFormat mode2 = new BoldFormat();
+        //mode 2 will be the Bold Format
+        boldFormat = new Label(modes.get(1).getInfo());
         boldFormat.setId("BoldFormatLabel");
 
         MigPane boldFormatPane = new MigPane();
@@ -120,8 +127,9 @@ public class ModeSettings extends Coggie {
         TitledPane boldPane = new TitledPane("Bold", boldFormatPane);
         boldPane.setId("BoldFormatPane");
 
-        ItalicFormat mode3 =  new ItalicFormat();
-        italicFormat = new Label(mode3.getInfo());
+        //ItalicFormat mode3 =  new ItalicFormat();
+        //mode 3 will be the Italic Format
+        italicFormat = new Label(modes.get(2).getInfo());
         italicFormat.setId("ItalicFormatLabel");
 
         MigPane italicFormatPane = new MigPane();

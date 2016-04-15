@@ -8,6 +8,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 /**
  * Created by Michael K. on 3/8/2016.
  */
@@ -17,6 +19,7 @@ public class CogWheel {
     GridPane pane;
     MenuBar menuBar;
     Menu menu;
+    ArrayList<Mode> modes;
     Coggie[] options = new Coggie[7];
     VisualSettings visual_settings;
     FontSettings font_settings;
@@ -34,7 +37,7 @@ public class CogWheel {
     MenuItem helpItem;
     MenuItem aboutItem;
 
-    public CogWheel(final Stage main_stage, final GridPane main_pane, final MenuBar mb, final Menu m){
+    public CogWheel(final Stage main_stage, final GridPane main_pane, final MenuBar mb, final Menu m, ArrayList<Mode> all_modes){
         if(main_stage != null)
             stage = main_stage;
         else
@@ -51,10 +54,14 @@ public class CogWheel {
             menu = m;
         else
             throw new NullPointerException("The menu is null.");
+        if(all_modes != null)
+            modes = all_modes;
+        else
+            throw new NullPointerException("No modes were provided");
 
         options[0] = visual_settings = new VisualSettings();
         options[1] = font_settings = new FontSettings(main_stage, main_pane);
-        options[2] = mode_settings = new ModeSettings(main_stage, main_pane);
+        options[2] = mode_settings = new ModeSettings(main_stage, main_pane, modes);
         options[3] = project_settings = new ProjectSettings();
         options[4] = account_management = new AccountManagement();
         options[5] = help = new Help();
