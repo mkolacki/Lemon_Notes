@@ -393,7 +393,13 @@ public class BasicCalculator extends Mode {
 
 
     @Override
+<<<<<<< HEAD
     public Text preview(Text textAreaBoxData) {
         return new Text(evalComponent(textAreaBoxData.getText()));
+=======
+    public Text preview(Text textAreaBoxData)
+    {
+        return textAreaBoxData;
+>>>>>>> origin/master
     }
 }
