@@ -1,15 +1,19 @@
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
+import com.sun.org.apache.xerces.internal.impl.dv.xs.BooleanDV;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -18,6 +22,9 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -40,14 +47,6 @@ public class Main extends Application
         launch(args);
     }
 
-<<<<<<< HEAD
-/*
-    private final TranslatorMode translate = new TranslatorMode();
-*/
-=======
-    private final SpeechMode translate = new SpeechMode();
->>>>>>> origin/master
-
     private Stage primaryStage;
     private Scene scene;
     private GridPane pane;
@@ -69,7 +68,7 @@ public class Main extends Application
     private ProjectCombobox comboBox;
     private NoteComboBox note_combo_box;
     private CogWheel cogWheel;
-    private ArrayList<Mode> modes;
+
 
     boolean noteModified;
 
@@ -141,13 +140,6 @@ public class Main extends Application
         subjBox.setId("Subject Box");
         subjBox.setPromptText("Subject");
 
-        modes = new ArrayList<Mode>();
-        BasicCalculator mode1 = new BasicCalculator();
-        BoldFormat mode2 = new BoldFormat();
-        ItalicFormat mode3 = new ItalicFormat();
-        modes.add(0, mode1);
-        modes.add(1, mode2);
-        modes.add(2, mode3);
     }
 
     /**
@@ -217,7 +209,8 @@ public class Main extends Application
         ColumnConstraints cons1 = new ColumnConstraints();
         pane.getColumnConstraints().add(cons1);
 
-        cogWheel = new CogWheel(primaryStage, pane, menu, menu1, modes);
+
+        cogWheel = new CogWheel(primaryStage, pane, menu, menu1);
         menu.getMenus().add(cogWheel.menu);
     }
 
@@ -505,23 +498,17 @@ public class Main extends Application
                 text3.setFill(Color.GREEN);
                 text3.setFont(Font.font(family, FontPosture.ITALIC, size));
                 textFlow.getChildren().addAll(text1, text2, text3);*/
+
+
                 ArrayList<Text> noteBits = new ArrayList<Text>();
                 String fullNote = bigBox.getText();
-                Mode.updateAllModes(fullNote);
-
-                //reference modes like this??? maybe???
-                ArrayList<Mode> modes = new ArrayList<Mode>();
-                if (fullNote.contains("<b>") && fullNote.contains("</b>")) {
-                    modes.add(new BoldFormat());
-                }
-                if (fullNote.contains("<i>") && fullNote.contains("</i>")) {
-                    modes.add(new ItalicFormat());
-                }
 
                 //substring is from current spot until next tag.
                 //save this substring, format if needed and add to the list.
                 //cut the substring from the main string
                 //rinse, repeat
+
+                //potential solution for nested tags: stack
 
                 while (fullNote != null && fullNote.length() != 0) {
                     if (fullNote.indexOf("<") != -1) {
@@ -531,7 +518,9 @@ public class Main extends Application
                                     Text t = new Text(fullNote.substring(3,fullNote.indexOf("</b>")));
                                     t.setFont(Font.font(family, FontWeight.BOLD, size));
                                     noteBits.add(t);
-                                    fullNote = fullNote.substring(fullNote.indexOf("</b>") + 4);
+                                    //System.out.println("a");
+                                    fullNote = fullNote.substring(fullNote.indexOf("</b>")+4);
+                                    //System.out.println("b");
                                 } else {
                                     Text t = new Text(fullNote);
                                     noteBits.add(t);
@@ -548,7 +537,9 @@ public class Main extends Application
                                     Text t = new Text(fullNote.substring(3, fullNote.indexOf("</i>")));
                                     t.setFont(Font.font(family, FontPosture.ITALIC, size));
                                     noteBits.add(t);
+                                    //System.out.println("a");
                                     fullNote = fullNote.substring(fullNote.indexOf("</i>") + 4);
+                                    //System.out.println("b");
                                 } else {
                                     Text t = new Text(fullNote);
                                     noteBits.add(t);
@@ -559,17 +550,6 @@ public class Main extends Application
                                 noteBits.add(t);
                                 fullNote = fullNote.substring(fullNote.indexOf("<i>"));
                             }
-<<<<<<< HEAD
-                        }else if (fullNote.indexOf("<calc>") == fullNote.indexOf("<")){
-                            if (fullNote.indexOf("<calc>") == 0){
-                                if(fullNote.indexOf("</calc>") != -1){
-                                    Text t = new Text(fullNote.substring(6, fullNote.indexOf("</calc>")));
-                                    t = modes.get(0).preview(t);
-                                    noteBits.add(t);
-                                    System.out.println("a");
-                                    fullNote = fullNote.substring(fullNote.indexOf("</calc>") + 7);
-                                    System.out.println("b");
-=======
                         } else if (fullNote.indexOf("<c>")==fullNote.indexOf("<")) {
                             if (fullNote.indexOf("<c>") == 0) {
                                 if (fullNote.indexOf("</c>") != 1) {
@@ -583,13 +563,16 @@ public class Main extends Application
                                         noteBits.add(t);
                                         fullNote = fullNote.substring(fullNote.indexOf("</c>") + 4);
                                     }
->>>>>>> origin/master
                                 } else {
                                     Text t = new Text(fullNote);
                                     noteBits.add(t);
                                     break;
                                 }
                             }
+                        } else { //temporary fix. this should be changed so people can use < at the start of a text if they wish to do so.
+                            Text t = new Text(fullNote);
+                            noteBits.add(t);
+                            break;
                         }
                     } else {
                         Text t = new Text(fullNote);
@@ -609,7 +592,6 @@ public class Main extends Application
                 stage.show();
             }
         });
-
 
         delete.setOnAction(new EventHandler<ActionEvent>() {
             @Override
