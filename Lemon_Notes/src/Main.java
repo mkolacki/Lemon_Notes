@@ -570,9 +570,9 @@ public class Main extends Application
                                 }
                             }
                         } else { //temporary fix. this should be changed so people can use < at the start of a text if they wish to do so.
-                            Text t = new Text(fullNote);
+                            Text t = new Text(fullNote.substring(0,1));
                             noteBits.add(t);
-                            break;
+                            fullNote = fullNote.substring(1);
                         }
                     } else {
                         Text t = new Text(fullNote);
