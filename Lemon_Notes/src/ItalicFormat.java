@@ -17,4 +17,10 @@ public class ItalicFormat extends Mode {
         to_be_formatted.setFont(Font.font(family, FontPosture.ITALIC, size));
         return to_be_formatted;
     }
+
+    @Override
+    public Text preview(Text textAreaBoxData)
+    {
+        return new Text("");
+    }
 }

@@ -16,4 +16,10 @@ public class BoldFormat extends Mode {
         to_be_formatted.setFont(Font.font(family, FontWeight.BOLD, size));
         return to_be_formatted;
     }
+
+    @Override
+    public Text preview(Text textAreaBoxData)
+    {
+        return new Text("");
+    }
 }
