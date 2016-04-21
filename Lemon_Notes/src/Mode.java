@@ -15,13 +15,11 @@ public abstract class Mode {
     String example;
     boolean isActive;
 
-    public static String updateAllModes(String textAreaBoxData)
+    public static void updateAllModes(Text textAreaBoxData)
     {
-        Text text = new Text(textAreaBoxData);
         for(Mode m: allModes)
             if(m.isActive)
-                text = m.preview(text);
-        return text.getText();
+                m.preview(textAreaBoxData);
     }
 
     public Mode(String new_mode, String initiator, String what_to_take, String what_it_does, String how_to_do_it){

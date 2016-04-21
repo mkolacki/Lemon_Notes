@@ -1,15 +1,17 @@
 import com.jfoenix.controls.JFXComboBox;
 import javafx.scene.control.Tooltip;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * Created by Michael K. on 3/8/2016.
  */
 public class ProjectCombobox {
-
-    private final static String DIRECTORY = "Projects/";
 
     ArrayList<Project> projects;
     JFXComboBox<String> comboBox;
@@ -85,53 +87,5 @@ public class ProjectCombobox {
             }
         }
         return current_project;
-    }
-
-    public void removeProject(String name)
-    {
-        if(name == null)
-            throw new NullPointerException("No name given");
-        Project saved = null;
-        for (Project p: projects)
-        {
-            if (name.equals(p.name))
-            {
-                p.removeAllNotes();
-                File delete_me = new File(DIRECTORY + p.name);
-                if (delete_me.exists())
-                    deleteDir(delete_me);
-                else
-                    System.out.println("Attempted to delete project but found no such project: " + DIRECTORY + p.name);
-//                projects.remove(projects.indexOf(p));
-                comboBox.getItems().remove(name);
-                saved = p;
-            }
-        }
-        if(saved != null)
-            projects.remove(saved);
-    }
-
-    private void deleteDir(File file) {
-        File[] contents = file.listFiles();
-        if (contents != null) {
-            for (File f : contents) {
-                deleteDir(f);
-            }
-        }
-        file.delete();
-    }
-
-    public void changeProjectName(String oldName, String newName)
-    {
-        for(Project pro: projects)
-        {
-            if(pro.name.equals(oldName))
-            {
-                pro.name = newName;
-                File rename = new File(DIRECTORY + oldName);
-                rename.renameTo(new File(DIRECTORY + newName));
-                comboBox.getItems().set(comboBox.getItems().indexOf(oldName), newName);
-            }
-        }
     }
 }

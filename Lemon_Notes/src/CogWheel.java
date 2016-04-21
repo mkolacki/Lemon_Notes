@@ -17,7 +17,6 @@ public class CogWheel {
     GridPane pane;
     MenuBar menuBar;
     Menu menu;
-    ProjectCombobox projectCombobox;
     Coggie[] options = new Coggie[7];
     VisualSettings visual_settings;
     FontSettings font_settings;
@@ -35,7 +34,7 @@ public class CogWheel {
     MenuItem helpItem;
     MenuItem aboutItem;
 
-    public CogWheel(final Stage main_stage, final GridPane main_pane, final MenuBar mb, final Menu m, final ProjectCombobox projectCombobox){
+    public CogWheel(final Stage main_stage, final GridPane main_pane, final MenuBar mb, final Menu m){
         if(main_stage != null)
             stage = main_stage;
         else
@@ -52,14 +51,11 @@ public class CogWheel {
             menu = m;
         else
             throw new NullPointerException("The menu is null.");
-        if (projectCombobox != null)
-            this.projectCombobox = projectCombobox;
-        else
-            throw new NullPointerException("The project combo-box is null.");
+
         options[0] = visual_settings = new VisualSettings();
         options[1] = font_settings = new FontSettings(main_stage, main_pane);
         options[2] = mode_settings = new ModeSettings(main_stage, main_pane);
-        options[3] = project_settings = new ProjectSettings(main_stage, projectCombobox);
+        options[3] = project_settings = new ProjectSettings();
         options[4] = account_management = new AccountManagement();
         options[5] = help = new Help();
         options[6] = about = new About();
@@ -85,14 +81,7 @@ public class CogWheel {
                 font_settings.show();
             }
         });
-        projectSettings.setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent event)
-            {
-                project_settings.show();
-            }
-        });
+
         modeSettings.setOnAction(new EventHandler<ActionEvent>(){
             /**
              * {@inheritDoc}
