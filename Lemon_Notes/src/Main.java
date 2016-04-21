@@ -40,7 +40,13 @@ public class Main extends Application
         launch(args);
     }
 
+    /**************
+     * MODES
+     ********************/
     private final SpeechMode speech = new SpeechMode();
+    private final BasicCalculator mode1 = new BasicCalculator();
+    private final BoldFormat mode2 = new BoldFormat();
+    private final ItalicFormat mode3 = new ItalicFormat();
 
     private Stage primaryStage;
     private Scene scene;
