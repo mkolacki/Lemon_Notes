@@ -1,23 +1,16 @@
-import javafx.scene.control.TextInputDialog;
-import javafx.scene.shape.Path;
-import org.mockito.internal.matchers.Null;
-
-import javax.security.auth.Subject;
-import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Optional;
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 /**
  * Created by Michael K. on 3/8/2016.
  */
 public class Project {
 
-    final String name;
+    String name;
     final String location;
     final String saved_notes;
     //final String temporary_note;
@@ -129,6 +122,19 @@ public class Project {
         }else {
             throw new NullPointerException("No note was provided.");
         }
+    }
+
+    public void removeAllNotes()
+    {
+        for (Note n : notes)
+        {
+            File remove_me = new File(saved_notes + "/" + n.subject + ".txt");
+            if (remove_me.exists())
+                remove_me.delete();
+            else
+                System.out.println("Attempted to delete not but found no such note: " + saved_notes + "/" + n.subject + ".txt");
+        }
+        notes.clear();
     }
 
     public Note selectNote(String subject) {
