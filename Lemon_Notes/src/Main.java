@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
+import static java.awt.Color.GREEN;
+
 /**
  * Created by alex on 3/6/2016.
  * Main class to start the program
@@ -51,6 +53,7 @@ public class Main extends Application
     private Scene scene;
     private GridPane pane;
 
+
     private JFXButton submit;
     private JFXButton npbutton;
     private JFXButton preview;
@@ -68,7 +71,7 @@ public class Main extends Application
     private ProjectCombobox comboBox;
     private NoteComboBox note_combo_box;
     private CogWheel cogWheel;
-
+    private ArrayList<Mode> modes;
 
     boolean noteModified;
 
@@ -140,6 +143,13 @@ public class Main extends Application
         subjBox.setId("Subject Box");
         subjBox.setPromptText("Subject");
 
+        modes = new ArrayList<Mode>();
+        BasicCalculator mode1 = new BasicCalculator();
+        BoldFormat mode2 = new BoldFormat();
+        ItalicFormat mode3 = new ItalicFormat();
+        modes.add(0, mode1);
+        modes.add(1, mode2);
+        modes.add(2, mode3);
     }
 
     /**
@@ -209,8 +219,7 @@ public class Main extends Application
         ColumnConstraints cons1 = new ColumnConstraints();
         pane.getColumnConstraints().add(cons1);
 
-
-        cogWheel = new CogWheel(primaryStage, pane, menu, menu1);
+        cogWheel = new CogWheel(primaryStage, pane, menu, menu1, bigBox, subjBox, comboBox, note_combo_box);
         menu.getMenus().add(cogWheel.menu);
     }
 
@@ -569,7 +578,26 @@ public class Main extends Application
                                     break;
                                 }
                             }
-                        } else { //temporary fix. this should be changed so people can use < at the start of a text if they wish to do so.
+                        }else if (fullNote.indexOf("<calc>") == fullNote.indexOf("<")){
+                            if (fullNote.indexOf("<calc>") == 0){
+                                if(fullNote.indexOf("</calc>") != -1){
+                                    Text t = new Text(fullNote.substring(6, fullNote.indexOf("</calc>")));
+                                    t = modes.get(0).preview(t);
+                                    noteBits.add(t);
+                                    System.out.println("a");
+                                    fullNote = fullNote.substring(fullNote.indexOf("</calc>") + 7);
+                                    System.out.println("b");
+                                } else {
+                                    Text t = new Text(fullNote);
+                                    noteBits.add(t);
+                                    break;
+                                }
+                            }else {
+                                Text t = new Text(fullNote.substring(0, fullNote.indexOf("<calc>")));
+                                noteBits.add(t);
+                                fullNote = fullNote.substring(fullNote.indexOf("<calc>"));
+                            }
+                        }else { //temporary fix. this should be changed so people can use < at the start of a text if they wish to do so.
                             Text t = new Text(fullNote.substring(0,1));
                             noteBits.add(t);
                             fullNote = fullNote.substring(1);
@@ -818,6 +846,7 @@ public class Main extends Application
 
         // Adding pane the the scene
         scene = new Scene(pane, 600, 250);
+        pane.setStyle("-fx-background-color: rgba(255, 255, 100, 0.5);");
         primaryStage.setTitle(titleText);
         primaryStage.setScene(scene);
         primaryStage.setResizable(true);

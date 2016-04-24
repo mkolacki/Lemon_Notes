@@ -1,3 +1,4 @@
+import com.jfoenix.controls.JFXTextArea;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Menu;
@@ -6,6 +7,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**
@@ -17,6 +19,11 @@ public class CogWheel {
     GridPane pane;
     MenuBar menuBar;
     Menu menu;
+    private JFXTextArea main_text_area;
+    private javafx.scene.control.TextField subject_box;
+    private ProjectCombobox project_combo_box;
+    private NoteComboBox note_combo_box;
+
     Coggie[] options = new Coggie[7];
     VisualSettings visual_settings;
     FontSettings font_settings;
@@ -34,7 +41,7 @@ public class CogWheel {
     MenuItem helpItem;
     MenuItem aboutItem;
 
-    public CogWheel(final Stage main_stage, final GridPane main_pane, final MenuBar mb, final Menu m){
+    public CogWheel(final Stage main_stage, final GridPane main_pane, final MenuBar mb, final Menu m, JFXTextArea bigBox, javafx.scene.control.TextField subjBox, ProjectCombobox comboBox, NoteComboBox noteComboBox){
         if(main_stage != null)
             stage = main_stage;
         else
@@ -51,8 +58,24 @@ public class CogWheel {
             menu = m;
         else
             throw new NullPointerException("The menu is null.");
+        if(bigBox != null)
+            this.main_text_area = bigBox;
+        else
+            throw new NullPointerException("TextBox is null");
+        if(subjBox != null)
+            this.subject_box = subjBox;
+        else
+            throw new NullPointerException("SubjectBox is null");
+        if(comboBox != null)
+            this.project_combo_box = comboBox;
+        else
+            throw new NullPointerException("ProjectComboBox is null");
+        if(noteComboBox != null)
+            this.note_combo_box = noteComboBox;
+        else
+            throw new NullPointerException("NoteComboBox is null");
 
-        options[0] = visual_settings = new VisualSettings();
+        options[0] = visual_settings = new VisualSettings(main_stage, main_pane, main_text_area, subject_box, project_combo_box, note_combo_box, this);
         options[1] = font_settings = new FontSettings(main_stage, main_pane);
         options[2] = mode_settings = new ModeSettings(main_stage, main_pane);
         options[3] = project_settings = new ProjectSettings();
@@ -90,6 +113,13 @@ public class CogWheel {
             public void handle(ActionEvent event)
             {
                 mode_settings.show();
+            }
+        });
+
+        visualSettings.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                visual_settings.show();
             }
         });
 
