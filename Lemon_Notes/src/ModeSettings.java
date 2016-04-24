@@ -1,15 +1,8 @@
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextArea;
-import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.SelectionModel;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
@@ -17,13 +10,10 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.tbee.javafx.scene.layout.MigPane;
-
-import java.util.ArrayList;
 
 
 /**
@@ -51,6 +41,7 @@ public class ModeSettings extends Coggie {
     //                  Also, not a huge deal now but something we could keep in mind, once we have the separate modes figured out, we should see how we can
     //                  integrate them together in case someone wants bold and italicised text, or they want to make a calculation have red text in their note.
 
+    private MigPane modePane;
     private Label basicCalculator;
     private Label boldFormat;
     private Label italicFormat;
@@ -75,9 +66,9 @@ public class ModeSettings extends Coggie {
         modeSettingsDialog.initModality(Modality.APPLICATION_MODAL);
         modeSettingsDialog.initOwner(primaryStage);
 
-        MigPane pane = createLayout();
-        pane.setId("MainModeSettingsPane");
-        Scene modeSettingsDialogScene = new Scene(pane, DIALOG_WIDTH, DIALOG_HEIGHT);
+        modePane = createLayout();
+        modePane.setId("MainModeSettingsPane");
+        Scene modeSettingsDialogScene = new Scene(modePane, DIALOG_WIDTH, DIALOG_HEIGHT);
         modeSettingsDialog.setScene(modeSettingsDialogScene);
     }
 
@@ -86,6 +77,9 @@ public class ModeSettings extends Coggie {
      *
      */
     public void show(){
+
+        modePane = createLayout();
+
         modeSettingsDialog.setX(primaryStage.getX());
         modeSettingsDialog.setY(primaryStage.getY());
         modeSettingsDialog.show();
@@ -96,43 +90,24 @@ public class ModeSettings extends Coggie {
         mainPane.setId("MainModeSettingsPaneBuilder");
         mainPane.setPrefSize(DIALOG_WIDTH, DIALOG_HEIGHT);
 
-        //String within should be obtained from the information for each Mode,
-        //i.e.:     basicCalculator.getInfo();
-        BasicCalculator mode1 = new BasicCalculator();
-        basicCalculator = new Label(mode1.getInfo());
-        basicCalculator.setPrefWidth(DIALOG_WIDTH);//?
-        basicCalculator.setWrapText(true);//?
-        basicCalculator.setId("BasicCalculatorLabel");
 
-        MigPane basicCalculatorPane = new MigPane();
-        basicCalculatorPane.setId("BasicCalculatorPaneBuilder");
-        basicCalculatorPane.add(basicCalculator, "wrap, align left");
-        basicCalculatorPane.setPrefSize(mainPane.getPrefWidth(), mainPane.getPrefHeight()/2);
-        TitledPane calcPane = new TitledPane("Basic Calculator", basicCalculatorPane);
-        calcPane.setId("BasicCalculatorPane");
+        for (Mode m : Mode.allModes)
+        {
+            //String within should be obtained from the information for each Mode,
+            //i.e.:     basicCalculator.getInfo();
+            basicCalculator = new Label(m.getInfo());
+            basicCalculator.setPrefWidth(DIALOG_WIDTH);//?
+            basicCalculator.setWrapText(true);//?
+            basicCalculator.setId(m.mode + "Label");
 
-        BoldFormat mode2 = new BoldFormat();
-        boldFormat = new Label(mode2.getInfo());
-        boldFormat.setId("BoldFormatLabel");
-
-        MigPane boldFormatPane = new MigPane();
-        boldFormatPane.setId("BoldFormatPaneBuilder");
-        boldFormatPane.add(boldFormat, "wrap, align left");
-        boldFormatPane.setPrefSize(mainPane.getPrefWidth(), mainPane.getPrefHeight()/2);
-        TitledPane boldPane = new TitledPane("Bold", boldFormatPane);
-        boldPane.setId("BoldFormatPane");
-
-        ItalicFormat mode3 =  new ItalicFormat();
-        italicFormat = new Label(mode3.getInfo());
-        italicFormat.setId("ItalicFormatLabel");
-
-        MigPane italicFormatPane = new MigPane();
-        italicFormatPane.setId("ItalicFormatPaneBuilder");
-        italicFormatPane.add(italicFormat, "wrap, align left");
-        italicFormatPane.setPrefSize(mainPane.getPrefWidth(), mainPane.getPrefHeight()/2);
-        TitledPane italicPane = new TitledPane("Italic", italicFormatPane);
-        italicPane.setId("ItalicFormatPane");
-
+            MigPane basicCalculatorPane = new MigPane();
+            basicCalculatorPane.setId(m.mode + "BuilderPane");
+            basicCalculatorPane.add(basicCalculator, "wrap, align left");
+            basicCalculatorPane.setPrefSize(mainPane.getPrefWidth(), mainPane.getPrefHeight() / 2);
+            TitledPane calcPane = new TitledPane(m.mode, basicCalculatorPane);
+            calcPane.setId(m.mode + "Pane");
+            mainPane.add(calcPane, "wrap");
+        }
         closeButton = new JFXButton("Close");
         closeButton.setId("CloseButton");
         closeButton.setButtonType(JFXButton.ButtonType.FLAT);
@@ -144,9 +119,6 @@ public class ModeSettings extends Coggie {
 
         setActionListeners();
 
-        mainPane.add(calcPane, "wrap");
-        mainPane.add(boldPane,"wrap");
-        mainPane.add(italicPane,"wrap");
         mainPane.add(buttonPane, "align right");
 
 

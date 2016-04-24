@@ -19,10 +19,13 @@ public class CogWheel {
     GridPane pane;
     MenuBar menuBar;
     Menu menu;
+
     private JFXTextArea main_text_area;
     private javafx.scene.control.TextField subject_box;
     private ProjectCombobox project_combo_box;
     private NoteComboBox note_combo_box;
+
+    ProjectCombobox projectCombobox;
 
     Coggie[] options = new Coggie[7];
     VisualSettings visual_settings;
@@ -42,6 +45,7 @@ public class CogWheel {
     MenuItem aboutItem;
 
     public CogWheel(final Stage main_stage, final GridPane main_pane, final MenuBar mb, final Menu m, JFXTextArea bigBox, javafx.scene.control.TextField subjBox, ProjectCombobox comboBox, NoteComboBox noteComboBox){
+
         if(main_stage != null)
             stage = main_stage;
         else
@@ -78,7 +82,7 @@ public class CogWheel {
         options[0] = visual_settings = new VisualSettings(main_stage, main_pane, main_text_area, subject_box, project_combo_box, note_combo_box, this);
         options[1] = font_settings = new FontSettings(main_stage, main_pane);
         options[2] = mode_settings = new ModeSettings(main_stage, main_pane);
-        options[3] = project_settings = new ProjectSettings();
+        options[3] = project_settings = new ProjectSettings(main_stage, project_combo_box);
         options[4] = account_management = new AccountManagement();
         options[5] = help = new Help();
         options[6] = about = new About();
@@ -104,7 +108,14 @@ public class CogWheel {
                 font_settings.show();
             }
         });
-
+        projectSettings.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                project_settings.show();
+            }
+        });
         modeSettings.setOnAction(new EventHandler<ActionEvent>(){
             /**
              * {@inheritDoc}

@@ -9,7 +9,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by alex on 3/17/2016.
@@ -71,6 +71,19 @@ public class CogWheelTest
         exception.expect(NullPointerException.class);
         new CogWheel(new Stage(), new GridPane(), new MenuBar(), null, new JFXTextArea(), new TextField(), new ProjectCombobox(new JFXComboBox<String>()), new NoteComboBox(new Project("A Project"), new JFXComboBox<String>()));
     }
+
+    /**
+     * Test method for {@link CogWheel#CogWheel(Stage, GridPane, MenuBar, Menu, JFXTextArea, TextField, ProjectCombobox, NoteComboBox)}
+     * Testing the constructor when passed null parameters
+     */
+    @Test
+    public void testCogWheelNull5()
+    {
+        exception.expect(NullPointerException.class);
+        new CogWheel(new Stage(), new GridPane(), new MenuBar(), null, new JFXTextArea(), new TextField(), null, new NoteComboBox(new Project("A Project"), new JFXComboBox<String>()));
+
+    }
+
 
     /**
      * Test method for {@link CogWheel#CogWheel(Stage, GridPane, MenuBar, Menu, JFXTextArea, TextField, ProjectCombobox, NoteComboBox)}

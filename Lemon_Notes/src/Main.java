@@ -1,19 +1,15 @@
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
-import com.sun.org.apache.xerces.internal.impl.dv.xs.BooleanDV;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -22,9 +18,6 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -48,6 +41,14 @@ public class Main extends Application
     {
         launch(args);
     }
+
+    /**************
+     * MODES
+     ********************/
+    private final SpeechMode speech = new SpeechMode();
+    private final BasicCalculator mode1 = new BasicCalculator();
+    private final BoldFormat mode2 = new BoldFormat();
+    private final ItalicFormat mode3 = new ItalicFormat();
 
     private Stage primaryStage;
     private Scene scene;
@@ -214,12 +215,13 @@ public class Main extends Application
 
         pane.setHgap(2);
         pane.setVgap(2);
-
         // Setting the general padding for the grid pane
         ColumnConstraints cons1 = new ColumnConstraints();
         pane.getColumnConstraints().add(cons1);
 
+
         cogWheel = new CogWheel(primaryStage, pane, menu, menu1, bigBox, subjBox, comboBox, note_combo_box);
+
         menu.getMenus().add(cogWheel.menu);
     }
 
@@ -299,6 +301,22 @@ public class Main extends Application
                                 if (noteFound) {
                                     System.out.println("note already exists");
                                     //overwrite existing note?
+
+                                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                                    alert.setTitle("Lemon Notes");
+                                    alert.setContentText("A file already exists with this name. If you proceed it will be overwritten. Is this OK?");
+
+                                    Optional<ButtonType> result = alert.showAndWait();
+                                    if (result.get() == ButtonType.OK){
+                                        // ... user chose OK
+                                        comboBox.current_project.addNote(content, subj, false);
+                                        noteModified = false;
+                                    } else {
+                                        // ... user chose CANCEL or closed the dialog
+                                        return;
+                                    }
+
+
                                 } else {
                                     comboBox.current_project.addNote(content, subj, true);
                                     noteModified = false;
@@ -363,6 +381,19 @@ public class Main extends Application
                                     if (noteFound) {
                                         System.out.println("note already exists");
                                         //overwrite existing note?
+                                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                                        alert.setTitle("Lemon Notes");
+                                        alert.setContentText("A file already exists with this name. If you proceed it will be overwritten. Is this OK?");
+
+                                        Optional<ButtonType> result = alert.showAndWait();
+                                        if (result.get() == ButtonType.OK){
+                                            // ... user chose OK
+                                            comboBox.current_project.addNote(content, subj, false);
+                                            noteModified = false;
+                                        } else {
+                                            // ... user chose CANCEL or closed the dialog
+                                            return;
+                                        }
                                     } else {
                                         comboBox.current_project.addNote(content, subj, true);
                                         noteModified = false;
@@ -426,6 +457,19 @@ public class Main extends Application
                             if (noteFound) {
                                 System.out.println("note already exists");
                                 //overwrite existing note?
+                                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                                alert.setTitle("Lemon Notes");
+                                alert.setContentText("A file already exists with this name. If you proceed it will be overwritten. Is this OK?");
+
+                                Optional<ButtonType> result = alert.showAndWait();
+                                if (result.get() == ButtonType.OK){
+                                    // ... user chose OK
+                                    comboBox.current_project.addNote(content, subj, false);
+                                    noteModified = false;
+                                } else {
+                                    // ... user chose CANCEL or closed the dialog
+                                    return;
+                                }
                             } else {
                                 comboBox.current_project.addNote(content, subj, true);
                                 noteModified = false;
@@ -466,6 +510,19 @@ public class Main extends Application
                     if (noteFound) {
                         System.out.println("note already exists");
                         //overwrite existing note?
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Lemon Notes");
+                        alert.setContentText("A file already exists with this name. If you proceed it will be overwritten. Is this OK?");
+
+                        Optional<ButtonType> result = alert.showAndWait();
+                        if (result.get() == ButtonType.OK){
+                            // ... user chose OK
+                            comboBox.current_project.addNote(content, subj, false);
+                            noteModified = false;
+                        } else {
+                            // ... user chose CANCEL or closed the dialog
+                            return;
+                        }
                     } else {
                         comboBox.current_project.addNote(content, subj, true);
                         note_combo_box.resize();
@@ -510,7 +567,7 @@ public class Main extends Application
 
 
                 ArrayList<Text> noteBits = new ArrayList<Text>();
-                String fullNote = bigBox.getText();
+                String fullNote = Mode.updateAllModes(bigBox.getText());
 
                 //substring is from current spot until next tag.
                 //save this substring, format if needed and add to the list.
