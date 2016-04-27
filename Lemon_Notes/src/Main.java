@@ -13,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -219,7 +220,12 @@ public class Main extends Application
         ColumnConstraints cons1 = new ColumnConstraints();
         pane.getColumnConstraints().add(cons1);
 
-
+        pane.setStyle("-fx-background-color: rgba(255, 255, 100, 0.5);");
+        bigBox.setStyle("-fx-background-color: rgba(0, 0, 0, 0);");
+        subjBox.setStyle("-fx-background-color: rgba(150, 150, 200, .5);");
+        comboBox.comboBox.setStyle("-fx-background-color: rgba(54, 255, 65, 1.0);");
+        note_combo_box.comboBox.setStyle("-fx-background-color: rgba(255, 90, 100, 1.0);");
+        menu.setStyle("-fx-background-color: rgba(200, 200, 200, 0.5);");
         cogWheel = new CogWheel(primaryStage, pane, menu, menu1, bigBox, subjBox, comboBox, note_combo_box);
 
         menu.getMenus().add(cogWheel.menu);
@@ -903,7 +909,6 @@ public class Main extends Application
 
         // Adding pane the the scene
         scene = new Scene(pane, 600, 250);
-        pane.setStyle("-fx-background-color: rgba(255, 255, 100, 0.5);");
         primaryStage.setTitle(titleText);
         primaryStage.setScene(scene);
         primaryStage.setResizable(true);
