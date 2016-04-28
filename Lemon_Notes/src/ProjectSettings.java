@@ -38,6 +38,9 @@ public class ProjectSettings extends Coggie
     private JFXButton cancelButton;
     private JFXButton deleteButton;
 
+    private ArrayList<String> projectsToRemove = new ArrayList<String>();
+    private ArrayList<String> changed = new ArrayList<String>();
+
     /**
      * Constructor.
      *
@@ -127,9 +130,6 @@ public class ProjectSettings extends Coggie
         mainPane.setStyle("-fx-background-color: rgba(255, 255, 100, 0.5);");
         return mainPane;
     }
-
-    private ArrayList<String> projectsToRemove = new ArrayList<String>();
-    private ArrayList<String> changed = new ArrayList<String>();
 
     private void setActionListeners()
     {

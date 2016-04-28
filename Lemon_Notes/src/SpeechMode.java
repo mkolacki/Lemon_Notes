@@ -13,6 +13,7 @@ import java.util.concurrent.Executors;
 public class SpeechMode extends Mode
 {
     private ExecutorService executor = Executors.newSingleThreadExecutor();
+
     public SpeechMode()
     {
         super("Text To Speech", "<speak>", "Takes in words",
