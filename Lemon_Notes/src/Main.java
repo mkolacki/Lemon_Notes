@@ -19,8 +19,12 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Scanner;
 import java.util.regex.Pattern;
 
 import static java.awt.Color.GREEN;
@@ -180,9 +184,56 @@ public class Main extends Application
             if (result.isPresent() && result.get().trim().length() > 0 && !p.matcher(result.get()).find()){
                 System.out.println("Project name: " + result.get());
                 comboBox.addAProject(result.get());
+
+                File settings_directory = new File("Settings");
+                Boolean made_Settings_directory = false;
+                try {
+                    made_Settings_directory = settings_directory.mkdirs();
+
+                } catch (SecurityException se) {
+                    System.out.println("Unsuccessful attempt to make Directory --- Settings:\n" + se.toString());
+                }
+
+                try {
+                    FileWriter fw = new FileWriter("Settings/color_settings.txt");
+                    fw.write("background: 0, 0, 0, 0\n");
+                    fw.write("subject box: 0, 0, 0, 0\n");
+                    fw.write("main text box: 0, 0, 0, 0\n");
+                    fw.write("project box: 0, 0, 0, 0\n");
+                    fw.write("note box: 0, 0, 0, 0\n");
+                    fw.write("cog wheel: 0, 0, 0, 0\n");
+                    fw.write("theme applied: no\n");
+                    fw.close();
+                }catch (IOException ex){
+                    ex.printStackTrace();
+                }
+
             } else {
                 System.out.println("Make default directory.");
                 comboBox.addAProject("default");
+
+                File settings_directory = new File("Settings");
+                Boolean made_Settings_directory = false;
+                try {
+                    made_Settings_directory = settings_directory.mkdirs();
+
+                } catch (SecurityException se) {
+                    System.out.println("Unsuccessful attempt to make Directory --- Settings:\n" + se.toString());
+                }
+
+                try {
+                    FileWriter fw = new FileWriter("Settings/color_settings.txt");
+                    fw.write("background: 0, 0, 0, 0\n");
+                    fw.write("subject box: 0, 0, 0, 0\n");
+                    fw.write("main text box: 0, 0, 0, 0\n");
+                    fw.write("project box: 0, 0, 0, 0\n");
+                    fw.write("note box: 0, 0, 0, 0\n");
+                    fw.write("cog wheel: 0, 0, 0, 0\n");
+                    fw.write("theme applied: no\n");
+                    fw.close();
+                }catch (IOException ex){
+                    ex.printStackTrace();
+                }
             }
         } else {
             //read in directory names in Projects folder.
@@ -199,9 +250,87 @@ public class Main extends Application
                 }
             }
 
-        }
+            note_combo_box = new NoteComboBox(comboBox.current_project, noteCombo);
 
-        note_combo_box = new NoteComboBox(comboBox.current_project, noteCombo);
+            /*File settings = new File("Settings/color_settings.txt");
+            try{
+                Scanner sc = new Scanner(settings);
+                String temp = "";
+                while(sc.hasNextLine()){
+                    temp = temp + ", " + sc.nextLine();
+                }
+
+                while(temp.length() != 0){
+                    if(temp.contains("background")){
+                        temp = temp.substring(temp.indexOf(":") + 2);
+                        double r = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                        temp = temp.substring(temp.indexOf(",") + 2);
+                        double g = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                        temp = temp.substring(temp.indexOf(",") + 2);
+                        double b = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                        temp = temp.substring(temp.indexOf(",") + 2);
+                        double o = Double.parseDouble(temp.substring(0, temp.indexOf(", ")));
+                        pane.setBackground(new Background(new BackgroundFill(new Color(r, g, b, o), CornerRadii.EMPTY, Insets.EMPTY)));
+                    }else if(temp.contains("subject box")){
+                        temp = temp.substring(temp.indexOf(":") + 2);
+                        double r = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                        temp = temp.substring(temp.indexOf(",") + 2);
+                        double g = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                        temp = temp.substring(temp.indexOf(",") + 2);
+                        double b = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                        temp = temp.substring(temp.indexOf(",") + 2);
+                        double o = Double.parseDouble(temp.substring(0, temp.indexOf(", ")));
+                        subjBox.setBackground(new Background(new BackgroundFill(new Color(r, g, b, o), CornerRadii.EMPTY, Insets.EMPTY)));
+                    }else if(temp.contains("main text box")){
+                        temp = temp.substring(temp.indexOf(":") + 2);
+                        double r = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                        temp = temp.substring(temp.indexOf(",") + 2);
+                        double g = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                        temp = temp.substring(temp.indexOf(",") + 2);
+                        double b = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                        temp = temp.substring(temp.indexOf(",") + 2);
+                        double o = Double.parseDouble(temp.substring(0, temp.indexOf(", ")));
+                        bigBox.setBackground(new Background(new BackgroundFill(new Color(r, g, b, o), CornerRadii.EMPTY, Insets.EMPTY)));
+                    }else if(temp.contains("project box")){
+                        temp = temp.substring(temp.indexOf(":") + 2);
+                        double r = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                        temp = temp.substring(temp.indexOf(",") + 2);
+                        double g = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                        temp = temp.substring(temp.indexOf(",") + 2);
+                        double b = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                        temp = temp.substring(temp.indexOf(",") + 2);
+                        double o = Double.parseDouble(temp.substring(0, temp.indexOf(", ")));
+                        comboBox.comboBox.setBackground(new Background(new BackgroundFill(new Color(r, g, b, o), CornerRadii.EMPTY, Insets.EMPTY)));
+                    }else if(temp.contains("note box")){
+                        temp = temp.substring(temp.indexOf(":") + 2);
+                        double r = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                        temp = temp.substring(temp.indexOf(",") + 2);
+                        double g = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                        temp = temp.substring(temp.indexOf(",") + 2);
+                        double b = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                        temp = temp.substring(temp.indexOf(",") + 2);
+                        double o = Double.parseDouble(temp.substring(0, temp.indexOf(", ")));
+                        note_combo_box.comboBox.setBackground(new Background(new BackgroundFill(new Color(r, g, b, o), CornerRadii.EMPTY, Insets.EMPTY)));
+                    }else if(temp.contains("cog wheel")){
+                        temp = temp.substring(temp.indexOf(":") + 2);
+                        double r = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                        temp = temp.substring(temp.indexOf(",") + 2);
+                        double g = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                        temp = temp.substring(temp.indexOf(",") + 2);
+                        double b = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                        temp = temp.substring(temp.indexOf(",") + 2);
+                        double o = Double.parseDouble(temp.substring(0, temp.indexOf(", ")));
+                        menu.setBackground(new Background(new BackgroundFill(new Color(r, g, b, o), CornerRadii.EMPTY, Insets.EMPTY)));
+                    }else if(temp.contains("theme applied")){
+                        //eventually handle this differently
+                        temp = "";
+                    }
+                }
+
+            }catch (FileNotFoundException e){
+                e.printStackTrace();
+            }*/
+        }
 
         pane.add(comboBox.comboBox, 0, 0);
         pane.add(note_combo_box.comboBox, 1, 0);
@@ -219,13 +348,16 @@ public class Main extends Application
         // Setting the general padding for the grid pane
         ColumnConstraints cons1 = new ColumnConstraints();
         pane.getColumnConstraints().add(cons1);
-
-        pane.setStyle("-fx-background-color: rgba(255, 255, 100, 0.5);");
-        bigBox.setStyle("-fx-background-color: rgba(0, 0, 0, 0);");
+        bigBox.setBackground(new Background(new BackgroundFill(new Color(1, 1, .5, 0.5), CornerRadii.EMPTY, Insets.EMPTY)));
+        subjBox.setBackground(new Background(new BackgroundFill(new Color(0, 0, 0, 0), CornerRadii.EMPTY, Insets.EMPTY)));
+        comboBox.comboBox.setBackground(new Background(new BackgroundFill(new Color(.6, .6, .75, .5), CornerRadii.EMPTY, Insets.EMPTY)));
+        note_combo_box.comboBox.setBackground(new Background(new BackgroundFill(new Color(1, .4, .4, 1.0), CornerRadii.EMPTY, Insets.EMPTY)));
+        menu.setBackground(new Background(new BackgroundFill(new Color(.8, .8, .8, 0.5), CornerRadii.EMPTY, Insets.EMPTY)));
+        /*bigBox.setStyle("-fx-background-color: rgba(0, 0, 0, 0);");
         subjBox.setStyle("-fx-background-color: rgba(150, 150, 200, .5);");
-        comboBox.comboBox.setStyle("-fx-background-color: rgba(54, 255, 65, 1.0);");
-        note_combo_box.comboBox.setStyle("-fx-background-color: rgba(255, 90, 100, 1.0);");
-        menu.setStyle("-fx-background-color: rgba(200, 200, 200, 0.5);");
+        combo.setStyle("-fx-background-color: rgba(54, 255, 65, 1.0);");
+        noteCombo.setStyle("-fx-background-color: rgba(255, 90, 100, 1.0);");
+        menu.setStyle("-fx-background-color: rgba(200, 200, 200, 0.5);");*/
         cogWheel = new CogWheel(primaryStage, pane, menu, menu1, bigBox, subjBox, comboBox, note_combo_box);
 
         menu.getMenus().add(cogWheel.menu);

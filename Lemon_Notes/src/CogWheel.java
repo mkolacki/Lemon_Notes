@@ -20,12 +20,10 @@ public class CogWheel {
     MenuBar menuBar;
     Menu menu;
 
-    private JFXTextArea main_text_area;
-    private javafx.scene.control.TextField subject_box;
-    private ProjectCombobox project_combo_box;
-    private NoteComboBox note_combo_box;
-
-    ProjectCombobox projectCombobox;
+    JFXTextArea main_text_area;
+    javafx.scene.control.TextField subject_box;
+    ProjectCombobox project_combo_box;
+    NoteComboBox note_combo_box;
 
     Coggie[] options = new Coggie[7];
     VisualSettings visual_settings;

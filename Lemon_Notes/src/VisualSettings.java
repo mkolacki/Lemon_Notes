@@ -2,10 +2,11 @@ import com.jfoenix.controls.*;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.*;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -18,14 +19,14 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.tbee.javafx.scene.layout.fxml.MigPane;
 
-import javax.swing.*;
-import javax.swing.colorchooser.ColorSelectionModel;
 import java.awt.*;
-import java.awt.Insets;
-import java.awt.Menu;
-import java.awt.TextField;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.ColorModel;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
-import static javafx.geometry.Insets.EMPTY;
 
 /**
  * Created by Michael K. on 3/8/2016.
@@ -113,6 +114,7 @@ public class VisualSettings extends Coggie {
     }
 
     public void show(){
+
         visualSettingsDialog.setX(primaryStage.getX());
         visualSettingsDialog.setY(primaryStage.getY());
         visualSettingsDialog.show();
@@ -125,7 +127,7 @@ public class VisualSettings extends Coggie {
 
         background = new Label("Main Background Color");
         background.setId("BackgroundLabel");
-        String temp = primaryPane.getStyle();
+        /*String temp = primaryPane.getStyle();
         double r = Double.parseDouble(temp.substring(temp.indexOf("(") +1, temp.indexOf(",")))/255;
         temp = temp.substring(temp.indexOf(",") + 2);
         double g = Double.parseDouble(temp.substring(0, temp.indexOf(",")))/255;
@@ -133,11 +135,13 @@ public class VisualSettings extends Coggie {
         double b = Double.parseDouble(temp.substring(0, temp.indexOf(",")))/255;
         temp = temp.substring(temp.indexOf(",") + 2);
         double o = Double.parseDouble(temp.substring(0, temp.indexOf(")")));
-        background_color_chooser = new JFXColorPicker(new Color(r, g, b, o));
+        background_color_chooser = new JFXColorPicker(new Color(r, g, b, o));*/
+        background_color_chooser = new JFXColorPicker();
+        background_color_chooser.setBackground(primaryPane.getBackground());
 
         textBox = new Label("Main Text Box Background Color");
         textBox.setId("MainTextBox");
-        temp = main_text_area.getStyle();
+        /*temp = main_text_area.getStyle();
         r = Double.parseDouble(temp.substring(temp.indexOf("(") +1, temp.indexOf(",")))/255;
         temp = temp.substring(temp.indexOf(",") + 2);
         g = Double.parseDouble(temp.substring(0, temp.indexOf(",")))/255;
@@ -145,12 +149,14 @@ public class VisualSettings extends Coggie {
         b = Double.parseDouble(temp.substring(0, temp.indexOf(",")))/255;
         temp = temp.substring(temp.indexOf(",") + 2);
         o = Double.parseDouble(temp.substring(0, temp.indexOf(")")));
-        text_box_color_chooser = new JFXColorPicker(new Color(r, g, b, o));
+        text_box_color_chooser = new JFXColorPicker(new Color(r, g, b, o));*/
+        text_box_color_chooser = new JFXColorPicker();
+        text_box_color_chooser.setBackground(main_text_area.getBackground());
 
 
         subjectBox = new Label("Subject Box Background Color");
         subjectBox.setId("SubjectBox");
-        temp = subject_box.getStyle();
+        /*temp = subject_box.getStyle();
         r = Double.parseDouble(temp.substring(temp.indexOf("(") +1, temp.indexOf(",")))/255;
         temp = temp.substring(temp.indexOf(",") + 2);
         g = Double.parseDouble(temp.substring(0, temp.indexOf(",")))/255;
@@ -158,11 +164,13 @@ public class VisualSettings extends Coggie {
         b = Double.parseDouble(temp.substring(0, temp.indexOf(",")))/255;
         temp = temp.substring(temp.indexOf(",") + 2);
         o = Double.parseDouble(temp.substring(0, temp.indexOf(")")));
-        subject_box_color_chooser = new JFXColorPicker(new Color(r, g, b, o));
+        subject_box_color_chooser = new JFXColorPicker(new Color(r, g, b, o));*/
+        subject_box_color_chooser = new JFXColorPicker();
+        subject_box_color_chooser.setBackground(subject_box.getBackground());
 
         project_box = new Label("Project Box Background Color");
         project_box.setId("ProjectBox");
-        temp = project_combo_box.comboBox.getStyle();
+        /*temp = project_combo_box.comboBox.getStyle();
         r = Double.parseDouble(temp.substring(temp.indexOf("(") +1, temp.indexOf(",")))/255;
         temp = temp.substring(temp.indexOf(",") + 2);
         g = Double.parseDouble(temp.substring(0, temp.indexOf(",")))/255;
@@ -170,11 +178,13 @@ public class VisualSettings extends Coggie {
         b = Double.parseDouble(temp.substring(0, temp.indexOf(",")))/255;
         temp = temp.substring(temp.indexOf(",") + 2);
         o = Double.parseDouble(temp.substring(0, temp.indexOf(")")));
-        project_box_color_chooser = new JFXColorPicker(new Color(r, g, b, o));
+        project_box_color_chooser = new JFXColorPicker(new Color(r, g, b, o));*/
+        project_box_color_chooser = new JFXColorPicker();
+        project_box_color_chooser.setBackground(project_combo_box.comboBox.getBackground());
 
         note_box = new Label("Note Box Background Color");
         note_box.setId("NoteBox");
-        temp = note_combo_box.comboBox.getStyle();
+        /*temp = note_combo_box.comboBox.getStyle();
         r = Double.parseDouble(temp.substring(temp.indexOf("(") +1, temp.indexOf(",")))/255;
         temp = temp.substring(temp.indexOf(",") + 2);
         g = Double.parseDouble(temp.substring(0, temp.indexOf(",")))/255;
@@ -182,11 +192,13 @@ public class VisualSettings extends Coggie {
         b = Double.parseDouble(temp.substring(0, temp.indexOf(",")))/255;
         temp = temp.substring(temp.indexOf(",") + 2);
         o = Double.parseDouble(temp.substring(0, temp.indexOf(")")));
-        note_box_color_chooser = new JFXColorPicker(new Color(r, g, b, o));
+        note_box_color_chooser = new JFXColorPicker(new Color(r, g, b, o));*/
+        note_box_color_chooser = new JFXColorPicker();
+        note_box_color_chooser.setBackground(note_combo_box.comboBox.getBackground());
 
         cog_wheel = new Label("Menu Bar Background Color");
         cog_wheel.setId("MenuBar");
-        temp = cogwheel.menuBar.getStyle();
+        /*temp = cogwheel.menuBar.getStyle();
         r = Double.parseDouble(temp.substring(temp.indexOf("(") +1, temp.indexOf(",")))/255;
         temp = temp.substring(temp.indexOf(",") + 2);
         g = Double.parseDouble(temp.substring(0, temp.indexOf(",")))/255;
@@ -194,7 +206,9 @@ public class VisualSettings extends Coggie {
         b = Double.parseDouble(temp.substring(0, temp.indexOf(",")))/255;
         temp = temp.substring(temp.indexOf(",") + 2);
         o = Double.parseDouble(temp.substring(0, temp.indexOf(")")));
-        cog_wheel_background_color_chooser = new JFXColorPicker(new Color(r, g, b, o));
+        cog_wheel_background_color_chooser = new JFXColorPicker(new Color(r, g, b, o));*/
+        cog_wheel_background_color_chooser = new JFXColorPicker();
+        cog_wheel_background_color_chooser.setBackground(cogwheel.menuBar.getBackground());
 
         all_options = new Label("Apply a Theme?");
         all_options.setId("AllOptionsLabel");
@@ -292,111 +306,52 @@ public class VisualSettings extends Coggie {
     }
 
     private void setActionListeners(){
-        /*ellipses1.setOnAction(new EventHandler<ActionEvent>() {
+        applyButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                final JFXColorPicker color_chooser = new JFXColorPicker();
-                MigPane color_pane = new MigPane();
-                color_pane.setId("ColorChooserPane");
-                color_pane.add(color_chooser);
-                color_pane.setPrefSize(color_chooser.getPrefWidth(), color_chooser.getPrefHeight());
-                Scene color_chooser_scene = new Scene(color_pane, color_chooser.getWidth(), color_chooser.getHeight());
-                Stage color_stage = new Stage();
-                color_stage.setTitle("Choose a Color");
-                color_stage.initStyle(StageStyle.DECORATED);
-                color_stage.initModality(Modality.APPLICATION_MODAL);
-                color_stage.initOwner(primaryStage);
-                color_stage.setScene(color_chooser_scene);
-                color_stage.setX(primaryStage.getX() + DIALOG_WIDTH);
-                color_stage.setY(primaryStage.getY() - 50);
-                color_stage.show();
+                Color chosen_for_background = background_color_chooser.getValue();
+                primaryPane.setBackground(new Background(new BackgroundFill(chosen_for_background, CornerRadii.EMPTY, Insets.EMPTY)));
 
-                *//*
-                color_chooser.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
+                Color chosen_for_subject_box = subject_box_color_chooser.getValue();
+                cogwheel.subject_box.setBackground(new Background(new BackgroundFill(chosen_for_subject_box, CornerRadii.EMPTY, Insets.EMPTY)));
 
-                    }
-                });*//*
-            }
-        });*/
-     /*   subjFontSizeBox.setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent event)
-            {
-                subjLabel.setFont(new Font(subjLabel.getFont().getName(), subjFontSizeBox.getSelectionModel().getSelectedItem()));
-            }
-        });
+                Color chosen_for_text_box = text_box_color_chooser.getValue();
+                cogwheel.main_text_area.setBackground(new Background(new BackgroundFill(chosen_for_text_box, CornerRadii.EMPTY, Insets.EMPTY)));
 
-        textFontSizeBox.setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent event)
-            {
-                textLabel.setFont(new Font(textLabel.getFont().getName(), textFontSizeBox.getSelectionModel().getSelectedItem()));
-            }
-        });
+                Color chosen_for_project_box = project_box_color_chooser.getValue();
+                cogwheel.project_combo_box.comboBox.setBackground(new Background(new BackgroundFill(chosen_for_project_box, CornerRadii.EMPTY, Insets.EMPTY)));
 
-        subjFontStyleBox.setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent event)
-            {
-                subjLabel.setFont(new Font(subjFontStyleBox.getSelectionModel().getSelectedItem(), subjLabel.getFont().getSize()));
-            }
-        });
+                Color chosen_for_note_box = note_box_color_chooser.getValue();
+                cogwheel.note_combo_box.comboBox.setBackground(new Background(new BackgroundFill(chosen_for_note_box, CornerRadii.EMPTY, Insets.EMPTY)));
 
-        textFontStyleBox.setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent event)
-            {
-                textLabel.setFont(new Font(textFontStyleBox.getSelectionModel().getSelectedItem(), textLabel.getFont().getSize()));
-            }
-        });
+                Color chosen_for_cog_wheel = cog_wheel_background_color_chooser.getValue();
+                cogwheel.menuBar.setBackground(new Background(new BackgroundFill(chosen_for_cog_wheel, CornerRadii.EMPTY, Insets.EMPTY)));
 
-        okButton.setOnMouseClicked(new EventHandler<MouseEvent>()
-        {
-            @Override
-            public void handle(MouseEvent event)
-            {
-                for(Node item: mainPane.getChildren())
-                {
-                    if(item.getId() != null && item.getId().equals("Big Box Area"))
-                    {
-                        JFXTextArea area = (JFXTextArea)item;
-                        SelectionModel<String> style = textFontStyleBox.getSelectionModel();
-                        SelectionModel<Integer> size = textFontSizeBox.getSelectionModel();
-                        Font font;
-                        if(size.getSelectedItem() != null && style.getSelectedItem() != null)
-                            font = new Font(style.getSelectedItem(), size.getSelectedItem());
-                        else if(size.getSelectedItem() == null)
-                            font = new Font(style.getSelectedItem(), area.getFont().getSize());
-                        else
-                            font = new Font(area.getFont().getName(), size.getSelectedItem());
-                        area.setFont(font);
-                    }
-                    else if(item.getId() != null && item.getId().equals("Subject Box"))
-                    {
-                        TextField field = (TextField)item;
-                        SelectionModel<String> style = subjFontStyleBox.getSelectionModel();
-                        SelectionModel<Integer> size = subjFontSizeBox.getSelectionModel();
-                        Font font;
-                        if(size.getSelectedItem() != null && style.getSelectedItem() != null)
-                            font = new Font(style.getSelectedItem(), size.getSelectedItem());
-                        else if(size.getSelectedItem() == null)
-                            font = new Font(style.getSelectedItem(), field.getFont().getSize());
-                        else
-                            font = new Font(field.getFont().getName(), size.getSelectedItem());
-                        field.setFont(font);
-                    }
+                try {
+                    File f = new File("Settings/color_settings.txt");
+                    f.delete();
+                    FileWriter fw = new FileWriter("Settings/color_settings.txt");
+                    fw.write("background: " + background_color_chooser.getValue().getRed() + ", " + background_color_chooser.getValue().getGreen() +
+                             ", " + background_color_chooser.getValue().getBlue() + ", " + background_color_chooser.getValue().getOpacity() + "\r\n");
+                    fw.write("subject box: " + subject_box_color_chooser.getValue().getRed() + ", " + subject_box_color_chooser.getValue().getGreen() +
+                            ", " + subject_box_color_chooser.getValue().getBlue() + ", " + subject_box_color_chooser.getValue().getOpacity() + "\r\n");
+                    fw.write("main text box: " + text_box_color_chooser.getValue().getRed() + ", " + text_box_color_chooser.getValue().getGreen() +
+                            ", " + text_box_color_chooser.getValue().getBlue() + ", " + text_box_color_chooser.getValue().getOpacity() + "\r\n");
+                    fw.write("project box: " +  project_box_color_chooser.getValue().getRed() + ", " + project_box_color_chooser.getValue().getGreen() +
+                            ", " + project_box_color_chooser.getValue().getBlue() + ", " + project_box_color_chooser.getValue().getOpacity() + "\r\n");
+                    fw.write("note box: " +  note_box_color_chooser.getValue().getRed() + ", " + note_box_color_chooser.getValue().getGreen() +
+                            ", " + note_box_color_chooser.getValue().getBlue() + ", " + note_box_color_chooser.getValue().getOpacity() + "\r\n");
+                    fw.write("cog wheel: " +  cog_wheel_background_color_chooser.getValue().getRed() + ", " + cog_wheel_background_color_chooser.getValue().getGreen() +
+                            ", " + cog_wheel_background_color_chooser.getValue().getBlue() + ", " + cog_wheel_background_color_chooser.getValue().getOpacity() + "\r\n");
+                    fw.write("theme applied: no\r\n");
+                    fw.close();
+                }catch (IOException ex){
+                    ex.printStackTrace();
                 }
-                fontDialog.close();
             }
         });
 
-        cancelButton.setOnMouseClicked(new EventHandler<MouseEvent>()
+        /*cancelButton.setOnMouseClicked(new EventHandler<MouseEvent>()
         {
             @Override
             public void handle(MouseEvent event)

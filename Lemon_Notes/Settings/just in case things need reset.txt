@@ -1,0 +1,7 @@
+background: 0, 0, 0, 0
+subject box: 0, 0, 0, 0
+main text box: 0, 0, 0, 0
+project box: 0, 0, 0, 0
+note box: 0, 0, 0, 0
+cog wheel: 0, 0, 0, 0
+theme applied: no

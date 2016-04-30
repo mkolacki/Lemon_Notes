@@ -132,7 +132,7 @@ public class Project {
             if (remove_me.exists())
                 remove_me.delete();
             else
-                System.out.println("Attempted to delete not but found no such note: " + saved_notes + "/" + n.subject + ".txt");
+                System.out.println("Attempted to delete note but found no such note: " + saved_notes + "/" + n.subject + ".txt");
         }
         notes.clear();
     }
