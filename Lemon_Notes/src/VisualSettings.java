@@ -61,7 +61,6 @@ public class VisualSettings extends Coggie {
     private Label all_options;
     private RadioButton themed;
 
-    private JFXButton okButton;
     private JFXButton cancelButton;
     private JFXButton applyButton;
 
@@ -272,10 +271,6 @@ public class VisualSettings extends Coggie {
         TitledPane pane_for_all = new TitledPane("Theme Options", all_options_pane);
         pane_for_all.setId("AllOptionsPane");
 
-        okButton = new JFXButton("Ok");
-        okButton.setId("OKButton");
-        okButton.setButtonType(JFXButton.ButtonType.FLAT);
-        okButton.setBackground(new Background(new BackgroundFill(Color.WHITESMOKE, new CornerRadii(0), new javafx.geometry.Insets(0))));
         cancelButton = new JFXButton("Cancel");
         cancelButton.setId("CancelButton");
         cancelButton.setButtonType(JFXButton.ButtonType.FLAT);
@@ -287,7 +282,6 @@ public class VisualSettings extends Coggie {
 
         MigPane buttonPane = new MigPane();
         buttonPane.setId("ButtonFontPane");
-        buttonPane.add(okButton);
         buttonPane.add(cancelButton);
         buttonPane.add(applyButton);
 
@@ -351,13 +345,11 @@ public class VisualSettings extends Coggie {
             }
         });
 
-        /*cancelButton.setOnMouseClicked(new EventHandler<MouseEvent>()
-        {
+        cancelButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(MouseEvent event)
-            {
-                fontDialog.close();
+            public void handle(ActionEvent event) {
+                visualSettingsDialog.close();
             }
-        });*/
+        });
     }
 }

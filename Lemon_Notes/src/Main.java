@@ -208,6 +208,15 @@ public class Main extends Application
                     ex.printStackTrace();
                 }
 
+                try{
+                    FileWriter fw = new FileWriter("Settings/last_open_project.txt");
+                    fw.write(result.get());
+                    fw.close();
+                }catch (IOException ex){
+                    ex.printStackTrace();
+                }
+
+
             } else {
                 System.out.println("Make default directory.");
                 comboBox.addAProject("default");
@@ -234,6 +243,15 @@ public class Main extends Application
                 }catch (IOException ex){
                     ex.printStackTrace();
                 }
+
+                try{
+                    FileWriter fw = new FileWriter("Settings/last_open_project.txt");
+                    fw.write("default");
+                    fw.close();
+                }catch (IOException ex){
+                    ex.printStackTrace();
+                }
+
             }
         } else {
             //read in directory names in Projects folder.
@@ -250,6 +268,28 @@ public class Main extends Application
                 }
             }
 
+            File settings = new File("Settings/last_open_project.txt");
+
+            try{
+                Scanner sc = new Scanner(settings);
+                String last_project = "";
+                while(sc.hasNextLine()){
+                    last_project = last_project + sc.nextLine();
+                    if(sc.hasNextLine()){
+                        last_project = last_project + "\n";
+                    }
+                }
+
+                for(Project p : comboBox.projects){
+                    if(p.name.equals(last_project)){
+                        comboBox.selectProject(last_project);
+                    }
+                }
+
+            }catch (FileNotFoundException fnfe){
+                fnfe.printStackTrace();
+            }
+            comboBox.comboBox.setPromptText(comboBox.current_project.name);
             note_combo_box = new NoteComboBox(comboBox.current_project, noteCombo);
 
             /*File settings = new File("Settings/color_settings.txt");
@@ -1011,14 +1051,57 @@ public class Main extends Application
                             } else {
                                 comboBox.current_project.addNote(content, subj, true);
                             }
+                            File last_project = new File("Settings/last_open_project.txt");
+                            if(last_project.exists()){
+                                last_project.delete();
+                            }
+
+                            last_project = new File("Settings/last_open_project.txt");
+
+                            try{
+                                FileWriter fw = new FileWriter("Settings/last_open_project.txt");
+                                fw.write(comboBox.current_project.name);
+                                fw.close();
+                            }catch (IOException ex){
+                                ex.printStackTrace();
+                            }
+
                             primaryStage.close();
                         } else if (choice.get() == no) {
+                            File last_project = new File("Settings/last_open_project.txt");
+                            if(last_project.exists()){
+                                last_project.delete();
+                            }
+
+                            last_project = new File("Settings/last_open_project.txt");
+
+                            try{
+                                FileWriter fw = new FileWriter("Settings/last_open_project.txt");
+                                fw.write(comboBox.current_project.name);
+                                fw.close();
+                            }catch (IOException ex){
+                                ex.printStackTrace();
+                            }
                             primaryStage.close();
                         } else {
                             event.consume();
                         }
                     }
                 } else {
+                    File last_project = new File("Settings/last_open_project.txt");
+                    if(last_project.exists()){
+                        last_project.delete();
+                    }
+
+                    last_project = new File("Settings/last_open_project.txt");
+
+                    try{
+                        FileWriter fw = new FileWriter("Settings/last_open_project.txt");
+                        fw.write(comboBox.current_project.name);
+                        fw.close();
+                    }catch (IOException ex){
+                        ex.printStackTrace();
+                    }
                     primaryStage.close();
                 }
             }
