@@ -82,7 +82,7 @@ public class CogWheel {
         options[2] = mode_settings = new ModeSettings(main_stage, main_pane);
         options[3] = project_settings = new ProjectSettings(main_stage, project_combo_box);
         options[4] = account_management = new AccountManagement();
-        options[5] = help = new Help();
+        options[5] = help = new Help(main_stage, main_pane);
         options[6] = about = new About();
 
         Image cog_wheel = new Image(getClass().getResourceAsStream("cogicon.png"));
@@ -106,6 +106,7 @@ public class CogWheel {
                 font_settings.show();
             }
         });
+
         projectSettings.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
@@ -114,6 +115,7 @@ public class CogWheel {
                 project_settings.show();
             }
         });
+
         modeSettings.setOnAction(new EventHandler<ActionEvent>(){
             /**
              * {@inheritDoc}
@@ -129,6 +131,13 @@ public class CogWheel {
             @Override
             public void handle(ActionEvent event) {
                 visual_settings.show();
+            }
+        });
+
+        helpItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                help.show();
             }
         });
 

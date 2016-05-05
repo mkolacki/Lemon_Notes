@@ -15,8 +15,11 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
+import org.tbee.javafx.scene.layout.MigPane;
 
 import java.io.File;
 import java.io.FileNotFoundException;
