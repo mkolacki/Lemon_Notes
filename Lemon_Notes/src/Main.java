@@ -1118,16 +1118,16 @@ public class Main extends Application
      */
     private void setupScene(GridPane pane)
     {
-        String titleText;
+        /*String titleText;
         if (comboBox.current_project != null) {
             titleText = comboBox.current_project.name;
         } else {
             titleText = "Lemon Notes";
-        }
+        }*/
 
         // Adding pane the the scene
         scene = new Scene(pane, 600, 250);
-        primaryStage.setTitle(titleText);
+        primaryStage.setTitle("Lemon Notes");
         primaryStage.setScene(scene);
         primaryStage.setResizable(true);
         primaryStage.show();
