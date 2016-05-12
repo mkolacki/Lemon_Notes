@@ -13,13 +13,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.*;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
-import org.tbee.javafx.scene.layout.MigPane;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -29,8 +25,6 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.regex.Pattern;
-
-import static java.awt.Color.GREEN;
 
 /**
  * Created by alex on 3/6/2016.
@@ -294,85 +288,6 @@ public class Main extends Application
             }
             comboBox.comboBox.setPromptText(comboBox.current_project.name);
             note_combo_box = new NoteComboBox(comboBox.current_project, noteCombo);
-
-            /*File settings = new File("Settings/color_settings.txt");
-            try{
-                Scanner sc = new Scanner(settings);
-                String temp = "";
-                while(sc.hasNextLine()){
-                    temp = temp + ", " + sc.nextLine();
-                }
-
-                while(temp.length() != 0){
-                    if(temp.contains("background")){
-                        temp = temp.substring(temp.indexOf(":") + 2);
-                        double r = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
-                        temp = temp.substring(temp.indexOf(",") + 2);
-                        double g = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
-                        temp = temp.substring(temp.indexOf(",") + 2);
-                        double b = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
-                        temp = temp.substring(temp.indexOf(",") + 2);
-                        double o = Double.parseDouble(temp.substring(0, temp.indexOf(", ")));
-                        pane.setBackground(new Background(new BackgroundFill(new Color(r, g, b, o), CornerRadii.EMPTY, Insets.EMPTY)));
-                    }else if(temp.contains("subject box")){
-                        temp = temp.substring(temp.indexOf(":") + 2);
-                        double r = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
-                        temp = temp.substring(temp.indexOf(",") + 2);
-                        double g = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
-                        temp = temp.substring(temp.indexOf(",") + 2);
-                        double b = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
-                        temp = temp.substring(temp.indexOf(",") + 2);
-                        double o = Double.parseDouble(temp.substring(0, temp.indexOf(", ")));
-                        subjBox.setBackground(new Background(new BackgroundFill(new Color(r, g, b, o), CornerRadii.EMPTY, Insets.EMPTY)));
-                    }else if(temp.contains("main text box")){
-                        temp = temp.substring(temp.indexOf(":") + 2);
-                        double r = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
-                        temp = temp.substring(temp.indexOf(",") + 2);
-                        double g = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
-                        temp = temp.substring(temp.indexOf(",") + 2);
-                        double b = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
-                        temp = temp.substring(temp.indexOf(",") + 2);
-                        double o = Double.parseDouble(temp.substring(0, temp.indexOf(", ")));
-                        bigBox.setBackground(new Background(new BackgroundFill(new Color(r, g, b, o), CornerRadii.EMPTY, Insets.EMPTY)));
-                    }else if(temp.contains("project box")){
-                        temp = temp.substring(temp.indexOf(":") + 2);
-                        double r = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
-                        temp = temp.substring(temp.indexOf(",") + 2);
-                        double g = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
-                        temp = temp.substring(temp.indexOf(",") + 2);
-                        double b = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
-                        temp = temp.substring(temp.indexOf(",") + 2);
-                        double o = Double.parseDouble(temp.substring(0, temp.indexOf(", ")));
-                        comboBox.comboBox.setBackground(new Background(new BackgroundFill(new Color(r, g, b, o), CornerRadii.EMPTY, Insets.EMPTY)));
-                    }else if(temp.contains("note box")){
-                        temp = temp.substring(temp.indexOf(":") + 2);
-                        double r = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
-                        temp = temp.substring(temp.indexOf(",") + 2);
-                        double g = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
-                        temp = temp.substring(temp.indexOf(",") + 2);
-                        double b = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
-                        temp = temp.substring(temp.indexOf(",") + 2);
-                        double o = Double.parseDouble(temp.substring(0, temp.indexOf(", ")));
-                        note_combo_box.comboBox.setBackground(new Background(new BackgroundFill(new Color(r, g, b, o), CornerRadii.EMPTY, Insets.EMPTY)));
-                    }else if(temp.contains("cog wheel")){
-                        temp = temp.substring(temp.indexOf(":") + 2);
-                        double r = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
-                        temp = temp.substring(temp.indexOf(",") + 2);
-                        double g = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
-                        temp = temp.substring(temp.indexOf(",") + 2);
-                        double b = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
-                        temp = temp.substring(temp.indexOf(",") + 2);
-                        double o = Double.parseDouble(temp.substring(0, temp.indexOf(", ")));
-                        menu.setBackground(new Background(new BackgroundFill(new Color(r, g, b, o), CornerRadii.EMPTY, Insets.EMPTY)));
-                    }else if(temp.contains("theme applied")){
-                        //eventually handle this differently
-                        temp = "";
-                    }
-                }
-
-            }catch (FileNotFoundException e){
-                e.printStackTrace();
-            }*/
         }
 
         pane.add(comboBox.comboBox, 0, 0);
@@ -404,6 +319,7 @@ public class Main extends Application
         cogWheel = new CogWheel(primaryStage, pane, menu, menu1, bigBox, subjBox, comboBox, note_combo_box);
 
         menu.getMenus().add(cogWheel.menu);
+
     }
 
     /**
@@ -1131,5 +1047,86 @@ public class Main extends Application
         primaryStage.setScene(scene);
         primaryStage.setResizable(true);
         primaryStage.show();
+
+        // Setup color
+        File settings = new File("Settings/color_settings.txt");
+        try{
+            Scanner sc = new Scanner(settings);
+            String temp = "";
+            while(sc.hasNextLine()){
+                temp = temp + ", " + sc.nextLine();
+            }
+
+            while(temp.length() != 0){
+                if(temp.contains("background")){
+                    temp = temp.substring(temp.indexOf(":") + 2);
+                    double r = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                    temp = temp.substring(temp.indexOf(",") + 2);
+                    double g = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                    temp = temp.substring(temp.indexOf(",") + 2);
+                    double b = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                    temp = temp.substring(temp.indexOf(",") + 2);
+                    double o = Double.parseDouble(temp.substring(0, temp.indexOf(", ")));
+                    pane.setBackground(new Background(new BackgroundFill(new Color(r, g, b, o), CornerRadii.EMPTY, Insets.EMPTY)));
+                }else if(temp.contains("subject box")){
+                    temp = temp.substring(temp.indexOf(":") + 2);
+                    double r = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                    temp = temp.substring(temp.indexOf(",") + 2);
+                    double g = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                    temp = temp.substring(temp.indexOf(",") + 2);
+                    double b = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                    temp = temp.substring(temp.indexOf(",") + 2);
+                    double o = Double.parseDouble(temp.substring(0, temp.indexOf(", ")));
+                    subjBox.setBackground(new Background(new BackgroundFill(new Color(r, g, b, o), CornerRadii.EMPTY, Insets.EMPTY)));
+                }else if(temp.contains("main text box")){
+                    temp = temp.substring(temp.indexOf(":") + 2);
+                    double r = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                    temp = temp.substring(temp.indexOf(",") + 2);
+                    double g = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                    temp = temp.substring(temp.indexOf(",") + 2);
+                    double b = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                    temp = temp.substring(temp.indexOf(",") + 2);
+                    double o = Double.parseDouble(temp.substring(0, temp.indexOf(", ")));
+                    bigBox.setBackground(new Background(new BackgroundFill(new Color(r, g, b, o), CornerRadii.EMPTY, Insets.EMPTY)));
+                }else if(temp.contains("project box")){
+                    temp = temp.substring(temp.indexOf(":") + 2);
+                    double r = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                    temp = temp.substring(temp.indexOf(",") + 2);
+                    double g = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                    temp = temp.substring(temp.indexOf(",") + 2);
+                    double b = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                    temp = temp.substring(temp.indexOf(",") + 2);
+                    double o = Double.parseDouble(temp.substring(0, temp.indexOf(", ")));
+                    comboBox.comboBox.setBackground(new Background(new BackgroundFill(new Color(r, g, b, o), CornerRadii.EMPTY, Insets.EMPTY)));
+                }else if(temp.contains("note box")){
+                    temp = temp.substring(temp.indexOf(":") + 2);
+                    double r = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                    temp = temp.substring(temp.indexOf(",") + 2);
+                    double g = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                    temp = temp.substring(temp.indexOf(",") + 2);
+                    double b = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                    temp = temp.substring(temp.indexOf(",") + 2);
+                    double o = Double.parseDouble(temp.substring(0, temp.indexOf(", ")));
+                    note_combo_box.comboBox.setBackground(new Background(new BackgroundFill(new Color(r, g, b, o), CornerRadii.EMPTY, Insets.EMPTY)));
+                }else if(temp.contains("cog wheel")){
+                    temp = temp.substring(temp.indexOf(":") + 2);
+                    double r = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                    temp = temp.substring(temp.indexOf(",") + 2);
+                    double g = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                    temp = temp.substring(temp.indexOf(",") + 2);
+                    double b = Double.parseDouble(temp.substring(0, temp.indexOf(",")));
+                    temp = temp.substring(temp.indexOf(",") + 2);
+                    double o = Double.parseDouble(temp.substring(0, temp.indexOf(", ")));
+                    menu.setBackground(new Background(new BackgroundFill(new Color(r, g, b, o), CornerRadii.EMPTY, Insets.EMPTY)));
+                }else if(temp.contains("theme applied")){
+                    //eventually handle this differently
+                    temp = "";
+                }
+            }
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
+
     }
 }
