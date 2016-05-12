@@ -283,14 +283,6 @@ public class VisualSettings extends Coggie {
 
         setActionListeners();
 
-        background_pane.setExpanded(false);
-        text_box_pane.setExpanded(false);
-        subject_box_pane.setExpanded(false);
-        project_box_pane.setExpanded(false);
-        note_box_pane.setExpanded(false);
-        cog_wheel_pane.setExpanded(false);
-        pane_for_all.setExpanded(false);
-
         mainPane.add(background_pane, "wrap");
         mainPane.add(text_box_pane, "wrap");
         mainPane.add(subject_box_pane, "wrap");
