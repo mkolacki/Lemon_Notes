@@ -1,28 +1,24 @@
-import com.jfoenix.controls.*;
-import javafx.collections.FXCollections;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXColorPicker;
+import com.jfoenix.controls.JFXRadioButton;
+import com.jfoenix.controls.JFXTextArea;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.tbee.javafx.scene.layout.fxml.MigPane;
 
-import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.ColorModel;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -286,6 +282,14 @@ public class VisualSettings extends Coggie {
         buttonPane.add(applyButton);
 
         setActionListeners();
+
+        background_pane.setExpanded(false);
+        text_box_pane.setExpanded(false);
+        subject_box_pane.setExpanded(false);
+        project_box_pane.setExpanded(false);
+        note_box_pane.setExpanded(false);
+        cog_wheel_pane.setExpanded(false);
+        pane_for_all.setExpanded(false);
 
         mainPane.add(background_pane, "wrap");
         mainPane.add(text_box_pane, "wrap");

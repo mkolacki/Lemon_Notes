@@ -154,6 +154,8 @@ public class FontSettings extends Coggie
 
         setActionListeners();
 
+        subjPane.setExpanded(false);
+        textPane.setExpanded(false);
         mainPane.add(subjPane, "wrap");
         mainPane.add(textPane, "wrap");
         mainPane.add(buttonPane, "align right");

@@ -106,6 +106,7 @@ public class ModeSettings extends Coggie {
             basicCalculatorPane.setPrefSize(mainPane.getPrefWidth(), mainPane.getPrefHeight() / 2);
             TitledPane calcPane = new TitledPane(m.mode, basicCalculatorPane);
             calcPane.setId(m.mode + "Pane");
+            calcPane.setExpanded(false);
             mainPane.add(calcPane, "wrap");
         }
         closeButton = new JFXButton("Close");
