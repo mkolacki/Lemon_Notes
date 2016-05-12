@@ -1,0 +1,2 @@
+subject_box 20.0 AR HERMANN
+main_box 24.0 AR BLANCA

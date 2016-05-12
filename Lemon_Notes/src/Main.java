@@ -975,7 +975,7 @@ public class Main extends Application
                                 last_project.delete();
                             }
 
-                            last_project = new File("Settings/last_open_project.txt");
+//                            last_project = new File("Settings/last_open_project.txt");
 
                             try{
                                 FileWriter fw = new FileWriter("Settings/last_open_project.txt");
@@ -992,7 +992,7 @@ public class Main extends Application
                                 last_project.delete();
                             }
 
-                            last_project = new File("Settings/last_open_project.txt");
+//                            last_project = new File("Settings/last_open_project.txt");
 
                             try{
                                 FileWriter fw = new FileWriter("Settings/last_open_project.txt");
@@ -1012,7 +1012,7 @@ public class Main extends Application
                         last_project.delete();
                     }
 
-                    last_project = new File("Settings/last_open_project.txt");
+                    //last_project = new File("Settings/last_open_project.txt");
 
                     try{
                         FileWriter fw = new FileWriter("Settings/last_open_project.txt");
@@ -1126,6 +1126,33 @@ public class Main extends Application
 
         }catch (FileNotFoundException e){
             e.printStackTrace();
+        }
+
+        File fontSettings = new File("Settings/font_settings.txt");
+        try
+        {
+            Scanner sc = new Scanner(fontSettings);
+            String name;
+            while(sc.hasNextLine())
+            {
+                name = sc.next();
+                if(name.equals("subject_box"))
+                {
+                    double size = sc.nextDouble();
+                    String style = sc.nextLine();
+                    Font font = new Font(style.trim(), size);
+                    subjBox.setFont(font);
+                }
+                else
+                {
+                    double size = sc.nextDouble();
+                    String style = sc.nextLine();
+                    Font font = new Font(style.trim(), size);
+                    bigBox.setFont(font);
+                }
+            }
+        }catch (FileNotFoundException ex){
+            ex.printStackTrace();
         }
 
     }

@@ -23,6 +23,12 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.tbee.javafx.scene.layout.MigPane;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
 /**
  * This class is responsible for changing fonts
  */
@@ -72,6 +78,33 @@ public class FontSettings extends Coggie
         pane.setId("MainFontPane");
         Scene fontDialogScene = new Scene(pane, DIALOG_WIDTH, DIALOG_HEIGHT);
         fontDialog.setScene(fontDialogScene);
+
+        File fontSettings = new File("Settings/font_settings.txt");
+        try
+        {
+            Scanner sc = new Scanner(fontSettings);
+            String name;
+            while(sc.hasNextLine())
+            {
+                name = sc.next();
+                if(name.equals("subject_box"))
+                {
+                    Integer size = new Integer((int) sc.nextDouble());
+                    String style = sc.nextLine();
+                    subjFontSizeBox.getSelectionModel().select(size);
+                    subjFontStyleBox.getSelectionModel().select(style);
+                }
+                else
+                {
+                    Integer size = new Integer((int) sc.nextDouble());
+                    String style = sc.nextLine();
+                    textFontSizeBox.getSelectionModel().select(size);
+                    textFontStyleBox.getSelectionModel().select(style);
+                }
+            }
+        }catch (FileNotFoundException ex){
+            ex.printStackTrace();
+        }
     }
 
     /**
@@ -206,6 +239,8 @@ public class FontSettings extends Coggie
             @Override
             public void handle(MouseEvent event)
             {
+                Font font1 = null;
+                Font font2 = null;
                 for(Node item: mainPane.getChildren())
                 {
                     if(item.getId() != null && item.getId().equals("Big Box Area"))
@@ -213,29 +248,37 @@ public class FontSettings extends Coggie
                         JFXTextArea area = (JFXTextArea)item;
                         SelectionModel<String> style = textFontStyleBox.getSelectionModel();
                         SelectionModel<Integer> size = textFontSizeBox.getSelectionModel();
-                        Font font;
                         if(size.getSelectedItem() != null && style.getSelectedItem() != null)
-                            font = new Font(style.getSelectedItem(), size.getSelectedItem());
+                            font1 = new Font(style.getSelectedItem().trim(), size.getSelectedItem());
                         else if(size.getSelectedItem() == null)
-                            font = new Font(style.getSelectedItem(), area.getFont().getSize());
+                            font1 = new Font(style.getSelectedItem().trim(), area.getFont().getSize());
                         else
-                            font = new Font(area.getFont().getName(), size.getSelectedItem());
-                        area.setFont(font);
+                            font1 = new Font(area.getFont().getName(), size.getSelectedItem());
+                        area.setFont(font1);
                     }
                     else if(item.getId() != null && item.getId().equals("Subject Box"))
                     {
                         TextField field = (TextField)item;
                         SelectionModel<String> style = subjFontStyleBox.getSelectionModel();
                         SelectionModel<Integer> size = subjFontSizeBox.getSelectionModel();
-                        Font font;
                         if(size.getSelectedItem() != null && style.getSelectedItem() != null)
-                            font = new Font(style.getSelectedItem(), size.getSelectedItem());
+                            font2 = new Font(style.getSelectedItem().trim(), size.getSelectedItem());
                         else if(size.getSelectedItem() == null)
-                            font = new Font(style.getSelectedItem(), field.getFont().getSize());
+                            font2 = new Font(style.getSelectedItem().trim(), field.getFont().getSize());
                         else
-                            font = new Font(field.getFont().getName(), size.getSelectedItem());
-                        field.setFont(font);
+                            font2 = new Font(field.getFont().getName(), size.getSelectedItem());
+                        field.setFont(font2);
                     }
+                }
+                try {
+                    File f = new File("Settings/font_settings.txt");
+                    f.delete();
+                    FileWriter fw = new FileWriter("Settings/font_settings.txt");
+                    fw.write("subject_box " + font2.getSize() + " " + font2.getName() + "\r\n");
+                    fw.write("main_box " + font1.getSize() + " " + font1.getName());
+                    fw.close();
+                }catch (IOException ex){
+                    ex.printStackTrace();
                 }
                 fontDialog.close();
             }
