@@ -3,7 +3,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -16,8 +15,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.tbee.javafx.scene.layout.MigPane;
 
-import javax.swing.*;
-
 /**
  * Created by Michael K. on 3/8/2016.
  */
@@ -25,7 +22,7 @@ public class About extends Coggie {
     /**
      * Displays the authors of the program, and a short blurb about the program itself.
      */
-    private static final int DIALOG_HEIGHT = 200;
+    private static final int DIALOG_HEIGHT = 250;
     private static final int DIALOG_WIDTH = 330;
 
     private JFXButton okButton;
