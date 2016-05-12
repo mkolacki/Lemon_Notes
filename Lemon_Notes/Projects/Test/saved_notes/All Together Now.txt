@@ -1,0 +1,4 @@
+<b>All Encompased</b>
+<speak>And the answer is...</speak>
+<i>Solution 1</i>
+<calc>722321.0 / 743.92814</calc>

@@ -48,9 +48,9 @@ public class Main extends Application
      * MODES
      ********************/
     private final SpeechMode speech = new SpeechMode();
-    private final BasicCalculator mode1 = new BasicCalculator();
+    /*private final BasicCalculator mode1 = new BasicCalculator();
     private final BoldFormat mode2 = new BoldFormat();
-    private final ItalicFormat mode3 = new ItalicFormat();
+    private final ItalicFormat mode3 = new ItalicFormat();*/
 
     private Stage primaryStage;
     private Scene scene;
@@ -147,12 +147,14 @@ public class Main extends Application
         subjBox.setPromptText("Subject");
 
         modes = new ArrayList<Mode>();
+        //SpeechMode mode4 = new SpeechMode();
         BasicCalculator mode1 = new BasicCalculator();
         BoldFormat mode2 = new BoldFormat();
         ItalicFormat mode3 = new ItalicFormat();
         modes.add(0, mode1);
         modes.add(1, mode2);
         modes.add(2, mode3);
+
     }
 
     /**
